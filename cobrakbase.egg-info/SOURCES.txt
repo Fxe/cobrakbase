@@ -1,0 +1,9 @@
+README.md
+setup.py
+cobrakbase/__init__.py
+cobrakbase.egg-info/PKG-INFO
+cobrakbase.egg-info/SOURCES.txt
+cobrakbase.egg-info/dependency_links.txt
+cobrakbase.egg-info/not-zip-safe
+cobrakbase.egg-info/requires.txt
+cobrakbase.egg-info/top_level.txt

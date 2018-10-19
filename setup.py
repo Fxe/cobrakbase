@@ -8,4 +8,7 @@ setup(name='cobrakbase',
       author_email='fliu@anl.gov',
       license='MIT',
       packages=['cobrakbase'],
+      install_requires=[
+          "cobra >= 0.13.4"
+      ],
       zip_safe=False)
