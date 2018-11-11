@@ -1,17 +1,54 @@
 import os
 import json
+import cobra
+from cobrakbase.kbaseapi import KBaseAPI
+from cobrakbase.Workspace.WorkspaceClient import Workspace as WorkspaceClient
+from cobra.core import Gene, Metabolite, Model, Reaction
+from cobra.util.solver import linear_reaction_coefficients
+import cobrakbase.core.model
 
 __author__  = "Filipe Liu"
 __email__   = "fliu@anl.gov"
-__version__ = "0.0.1"
+__version__ = "0.0.7"
+
+print("cobrakbase", __version__)
+
+KBASE_WS_URL = "https://kbase.us/services/ws/"
+DEV_KBASE_WS_URL = "https://appdev.kbase.us/services/ws/"
 
 bigg = False
 
-def convert_kmodel(kmodel, media={}):
+API = None
+
+def read_model(id, workspace):
+    if API == None:
+        print("Login first! cobrakbase.login(<API_TOKEN>)")
+        return None
+    data = API.get_object(id, workspace)
+    return convert_kmodel(data)
+
+def read_model_with_media(modelId, mediaId, workspace):
+    if API == None:
+        print("Login first! cobrakbase.login(<API_TOKEN>)")
+        return None
+    model_data = API.get_object(modelId, workspace)
+    media_data = API.get_object(mediaId, workspace)
+    media = convert_media(media_data)
+    #print(media)
+    return convert_kmodel(model_data, media)
+
+def login(token, dev=False):
+    global API
+    API = KBaseAPI(token, dev)
+
+SINK = ["cpd02701_c0", "cpd11416_c0"]
+    
+def convert_kmodel(kmodel, media=None):
     model_test = cobra.Model("kbase")
 
     comps = {}
     mets = {}
+    sink = set()
     reactions = []
     extra = set()
 
@@ -25,7 +62,9 @@ def convert_kmodel(kmodel, media={}):
         name = mc['name']
         charge = mc['charge']
         mc_id = mc['id']
-        annotation = get_cpd_annotation(mc['dblinks'])
+        annotation = {}
+        if 'dblinks' in mc:
+            annotation = get_cpd_annotation(mc['dblinks'])
         compartment = get_compartment_id(mc, simple=True)
         id = build_cpd_id(mc_id)
         if bigg:
@@ -33,6 +72,10 @@ def convert_kmodel(kmodel, media={}):
                 id = annotation["bigg.metabolite"] + "_" + compartment
                 #print(id)
         
+        if mc_id in SINK:
+            print("Add Sink", mc_id)
+            extra.add(mc_id)
+            sink.add(mc_id)
         if compartment.startswith("e"):
             extra.add(mc_id)
         met = Metabolite(id=id, formula=formula, name=name, charge=charge, compartment=compartment)
@@ -47,16 +90,22 @@ def convert_kmodel(kmodel, media={}):
         mr_id = mr['id']
         name = mr['name']
         
-        lower_bound = -1 * mr['maxrevflux']
-        upper_bound = mr['maxforflux']
-        annotation = get_rxn_annotation(mr['dblinks'])
+        lower_bound = 0
+        upper_bound = 0
+        if 'maxrevflux' in mr:
+            lower_bound = -1 * mr['maxrevflux']
+        if 'maxforflux' in mr:
+            upper_bound = mr['maxforflux']
+        annotation = {}
+        if 'dblinks' in mr:
+            annotation = get_rxn_annotation(mr['dblinks'])
         id = build_rxn_id(mr_id)
         if bigg:
             if "bigg.reaction" in annotation:
                 id = annotation["bigg.reaction"]
         #print(id)
         reaction = Reaction(id=id, name=name, lower_bound=lower_bound, upper_bound=upper_bound)
-        print(mr['maxrevflux'], mr['maxforflux'], reaction.lower_bound)
+        #print(mr['maxrevflux'], mr['maxforflux'], reaction.lower_bound)
         reaction.annotation["SBO"] = "!!!"
         reaction.annotation.update(annotation)
         object_stoichiometry = {}
@@ -79,7 +128,7 @@ def convert_kmodel(kmodel, media={}):
         reactions.append(reaction)
         #print(mr.keys())
 
-    objective_id = ""
+    objective_id = None
     for biomass in kmodel['biomasses']:
         mr_id = biomass['id'] + "_biomass"
         name = biomass['name']
@@ -99,17 +148,25 @@ def convert_kmodel(kmodel, media={}):
         reactions.append(reaction)
         #print(biomass)
     #print(media)
+    
+    print("Setup Drains. EX:", len(extra), "SK:", len(sink))
     for e in extra:
         met = mets[e]
-        id = "EX_" + met.id
+        prefix = "EX_"
+        if e in sink:
+            prefix = "SK_"
+        id = prefix + met.id
         lower_bound = -1000
         upper_bound =  1000
-        if e.split("_")[0] in media:
+        if not media == None:
+            lower_bound = 0
+        if not media == None and e.split("_")[0] in media:
             ct = media[e.split("_")[0]]
             lower_bound = ct[0]
             upper_bound = ct[1]
             
         #print(e, met, id, lower_bound, upper_bound)
+        
         object_stoichiometry = {met : -1}
         reaction = Reaction(id=id, name="Exchange for " + met.name, lower_bound=lower_bound, upper_bound=upper_bound)
         reaction.add_metabolites(object_stoichiometry)
@@ -129,9 +186,42 @@ def convert_kmodel(kmodel, media={}):
     except ValueError as e:
         warn(str(e))
     
-    model_test.objective = model_test.reactions.get_by_id(id=objective_id)
-    linear_reaction_coefficients(model_test)
+    if not objective_id == None:
+        model_test.objective = model_test.reactions.get_by_id(id=objective_id)
+        linear_reaction_coefficients(model_test)
     return model_test
+
+
+def read_kbase_model(filename):
+    kmodel = {}
+    with open(filename) as file:
+        data = file.read()
+        kmodel = json.loads(data)
+    return kmodel
+
+def read_json(filename, converter):
+    di = None
+    if os.path.exists(filename):
+        with open(filename) as file:
+            data = file.read()
+            di = json.loads(data)
+    if di is None:
+        return None
+    return converter(di)
+
+def convert_media(kmedia):
+    media = {}
+    for mediacompound in kmedia['mediacompounds']:
+        met_id = get_id_from_ref(mediacompound['compound_ref'])
+        lb = -1 * mediacompound['maxFlux']
+        ub = -1 * mediacompound['minFlux']
+        media[met_id] = (lb, ub)
+    return media
+
+def read_kbase_media(filename):
+    return read_json(filename, convert_media)
+
+
 
 def get_compartment_id(modelcompound, simple=False):
     modelcompartment_ref = modelcompound['modelcompartment_ref']
@@ -193,8 +283,8 @@ def build_rxn_id(str):
         return str[2:]
     return str
 
-def get_id_from_ref(str):
-    return str.split('/')[-1]
+def get_id_from_ref(str, stok='/'):
+    return str.split(stok)[-1]
 
 def get_genes(gpr):
     genes = set()
@@ -210,8 +300,10 @@ def get_gpr_string(gpr):
             a.append(g)
         ors.append(" and ".join(a))
     gpr_string = "(" + (") or (".join(ors)) + ")"
-    if gpr_string.startswith("(") and gpr_string.endswith(")"):
-        gpr_string = gpr_string[1:-1].strip()
+    if gpr_string == "()":
+        return ""
+    #if gpr_string.startswith("(") and gpr_string.endswith(")"):
+    #    gpr_string = gpr_string[1:-1].strip()
     return gpr_string
 
 def get_gpr(mr):
@@ -226,32 +318,3 @@ def get_gpr(mr):
         if len(gpr_and) > 0:
             gpr.append(gpr_and)
     return gpr
-
-def read_kbase_model(filename):
-    kmodel = {}
-    with open(filename) as file:
-        data = file.read()
-        kmodel = json.loads(data)
-    return kmodel
-
-def read_json(filename, converter):
-    di = None
-    if os.path.exists(filename):
-        with open(filename) as file:
-            data = file.read()
-            di = json.loads(data)
-    if di is None:
-        return None
-    return converter(di)
-
-def convert_media(kmedia):
-    media = {}
-    for mediacompound in kmedia['mediacompounds']:
-        met_id = get_id_from_ref(mediacompound['compound_ref'])
-        lb = -1 * mediacompound['maxFlux']
-        ub = -1 * mediacompound['minFlux']
-        media[met_id] = (lb, ub)
-    return media
-
-def read_kbase_media(filename):
-    return read_json(filename, convert_media)

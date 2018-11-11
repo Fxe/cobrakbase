@@ -1,9 +1,17 @@
+MANIFEST.in
 README.md
 setup.py
 cobrakbase/__init__.py
+cobrakbase/kbaseapi.py
 cobrakbase.egg-info/PKG-INFO
 cobrakbase.egg-info/SOURCES.txt
 cobrakbase.egg-info/dependency_links.txt
 cobrakbase.egg-info/not-zip-safe
 cobrakbase.egg-info/requires.txt
 cobrakbase.egg-info/top_level.txt
+cobrakbase/Workspace/WorkspaceClient.py
+cobrakbase/Workspace/__init__.py
+cobrakbase/Workspace/authclient.py
+cobrakbase/Workspace/baseclient.py
+cobrakbase/core/__init__.py
+cobrakbase/core/model.py
