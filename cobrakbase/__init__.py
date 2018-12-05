@@ -41,7 +41,7 @@ def login(token, dev=False):
     global API
     API = KBaseAPI(token, dev)
 
-SINK = ["cpd02701_c0", "cpd11416_c0"]
+SINK = ["cpd02701_c0", "cpd11416_c0", "cpd15302_c0", "cpd11416_c0"]
     
 def convert_kmodel(kmodel, media=None):
     model_test = cobra.Model("kbase")
