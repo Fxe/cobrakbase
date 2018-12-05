@@ -9,7 +9,7 @@ import cobrakbase.core.model
 
 __author__  = "Filipe Liu"
 __email__   = "fliu@anl.gov"
-__version__ = "0.0.8"
+__version__ = "0.0.9"
 
 print("cobrakbase", __version__)
 
@@ -78,8 +78,11 @@ def convert_kmodel(kmodel, media=None):
             sink.add(mc_id)
         if compartment.startswith("e"):
             extra.add(mc_id)
+            
         met = Metabolite(id=id, formula=formula, name=name, charge=charge, compartment=compartment)
         met.annotation["SBO"] = "SBO:0000247" #simple chemical - Simple, non-repetitive chemical entity.
+        if id.startswith('cpd'):
+            met.annotation["seed.compound"] = id.split("_")[0]
         #met.annotation[""] = "!!!"
         met.annotation.update(annotation)
         mets[mc_id] = met
@@ -318,3 +321,47 @@ def get_gpr(mr):
         if len(gpr_and) > 0:
             gpr.append(gpr_and)
     return gpr
+
+def read_modelseed_compound_aliases(df):
+    aliases = {}
+    for a, row in df.iterrows():
+        if row[3] == 'BiGG':
+            if not row[0] in aliases:
+                aliases[row[0]] = {}
+            aliases[row[0]]['bigg.metabolite'] = row[2]
+        if row[3] == 'MetaCyc':
+            if not row[0] in aliases:
+                aliases[row[0]] = {}
+            aliases[row[0]]['biocyc'] = row[2]
+        if row[3] == 'KEGG' and row[2][0] == 'C':
+            if not row[0] in aliases:
+                aliases[row[0]] = {}
+            aliases[row[0]]['kegg.compound'] = row[2]
+    return aliases
+
+def read_modelseed_reaction_aliases(df):
+    aliases = {}
+    for a, row in df.iterrows():
+        if row[3] == 'BiGG':
+            if not row[0] in aliases:
+                aliases[row[0]] = {}
+            aliases[row[0]]['bigg.reaction'] = row[2]
+        if row[3] == 'MetaCyc':
+            if not row[0] in aliases:
+                aliases[row[0]] = {}
+            aliases[row[0]]['biocyc'] = row[2]
+        if row[3] == 'KEGG' and row[2][0] == 'R':
+            if not row[0] in aliases:
+                aliases[row[0]] = {}
+            aliases[row[0]]['kegg.reaction'] = row[2]
+    return aliases
+
+def read_modelseed_compound_structures(df):
+    structures = {}
+    for _, row in df.iterrows():
+        #print(row[0], row[1], row[3])
+        if row[1] == 'InChIKey':
+            if not row[0] in structures:
+                structures[row[0]] = {}
+            structures[row[0]]['inchikey'] = row[3]
+    return structures
