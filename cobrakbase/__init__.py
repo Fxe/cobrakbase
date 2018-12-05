@@ -9,7 +9,7 @@ import cobrakbase.core.model
 
 __author__  = "Filipe Liu"
 __email__   = "fliu@anl.gov"
-__version__ = "0.0.9"
+__version__ = "0.1.0"
 
 print("cobrakbase", __version__)
 
@@ -110,6 +110,8 @@ def convert_kmodel(kmodel, media=None):
         reaction = Reaction(id=id, name=name, lower_bound=lower_bound, upper_bound=upper_bound)
         #print(mr['maxrevflux'], mr['maxforflux'], reaction.lower_bound)
         reaction.annotation["SBO"] = "!!!"
+        if id.startswith('rxn'):
+            reaction.annotation["seed.reaction"] = id.split("_")[0]
         reaction.annotation.update(annotation)
         object_stoichiometry = {}
         for mrr in mr['modelReactionReagents']:
@@ -120,7 +122,7 @@ def convert_kmodel(kmodel, media=None):
             met = mets[mc_id]#model_test.metabolites.get_by_id(met_id)
             #print(met, met_id, coefficient)
             object_stoichiometry[met] = coefficient
-        reaction.annotation["SBO"] = "SBO:0000176" #biochemical reaction 
+        reaction.annotation["SBO"] = "SBO:0000176" #biochemical reaction
         reaction.add_metabolites(object_stoichiometry)
         gpr = get_gpr(mr)
         gpr_string = get_gpr_string(gpr)

@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='cobrakbase',
-      version='0.0.9',
+      version='0.1.0',
       description='KBase interface for COBRApy',
       url='https://github.com/Fxe/cobrakbase',
       author='Filipe Liu',
