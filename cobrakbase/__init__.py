@@ -9,7 +9,7 @@ import cobrakbase.core.model
 
 __author__  = "Filipe Liu"
 __email__   = "fliu@anl.gov"
-__version__ = "0.0.7"
+__version__ = "0.0.8"
 
 print("cobrakbase", __version__)
 
