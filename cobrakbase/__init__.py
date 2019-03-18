@@ -6,15 +6,19 @@ from cobrakbase.Workspace.WorkspaceClient import Workspace as WorkspaceClient
 from cobra.core import Gene, Metabolite, Model, Reaction
 from cobra.util.solver import linear_reaction_coefficients
 import cobrakbase.core.model
+import cobrakbase.modelseed.utils
+import cobrakbase.modelseed.modelseed
 
 __author__  = "Filipe Liu"
 __email__   = "fliu@anl.gov"
-__version__ = "0.1.0"
+__version__ = "0.1.4"
 
 print("cobrakbase", __version__)
 
 KBASE_WS_URL = "https://kbase.us/services/ws/"
 DEV_KBASE_WS_URL = "https://appdev.kbase.us/services/ws/"
+
+SBO_ANNOTATION = "sbo"
 
 bigg = False
 
@@ -42,7 +46,30 @@ def login(token, dev=False):
     API = KBaseAPI(token, dev)
 
 SINK = ["cpd02701_c0", "cpd11416_c0", "cpd15302_c0", "cpd11416_c0"]
-    
+
+COBRA_DEFAULT_LB = -1000000
+COBRA_DEFAULT_UB =  1000000
+COBRA_0_BOUND = 0
+
+def convert_biomass_to_reaction(biomass, mets):
+    mr_id = biomass['id'] + "_biomass"
+    name = biomass['name']
+    object_stoichiometry = {}
+    for biomasscompound in biomass['biomasscompounds']:
+        coefficient = biomasscompound['coefficient']
+        modelcompound_ref = biomasscompound['modelcompound_ref']
+        mc_id = get_id_from_ref(modelcompound_ref)
+        met_id = build_cpd_id(mc_id)
+        met = mets[mc_id]
+        object_stoichiometry[met] = coefficient
+    reaction = Reaction(id=build_rxn_id(mr_id), name=name, lower_bound=COBRA_0_BOUND, upper_bound=COBRA_DEFAULT_UB)
+    objective_id = reaction.id
+    reaction.add_metabolites(object_stoichiometry)
+    #SBO:0000629 [biomass production]
+    #Biomass production, often represented 'R_BIOMASS_', is usually the optimization target reaction of constraint-based models ...
+    reaction.annotation[SBO_ANNOTATION] = "SBO:0000629" 
+    return reaction
+
 def convert_kmodel(kmodel, media=None):
     model_test = cobra.Model("kbase")
 
@@ -56,6 +83,7 @@ def convert_kmodel(kmodel, media=None):
         mcomp_id = mcomp['id']
         name = mcomp['label']
         comps[mcomp_id] = name
+
     for mc in kmodel["modelcompounds"]:
         #print(mc.keys())
         formula = mc['formula']
@@ -80,7 +108,7 @@ def convert_kmodel(kmodel, media=None):
             extra.add(mc_id)
             
         met = Metabolite(id=id, formula=formula, name=name, charge=charge, compartment=compartment)
-        met.annotation["SBO"] = "SBO:0000247" #simple chemical - Simple, non-repetitive chemical entity.
+        met.annotation[SBO_ANNOTATION] = "SBO:0000247" #simple chemical - Simple, non-repetitive chemical entity.
         if id.startswith('cpd'):
             met.annotation["seed.compound"] = id.split("_")[0]
         #met.annotation[""] = "!!!"
@@ -109,7 +137,7 @@ def convert_kmodel(kmodel, media=None):
         #print(id)
         reaction = Reaction(id=id, name=name, lower_bound=lower_bound, upper_bound=upper_bound)
         #print(mr['maxrevflux'], mr['maxforflux'], reaction.lower_bound)
-        reaction.annotation["SBO"] = "!!!"
+        reaction.annotation[SBO_ANNOTATION] = "!!!"
         if id.startswith('rxn'):
             reaction.annotation["seed.reaction"] = id.split("_")[0]
         reaction.annotation.update(annotation)
@@ -122,7 +150,7 @@ def convert_kmodel(kmodel, media=None):
             met = mets[mc_id]#model_test.metabolites.get_by_id(met_id)
             #print(met, met_id, coefficient)
             object_stoichiometry[met] = coefficient
-        reaction.annotation["SBO"] = "SBO:0000176" #biochemical reaction
+        reaction.annotation[SBO_ANNOTATION] = "SBO:0000176" #biochemical reaction
         reaction.add_metabolites(object_stoichiometry)
         gpr = get_gpr(mr)
         gpr_string = get_gpr_string(gpr)
@@ -135,22 +163,9 @@ def convert_kmodel(kmodel, media=None):
 
     objective_id = None
     for biomass in kmodel['biomasses']:
-        mr_id = biomass['id'] + "_biomass"
-        name = biomass['name']
-        object_stoichiometry = {}
-        for biomasscompound in biomass['biomasscompounds']:
-            #print(biomasscompound)
-            coefficient = biomasscompound['coefficient']
-            modelcompound_ref = biomasscompound['modelcompound_ref']
-            mc_id = get_id_from_ref(modelcompound_ref)
-            met_id = build_cpd_id(mc_id)
-            met = mets[mc_id]
-            object_stoichiometry[met] = coefficient
-        reaction = Reaction(id=build_rxn_id(mr_id), name=name, lower_bound=0, upper_bound=1000)
-        objective_id = reaction.id
-        reaction.add_metabolites(object_stoichiometry)
-        reaction.annotation["SBO"] = "SBO:0000629" #biomass production - Biomass production, often represented 'R_BIOMASS_', is usually the optimization target reaction of constraint-based models ...
+        reaction = convert_biomass_to_reaction(biomass, mets)
         reactions.append(reaction)
+        objective_id = reaction.id
         #print(biomass)
     #print(media)
     
@@ -159,10 +174,10 @@ def convert_kmodel(kmodel, media=None):
         met = mets[e]
         prefix = "EX_"
         if e in sink:
-            prefix = "SK_"
+            prefix = "DM_"
         id = prefix + met.id
-        lower_bound = -1000
-        upper_bound =  1000
+        lower_bound = COBRA_DEFAULT_LB
+        upper_bound = COBRA_DEFAULT_UB
         if not media == None:
             lower_bound = 0
         if not media == None and e.split("_")[0] in media:
@@ -175,13 +190,13 @@ def convert_kmodel(kmodel, media=None):
         object_stoichiometry = {met : -1}
         reaction = Reaction(id=id, name="Exchange for " + met.name, lower_bound=lower_bound, upper_bound=upper_bound)
         reaction.add_metabolites(object_stoichiometry)
-        reaction.annotation["SBO"] = "SBO:0000627" #exchange reaction - ... provide matter influx or efflux to a model, for example to replenish a metabolic network with raw materials ... 
+        reaction.annotation[SBO_ANNOTATION] = "SBO:0000627" #exchange reaction - ... provide matter influx or efflux to a model, for example to replenish a metabolic network with raw materials ... 
         reactions.append(reaction)
         #print(reaction.name)
     #print("Genes:", genes)
     for g in genes:
         gene = Gene(id=build_gene_id(g), name=g)
-        gene.annotation["SBO"] = "SBO:0000243"
+        gene.annotation[SBO_ANNOTATION] = "SBO:0000243"
         model_test.genes.append(gene)
 
     model_test.compartments = comps
@@ -324,6 +339,43 @@ def get_gpr(mr):
             gpr.append(gpr_and)
     return gpr
 
+
+
+def read_modelseed_compound_aliases2(df):
+    aliases = {}
+    for a, row in df.iterrows():
+        cpd_id = row[0]
+        database_id = row[1]
+        database = row[2]
+        if not cpd_id in aliases:
+            aliases[cpd_id] = {}
+        
+        if database == 'BiGG' or 'BiGG' in database:
+            aliases[cpd_id]['bigg.metabolite'] = database_id
+        if database == 'MetaCyc' or 'MetaCyc' in database:
+            aliases[cpd_id]['biocyc'] = database_id
+        if (database == 'KEGG' or 'KEGG' in database) and database_id[0] == 'C':
+            aliases[cpd_id]['kegg.compound'] = database_id
+    return aliases
+
+def read_modelseed_reaction_aliases2(df):
+    aliases = {}
+    for a, row in df.iterrows():
+        #print(row)
+        #break
+        rxn_id = row[0]
+        database_id = row[1]
+        database = row[2]
+        if not rxn_id in aliases:
+            aliases[rxn_id] = {}
+        if database == 'BiGG' or 'BiGG' in database:
+            aliases[rxn_id]['bigg.reaction'] = database_id
+        if database == 'MetaCyc' or 'MetaCyc' in database:
+            aliases[rxn_id]['biocyc'] = database_id
+        if (database == 'KEGG' or 'KEGG' in database) and database_id[0] == 'R':
+            aliases[rxn_id]['kegg.reaction'] = database_id
+    return aliases
+
 def read_modelseed_compound_aliases(df):
     aliases = {}
     for a, row in df.iterrows():
@@ -367,3 +419,65 @@ def read_modelseed_compound_structures(df):
                 structures[row[0]] = {}
             structures[row[0]]['inchikey'] = row[3]
     return structures
+
+def get_old_alias(alias, feature, gene_aliases):
+    if alias.startswith('EcoGene:'):
+        gene_aliases[feature['id']]['ecogene'] = alias.split(':')[1]
+    elif alias.startswith('UniProtKB/Swiss-Prot:'):
+        gene_aliases[feature['id']]['uniprot'] = alias.split(':')[1]
+    elif alias.startswith('NP_'):
+        gene_aliases[feature['id']]['ncbiprotein'] = alias
+    elif alias.startswith('ASAP:'):
+        gene_aliases[feature['id']]['asap'] = alias.split(':')[1]
+    elif alias.startswith('GI:'):
+        gene_aliases[feature['id']]['ncbigi'] = alias
+    elif alias.startswith('GeneID:'):
+        gene_aliases[feature['id']]['ncbigene'] = alias.split(':')[1]
+    else:
+        1
+
+def read_genome_aliases(genome):
+    gene_aliases = {}
+    for feature in genome['features']:
+        gene_aliases[feature['id']] = {}
+        if 'aliases' in feature and type(feature['aliases']) == list:
+            for alias in feature['aliases']:
+                if type(alias) == list:
+                    for a in alias:
+                        #risk parsing the first element
+                        get_old_alias(a, feature, gene_aliases)
+                else:
+                    get_old_alias(alias, feature, gene_aliases)
+                    #print('discard', alias)
+        #print(feature['aliases' in ])
+    return gene_aliases
+
+def is_transport(r):
+    lhs = set()
+    rhs = set()
+    for m in r.reactants:
+        if 'seed.compound' in m.annotation:
+            lhs.add(m.annotation['seed.compound'])
+        else:
+            return False
+    for m in r.products:
+        if 'seed.compound' in m.annotation:
+            rhs.add(m.annotation['seed.compound'])
+        else:
+            return False
+    
+    if not len(lhs & rhs) == 0:
+        return True
+    
+    return False
+
+
+def is_translocation(r):
+    cmps = set()
+    
+    for m in r.reactants:
+        cmps.add(m.compartment)
+    for m in r.products:
+        cmps.add(m.compartment)
+    
+    return len(cmps) > 1

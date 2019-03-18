@@ -15,11 +15,25 @@ def _get_ws_client(token, dev=False):
 
 class KBaseAPI(object):
 
-    def __init__(self, token, dev=False):
-        self.ws_client = _get_ws_client(token, dev)
+    def __init__(self, token, dev=False, config=None):
+        if config == None:
+            self.ws_client = _get_ws_client(token, dev)
+        else:
+            self.ws_client = WorkspaceClient(config['workspace-url'], token=token)
         
     def get_object(self, id, ws):
         return _get_object_wsc(self.ws_client, id, ws)
+    
+    def save_object(self, id, ws, otype, data):
+        params = {
+            'workspace' : ws,
+            'objects' : [{
+                'data' : data,
+                'name' : id,
+                'type' : otype
+            }]
+        }
+        return self.ws_client.save_objects(params)
     
     def list_objects(self, ws):
         return self.ws_client.list_objects(
