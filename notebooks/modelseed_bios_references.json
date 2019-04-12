@@ -1,0 +1,4914 @@
+{
+  "cpd15238" : {
+    "bigg.metabolite" : "hdcoa"
+  },
+  "cpd15478" : {
+    "bigg.metabolite" : "ggptrc"
+  },
+  "cpd15236" : {
+    "bigg.metabolite" : "gluala"
+  },
+  "cpd15237" : {
+    "kegg.compound" : "C08362",
+    "bigg.metabolite" : "hdcea",
+    "metacyc.compound" : "META:CPD-9245"
+  },
+  "cpd13053" : {
+    "kegg.compound" : "C07305"
+  },
+  "cpd15473" : {
+    "bigg.metabolite" : "gfgaragund"
+  },
+  "cpd15470" : {
+    "bigg.metabolite" : "garagund"
+  },
+  "cpd29646" : {
+    "kegg.compound" : "C00129",
+    "bigg.metabolite" : "ipdp",
+    "metacyc.compound" : "META:DELTA3-ISOPENTENYL-PP"
+  },
+  "cpd02169" : {
+    "kegg.compound" : "C03428",
+    "bigg.metabolite" : "HC01118",
+    "metacyc.compound" : "META:CPD-465"
+  },
+  "cpd01078" : {
+    "kegg.compound" : "C01528",
+    "bigg.metabolite" : "seln",
+    "metacyc.compound" : "META:CPD-678"
+  },
+  "cpd27220" : {
+    "metacyc.compound" : "META:HOLO-CITRATE-LYASE"
+  },
+  "cpd19603" : {
+    "kegg.compound" : "C18338",
+    "metacyc.compound" : "META:CPD-11853"
+  },
+  "cpd02160" : {
+    "kegg.compound" : "C03415",
+    "bigg.metabolite" : "sucorn",
+    "metacyc.compound" : "META:N2-SUCCINYLORNITHINE"
+  },
+  "cpd15468" : {
+    "bigg.metabolite" : "g3ps",
+    "metacyc.compound" : "META:CPD0-2030"
+  },
+  "cpd15226" : {
+    "bigg.metabolite" : "cer3_24"
+  },
+  "cpd15465" : {
+    "bigg.metabolite" : "fldrd"
+  },
+  "cpd15224" : {
+    "bigg.metabolite" : "cer2_24"
+  },
+  "cpd15463" : {
+    "bigg.metabolite" : "feoxam_un"
+  },
+  "cpd12194" : {
+    "kegg.compound" : "C02839",
+    "bigg.metabolite" : "tyrtrna",
+    "metacyc.compound" : "META:Charged-TYR-tRNAs"
+  },
+  "cpd15464" : {
+    "bigg.metabolite" : "flxso"
+  },
+  "cpd15461" : {
+    "bigg.metabolite" : "fe3hox_un"
+  },
+  "cpd12196" : {
+    "kegg.compound" : "C02843",
+    "metacyc.compound" : "META:Long-Chain-Acyl-CoAs"
+  },
+  "cpd15462" : {
+    "bigg.metabolite" : "fecrm_un"
+  },
+  "cpd15220" : {
+    "bigg.metabolite" : "cer1_24"
+  },
+  "cpd15460" : {
+    "bigg.metabolite" : "fe3dhbzs"
+  },
+  "cpd08928" : {
+    "kegg.compound" : "C12147",
+    "bigg.metabolite" : "thrp",
+    "metacyc.compound" : "META:L-THREONINE-O-3-PHOSPHATE"
+  },
+  "cpd02394" : {
+    "kegg.compound" : "C03838",
+    "bigg.metabolite" : "gar",
+    "metacyc.compound" : "META:5-PHOSPHO-RIBOSYL-GLYCINEAMIDE"
+  },
+  "cpd02152" : {
+    "kegg.compound" : "C03406",
+    "bigg.metabolite" : "argsuc",
+    "metacyc.compound" : "META:L-ARGININO-SUCCINATE"
+  },
+  "cpd15499" : {
+    "bigg.metabolite" : "mql8"
+  },
+  "cpd15496" : {
+    "bigg.metabolite" : "man6pglyc"
+  },
+  "cpd15255" : {
+    "bigg.metabolite" : "mip2c224_SC"
+  },
+  "cpd15495" : {
+    "bigg.metabolite" : "maltpt"
+  },
+  "cpd15492" : {
+    "bigg.metabolite" : "kphphhlipa"
+  },
+  "cpd03039" : {
+    "kegg.compound" : "C05109",
+    "bigg.metabolite" : "C05109",
+    "metacyc.compound" : "META:CPD-8606"
+  },
+  "cpd03037" : {
+    "kegg.compound" : "C05107",
+    "bigg.metabolite" : "ddsmsterol",
+    "metacyc.compound" : "META:CPD-8646"
+  },
+  "cpd04122" : {
+    "kegg.compound" : "C06735",
+    "bigg.metabolite" : "aacald",
+    "metacyc.compound" : "META:CPD-1772"
+  },
+  "cpd02187" : {
+    "kegg.compound" : "C03460",
+    "bigg.metabolite" : "2mp2coa",
+    "metacyc.compound" : "META:METHACRYLYL-COA"
+  },
+  "cpd02182" : {
+    "kegg.compound" : "C03451",
+    "bigg.metabolite" : "lgt__S",
+    "metacyc.compound" : "META:S-LACTOYL-GLUTATHIONE"
+  },
+  "cpd02183" : {
+    "kegg.compound" : "C03453",
+    "bigg.metabolite" : "oxalc"
+  },
+  "cpd15489" : {
+    "bigg.metabolite" : "icolipa"
+  },
+  "cpd15245" : {
+    "bigg.metabolite" : "ipc224_SC"
+  },
+  "cpd15481" : {
+    "bigg.metabolite" : "grxrd"
+  },
+  "cpd15240" : {
+    "bigg.metabolite" : "hexc"
+  },
+  "cpd15480" : {
+    "bigg.metabolite" : "grxox"
+  },
+  "cpd04111" : {
+    "kegg.compound" : "C06723",
+    "metacyc.compound" : "META:6-CARBOXYHEX-2-ENOYL-COA"
+  },
+  "cpd28301" : {
+    "kegg.compound" : "C00399",
+    "metacyc.compound" : "META:Ubiquinones"
+  },
+  "cpd01084" : {
+    "kegg.compound" : "C01537"
+  },
+  "cpd28300" : {
+    "kegg.compound" : "C00390",
+    "metacyc.compound" : "META:Ubiquinols"
+  },
+  "cpd30613" : {
+    "bigg.metabolite" : "tyr_Lso4"
+  },
+  "cpd24187" : {
+    "metacyc.compound" : "META:CPD-14116"
+  },
+  "cpd02172" : {
+    "kegg.compound" : "C04145",
+    "metacyc.compound" : "META:SOLANESYL-PYROPHOSPHATE"
+  },
+  "cpd01080" : {
+    "kegg.compound" : "C01530",
+    "bigg.metabolite" : "ocdca",
+    "metacyc.compound" : "META:STEARIC_ACID"
+  },
+  "cpd05235" : {
+    "kegg.compound" : "C08320",
+    "bigg.metabolite" : "ttc"
+  },
+  "cpd15277" : {
+    "kegg.compound" : "C05764",
+    "bigg.metabolite" : "palmACP",
+    "metacyc.compound" : "META:Palmitoyl-ACPs"
+  },
+  "cpd27269" : {
+    "kegg.compound" : "C01644",
+    "bigg.metabolite" : "trnaile",
+    "metacyc.compound" : "META:ILE-tRNAs"
+  },
+  "cpd11909" : {
+    "kegg.compound" : "C01638",
+    "bigg.metabolite" : "trnaasp",
+    "metacyc.compound" : "META:ASP-tRNAs"
+  },
+  "cpd11902" : {
+    "kegg.compound" : "C01614",
+    "metacyc.compound" : "META:Sulfamates"
+  },
+  "cpd03294" : {
+    "bigg.metabolite" : "arbtn_fe3"
+  },
+  "cpd03293" : {
+    "bigg.metabolite" : "biocyt"
+  },
+  "cpd29681" : {
+    "bigg.metabolite" : "tagdp__D"
+  },
+  "cpd15269" : {
+    "bigg.metabolite" : "ocdcea"
+  },
+  "cpd15268" : {
+    "bigg.metabolite" : "ocdcaACP"
+  },
+  "cpd15261" : {
+    "bigg.metabolite" : "mipc224_SC"
+  },
+  "cpd03049" : {
+    "kegg.compound" : "C05125",
+    "bigg.metabolite" : "hethmpp"
+  },
+  "cpd03047" : {
+    "kegg.compound" : "C05122",
+    "bigg.metabolite" : "tchola",
+    "metacyc.compound" : "META:CPD-3743"
+  },
+  "cpd03046" : {
+    "bigg.metabolite" : "HC01377"
+  },
+  "cpd29213" : {
+    "kegg.compound" : "C11811",
+    "bigg.metabolite" : "h2mb4p",
+    "metacyc.compound" : "META:HYDROXY-METHYL-BUTENYL-DIP"
+  },
+  "cpd03045" : {
+    "bigg.metabolite" : "2mbdhl"
+  },
+  "cpd03284" : {
+    "kegg.compound" : "C05527",
+    "bigg.metabolite" : "3snpyr",
+    "metacyc.compound" : "META:3-SULFINYL-PYRUVATE"
+  },
+  "cpd03282" : {
+    "kegg.compound" : "C05519",
+    "bigg.metabolite" : "athr__L",
+    "metacyc.compound" : "META:L-ALLO-THREONINE"
+  },
+  "cpd15297" : {
+    "kegg.compound" : "C16529",
+    "bigg.metabolite" : "ttccoa"
+  },
+  "cpd15294" : {
+    "bigg.metabolite" : "tdeACP"
+  },
+  "cpd15290" : {
+    "kegg.compound" : "C17568",
+    "bigg.metabolite" : "q6"
+  },
+  "cpd15291" : {
+    "bigg.metabolite" : "q6h2"
+  },
+  "cpd27005" : {
+    "kegg.compound" : "C04253",
+    "metacyc.compound" : "META:ETF-Oxidized"
+  },
+  "cpd27006" : {
+    "kegg.compound" : "C04570",
+    "metacyc.compound" : "META:ETF-Reduced"
+  },
+  "cpd11924" : {
+    "kegg.compound" : "C01653",
+    "bigg.metabolite" : "trnaval",
+    "metacyc.compound" : "META:VAL-tRNAs"
+  },
+  "cpd03077" : {
+    "kegg.compound" : "C05167",
+    "metacyc.compound" : "META:Alpha-Amino-Acids"
+  },
+  "cpd11920" : {
+    "kegg.compound" : "C01649",
+    "bigg.metabolite" : "trnapro",
+    "metacyc.compound" : "META:PRO-tRNAs"
+  },
+  "cpd28330" : {
+    "metacyc.compound" : "META:holo-VibB"
+  },
+  "cpd11922" : {
+    "kegg.compound" : "C01651",
+    "bigg.metabolite" : "trnathr",
+    "metacyc.compound" : "META:THR-tRNAs"
+  },
+  "cpd11923" : {
+    "kegg.compound" : "C01652",
+    "bigg.metabolite" : "trnatrp",
+    "metacyc.compound" : "META:TRP-tRNAs"
+  },
+  "cpd11913" : {
+    "kegg.compound" : "C01642",
+    "bigg.metabolite" : "trnagly",
+    "metacyc.compound" : "META:GLY-tRNAs"
+  },
+  "cpd11914" : {
+    "kegg.compound" : "C01643",
+    "bigg.metabolite" : "trnahis",
+    "metacyc.compound" : "META:HIS-tRNAs"
+  },
+  "cpd29676" : {
+    "kegg.compound" : "C05925",
+    "bigg.metabolite" : "dhpmp",
+    "metacyc.compound" : "META:DIHYDRONEOPTERIN-P"
+  },
+  "cpd11915" : {
+    "kegg.compound" : "C01644",
+    "bigg.metabolite" : "trnaile",
+    "metacyc.compound" : "META:ILE-tRNAs"
+  },
+  "cpd29673" : {
+    "kegg.compound" : "C03406",
+    "bigg.metabolite" : "argsuc",
+    "metacyc.compound" : "META:L-ARGININO-SUCCINATE"
+  },
+  "cpd11910" : {
+    "kegg.compound" : "C01639",
+    "bigg.metabolite" : "trnacys",
+    "metacyc.compound" : "META:CYS-tRNAs"
+  },
+  "cpd03091" : {
+    "kegg.compound" : "C05198",
+    "bigg.metabolite" : "dad_5",
+    "metacyc.compound" : "META:CH33ADO"
+  },
+  "cpd03090" : {
+    "kegg.compound" : "C05195",
+    "metacyc.compound" : "META:CPD-264"
+  },
+  "cpd09878" : {
+    "bigg.metabolite" : "sulfac"
+  },
+  "cpd00810" : {
+    "kegg.compound" : "C01103",
+    "bigg.metabolite" : "orot5p",
+    "metacyc.compound" : "META:OROTIDINE-5-PHOSPHATE"
+  },
+  "cpd00812" : {
+    "kegg.compound" : "C01107",
+    "bigg.metabolite" : "5pmev",
+    "metacyc.compound" : "META:CPD-499"
+  },
+  "cpd19442" : {
+    "kegg.compound" : "C18172",
+    "bigg.metabolite" : "cspmd",
+    "metacyc.compound" : "META:CPD-10012"
+  },
+  "cpd11709" : {
+    "kegg.compound" : "C00609",
+    "metacyc.compound" : "META:Long-Chain-Aldehydes"
+  },
+  "cpd27067" : {
+    "kegg.compound" : "C06741",
+    "metacyc.compound" : "META:Feruloyl-polysaccharides"
+  },
+  "cpd28152" : {
+    "kegg.compound" : "C01650",
+    "bigg.metabolite" : "trnaser",
+    "metacyc.compound" : "META:SER-tRNAs"
+  },
+  "cpd00808" : {
+    "kegg.compound" : "C01101",
+    "bigg.metabolite" : "ru5p__L",
+    "metacyc.compound" : "META:L-RIBULOSE-5-P"
+  },
+  "cpd00807" : {
+    "kegg.compound" : "C01100",
+    "bigg.metabolite" : "hisp",
+    "metacyc.compound" : "META:L-HISTIDINOL-P"
+  },
+  "cpd00809" : {
+    "kegg.compound" : "C01102",
+    "bigg.metabolite" : "phom",
+    "metacyc.compound" : "META:O-PHOSPHO-L-HOMOSERINE"
+  },
+  "cpd15068" : {
+    "kegg.compound" : "C16352",
+    "metacyc.compound" : "META:7-METHYLXANTHOSINE"
+  },
+  "cpd00806" : {
+    "kegg.compound" : "C01099",
+    "bigg.metabolite" : "fc1p",
+    "metacyc.compound" : "META:FUCULOSE-1P"
+  },
+  "cpd00800" : {
+    "kegg.compound" : "C01092",
+    "bigg.metabolite" : "8aonn",
+    "metacyc.compound" : "META:8-AMINO-7-OXONONANOATE"
+  },
+  "cpd00802" : {
+    "kegg.compound" : "C01094",
+    "bigg.metabolite" : "f1p",
+    "metacyc.compound" : "META:FRU1P"
+  },
+  "cpd11731" : {
+    "kegg.compound" : "C00706",
+    "metacyc.compound" : "META:Primary-Amines"
+  },
+  "cpd00837" : {
+    "kegg.compound" : "C01137",
+    "bigg.metabolite" : "ametam"
+  },
+  "cpd01926" : {
+    "kegg.compound" : "C03003",
+    "metacyc.compound" : "META:CPD-446"
+  },
+  "cpd16183" : {
+    "kegg.compound" : "C02984",
+    "bigg.metabolite" : "asptrna",
+    "metacyc.compound" : "META:Charged-ASP-tRNAs"
+  },
+  "cpd00842" : {
+    "kegg.compound" : "C01144",
+    "bigg.metabolite" : "3hbcoa",
+    "metacyc.compound" : "META:S-3-HYDROXYBUTANOYL-COA"
+  },
+  "cpd20411" : {
+    "kegg.compound" : "C19151",
+    "bigg.metabolite" : "f420_3",
+    "metacyc.compound" : "META:CPD-7613"
+  },
+  "cpd28137" : {
+    "kegg.compound" : "C19156",
+    "bigg.metabolite" : "2plac__L",
+    "metacyc.compound" : "META:S-PHOSPHOLACTATE"
+  },
+  "cpd20414" : {
+    "kegg.compound" : "C19156",
+    "bigg.metabolite" : "2plac__L",
+    "metacyc.compound" : "META:S-PHOSPHOLACTATE"
+  },
+  "cpd20412" : {
+    "kegg.compound" : "C19152",
+    "bigg.metabolite" : "f420_1",
+    "metacyc.compound" : "META:CPD-7607"
+  },
+  "cpd20413" : {
+    "kegg.compound" : "C19153",
+    "bigg.metabolite" : "f420_0",
+    "metacyc.compound" : "META:CPD-10333"
+  },
+  "cpd01912" : {
+    "kegg.compound" : "C02985",
+    "bigg.metabolite" : "fuc1p__L"
+  },
+  "cpd00822" : {
+    "kegg.compound" : "C01118",
+    "bigg.metabolite" : "suchms",
+    "metacyc.compound" : "META:O-SUCCINYL-L-HOMOSERINE"
+  },
+  "cpd00824" : {
+    "kegg.compound" : "C01120",
+    "bigg.metabolite" : "sph1p",
+    "metacyc.compound" : "META:CPD-649"
+  },
+  "cpd00830" : {
+    "kegg.compound" : "C01127",
+    "bigg.metabolite" : "4h2oglt"
+  },
+  "cpd11959" : {
+    "bigg.metabolite" : "lpp"
+  },
+  "cpd11712" : {
+    "kegg.compound" : "C00615"
+  },
+  "cpd12803" : {
+    "kegg.compound" : "C05996"
+  },
+  "cpd11751" : {
+    "kegg.compound" : "C00787",
+    "bigg.metabolite" : "trnatyr",
+    "metacyc.compound" : "META:TYR-tRNAs"
+  },
+  "cpd12843" : {
+    "bigg.metabolite" : "fe3hox"
+  },
+  "cpd00617" : {
+    "kegg.compound" : "C00827",
+    "metacyc.compound" : "META:LACTOYL-COA"
+  },
+  "cpd00616" : {
+    "kegg.compound" : "C00826",
+    "bigg.metabolite" : "Largn",
+    "metacyc.compound" : "META:CPD-659"
+  },
+  "cpd00858" : {
+    "kegg.compound" : "C01165",
+    "bigg.metabolite" : "glu5sa",
+    "metacyc.compound" : "META:L-GLUTAMATE_GAMMA-SEMIALDEHYDE"
+  },
+  "cpd00855" : {
+    "kegg.compound" : "C01162",
+    "metacyc.compound" : "META:CPD-670"
+  },
+  "cpd00857" : {
+    "kegg.compound" : "C01164",
+    "bigg.metabolite" : "7dhchsterol",
+    "metacyc.compound" : "META:CPD-4187"
+  },
+  "cpd19241" : {
+    "kegg.compound" : "C17432",
+    "bigg.metabolite" : "decdp",
+    "metacyc.compound" : "META:CPD-9610"
+  },
+  "cpd00620" : {
+    "kegg.compound" : "C00831",
+    "bigg.metabolite" : "ptth",
+    "metacyc.compound" : "META:CPD-511"
+  },
+  "cpd01950" : {
+    "kegg.compound" : "C03047",
+    "metacyc.compound" : "META:CPD-595"
+  },
+  "cpd00863" : {
+    "kegg.compound" : "C01172",
+    "bigg.metabolite" : "g6p_B"
+  },
+  "cpd00860" : {
+    "bigg.metabolite" : "sdhlam"
+  },
+  "cpd00847" : {
+    "kegg.compound" : "C01151",
+    "bigg.metabolite" : "r15bp",
+    "metacyc.compound" : "META:RIBOSE-15-BISPHOSPHATE"
+  },
+  "cpd01937" : {
+    "kegg.compound" : "C03028",
+    "bigg.metabolite" : "thmtp",
+    "metacyc.compound" : "META:CPD-611"
+  },
+  "cpd00843" : {
+    "kegg.compound" : "C01146",
+    "bigg.metabolite" : "2h3oppan",
+    "metacyc.compound" : "META:TARTRONATE-S-ALD"
+  },
+  "cpd00851" : {
+    "kegg.compound" : "C01157",
+    "bigg.metabolite" : "4hpro_LT",
+    "metacyc.compound" : "META:4-HYDROXY-L-PROLINE"
+  },
+  "cpd00853" : {
+    "kegg.compound" : "C01159",
+    "bigg.metabolite" : "23dpg",
+    "metacyc.compound" : "META:23-DIPHOSPHOGLYCERATE"
+  },
+  "cpd19012" : {
+    "kegg.compound" : "C01326",
+    "bigg.metabolite" : "cyan",
+    "metacyc.compound" : "META:HCN"
+  },
+  "cpd19013" : {
+    "kegg.compound" : "C00014",
+    "bigg.metabolite" : "nh4",
+    "metacyc.compound" : "META:AMMONIUM"
+  },
+  "cpd12824" : {
+    "kegg.compound" : "C06084"
+  },
+  "cpd08363" : {
+    "kegg.compound" : "C11529",
+    "metacyc.compound" : "META:N-Carbamoyl-L-Amino-Acids"
+  },
+  "cpd08368" : {
+    "bigg.metabolite" : "copre2",
+    "metacyc.compound" : "META:CPD-9039"
+  },
+  "cpd00638" : {
+    "kegg.compound" : "C00857",
+    "bigg.metabolite" : "dnad"
+  },
+  "cpd01727" : {
+    "kegg.compound" : "C02656",
+    "bigg.metabolite" : "pime",
+    "metacyc.compound" : "META:CPD-205"
+  },
+  "cpd00635" : {
+    "kegg.compound" : "C00853",
+    "bigg.metabolite" : "cbl1",
+    "metacyc.compound" : "META:COB-I-ALAMIN"
+  },
+  "cpd00876" : {
+    "kegg.compound" : "C06001",
+    "bigg.metabolite" : "3hmp",
+    "metacyc.compound" : "META:CPD-12175"
+  },
+  "cpd01966" : {
+    "kegg.compound" : "C03069",
+    "bigg.metabolite" : "3mb2coa",
+    "metacyc.compound" : "META:3-METHYL-CROTONYL-COA"
+  },
+  "cpd01733" : {
+    "kegg.compound" : "C02666",
+    "bigg.metabolite" : "conialdh",
+    "metacyc.compound" : "META:CONIFERYL-ALDEHYDE"
+  },
+  "cpd00641" : {
+    "kegg.compound" : "C00860",
+    "bigg.metabolite" : "histd",
+    "metacyc.compound" : "META:HISTIDINOL"
+  },
+  "cpd00644" : {
+    "kegg.compound" : "C00864",
+    "bigg.metabolite" : "pnto__R",
+    "metacyc.compound" : "META:PANTOTHENATE"
+  },
+  "cpd00401" : {
+    "kegg.compound" : "C00512",
+    "bigg.metabolite" : "bzcoa",
+    "metacyc.compound" : "META:BENZOYLCOA"
+  },
+  "cpd00881" : {
+    "kegg.compound" : "C01197",
+    "metacyc.compound" : "META:CPD-676"
+  },
+  "cpd07027" : {
+    "kegg.compound" : "C10138"
+  },
+  "cpd01716" : {
+    "kegg.compound" : "C02637",
+    "bigg.metabolite" : "3dhsk",
+    "metacyc.compound" : "META:3-DEHYDRO-SHIKIMATE"
+  },
+  "cpd00623" : {
+    "kegg.compound" : "C00836",
+    "bigg.metabolite" : "sphgn",
+    "metacyc.compound" : "META:CPD-13612"
+  },
+  "cpd00868" : {
+    "kegg.compound" : "C01179",
+    "bigg.metabolite" : "34hpp",
+    "metacyc.compound" : "META:P-HYDROXY-PHENYLPYRUVATE"
+  },
+  "cpd23727" : {
+    "metacyc.compound" : "META:CPD-13085"
+  },
+  "cpd00867" : {
+    "kegg.compound" : "C01177",
+    "metacyc.compound" : "META:D-MYO-INOSITOL-1-MONOPHOSPHATE"
+  },
+  "cpd00873" : {
+    "kegg.compound" : "C01185",
+    "bigg.metabolite" : "nicrnt",
+    "metacyc.compound" : "META:NICOTINATE_NUCLEOTIDE"
+  },
+  "cpd00875" : {
+    "kegg.compound" : "C01187",
+    "bigg.metabolite" : "kdo",
+    "metacyc.compound" : "META:KDO"
+  },
+  "cpd00633" : {
+    "kegg.compound" : "C00849",
+    "metacyc.compound" : "META:ETHYLACETATE"
+  },
+  "cpd01720" : {
+    "kegg.compound" : "C02642",
+    "bigg.metabolite" : "cala",
+    "metacyc.compound" : "META:3-UREIDO-PROPIONATE"
+  },
+  "cpd00871" : {
+    "kegg.compound" : "C01182",
+    "bigg.metabolite" : "rb15bp",
+    "metacyc.compound" : "META:D-RIBULOSE-15-P2"
+  },
+  "cpd12848" : {
+    "kegg.compound" : "C06250",
+    "bigg.metabolite" : "btnCCP"
+  },
+  "cpd12847" : {
+    "kegg.compound" : "C06249",
+    "bigg.metabolite" : "accp"
+  },
+  "cpd14702" : {
+    "kegg.compound" : "C15978",
+    "bigg.metabolite" : "2mhob"
+  },
+  "cpd11673" : {
+    "kegg.compound" : "C00405",
+    "metacyc.compound" : "META:D-Amino-Acids"
+  },
+  "cpd11431" : {
+    "bigg.metabolite" : "fa11"
+  },
+  "cpd21479" : {
+    "kegg.compound" : "C20246",
+    "bigg.metabolite" : "2c4mthzep",
+    "metacyc.compound" : "META:CPD-13575"
+  },
+  "cpd03802" : {
+    "kegg.compound" : "C06366",
+    "bigg.metabolite" : "hspmd",
+    "metacyc.compound" : "META:CPD-1821"
+  },
+  "cpd00300" : {
+    "kegg.compound" : "C00366",
+    "bigg.metabolite" : "urate",
+    "metacyc.compound" : "META:URATE"
+  },
+  "cpd02720" : {
+    "kegg.compound" : "C04454",
+    "bigg.metabolite" : "5aprbu",
+    "metacyc.compound" : "META:CPD-1086"
+  },
+  "cpd02721" : {
+    "kegg.compound" : "C06893",
+    "bigg.metabolite" : "d5kgp",
+    "metacyc.compound" : "META:CPD-645"
+  },
+  "cpd02961" : {
+    "kegg.compound" : "C04874",
+    "bigg.metabolite" : "dhnpt",
+    "metacyc.compound" : "META:DIHYDRO-NEO-PTERIN"
+  },
+  "cpd01630" : {
+    "kegg.compound" : "C02480",
+    "bigg.metabolite" : "ccmuac",
+    "metacyc.compound" : "META:CIS-CIS-MUCONATE"
+  },
+  "cpd00780" : {
+    "kegg.compound" : "C01061",
+    "bigg.metabolite" : "4fumacac",
+    "metacyc.compound" : "META:4-FUMARYL-ACETOACETATE"
+  },
+  "cpd00540" : {
+    "kegg.compound" : "C00719",
+    "metacyc.compound" : "META:BETAINE"
+  },
+  "cpd00782" : {
+    "kegg.compound" : "C01063",
+    "bigg.metabolite" : "pmcoa",
+    "metacyc.compound" : "META:CPD-558"
+  },
+  "cpd14935" : {
+    "kegg.compound" : "C16216",
+    "bigg.metabolite" : "3ohodcoa",
+    "metacyc.compound" : "META:CPD-10260"
+  },
+  "cpd14937" : {
+    "kegg.compound" : "C16218",
+    "bigg.metabolite" : "od2coa",
+    "metacyc.compound" : "META:CPD-10262"
+  },
+  "cpd11427" : {
+    "kegg.compound" : "C00269",
+    "bigg.metabolite" : "cdpdag_hs",
+    "metacyc.compound" : "META:CDPDIACYLGLYCEROL"
+  },
+  "cpd11421" : {
+    "kegg.compound" : "C00342",
+    "bigg.metabolite" : "trdrd",
+    "metacyc.compound" : "META:Red-Thioredoxin"
+  },
+  "cpd11420" : {
+    "kegg.compound" : "C00343",
+    "bigg.metabolite" : "trdox",
+    "metacyc.compound" : "META:Ox-Thioredoxin"
+  },
+  "cpd00525" : {
+    "kegg.compound" : "C00692",
+    "bigg.metabolite" : "uamag"
+  },
+  "cpd00524" : {
+    "kegg.compound" : "C00691",
+    "bigg.metabolite" : "2ins",
+    "metacyc.compound" : "META:CPD-14808"
+  },
+  "cpd00768" : {
+    "kegg.compound" : "C01043",
+    "metacyc.compound" : "META:CARBAMOYL-SARCOSINE"
+  },
+  "cpd00774" : {
+    "kegg.compound" : "C01051",
+    "bigg.metabolite" : "uppg3",
+    "metacyc.compound" : "META:UROPORPHYRINOGEN-III"
+  },
+  "cpd02711" : {
+    "kegg.compound" : "C04442",
+    "bigg.metabolite" : "2ddg6p",
+    "metacyc.compound" : "META:2-KETO-3-DEOXY-6-P-GLUCONATE"
+  },
+  "cpd01622" : {
+    "kegg.compound" : "C02466",
+    "bigg.metabolite" : "tmp",
+    "metacyc.compound" : "META:CPD-610"
+  },
+  "cpd01620" : {
+    "kegg.compound" : "C02463",
+    "bigg.metabolite" : "dscl",
+    "metacyc.compound" : "META:DIHYDROSIROHYDROCHLORIN"
+  },
+  "cpd00776" : {
+    "kegg.compound" : "C01054",
+    "bigg.metabolite" : "Ssq23epx",
+    "metacyc.compound" : "META:EPOXYSQUALENE"
+  },
+  "cpd00533" : {
+    "kegg.compound" : "C00705",
+    "bigg.metabolite" : "dcdp",
+    "metacyc.compound" : "META:DCDP"
+  },
+  "cpd00775" : {
+    "kegg.compound" : "C01053",
+    "metacyc.compound" : "META:CPD-376"
+  },
+  "cpd00770" : {
+    "kegg.compound" : "C01045",
+    "bigg.metabolite" : "Nforglu",
+    "metacyc.compound" : "META:CPD-600"
+  },
+  "cpd01861" : {
+    "bigg.metabolite" : "12ppd__R"
+  },
+  "cpd00530" : {
+    "kegg.compound" : "C00700",
+    "bigg.metabolite" : "xtp",
+    "metacyc.compound" : "META:XTP"
+  },
+  "cpd12508" : {
+    "kegg.compound" : "C04261"
+  },
+  "cpd12543" : {
+    "kegg.compound" : "C04419",
+    "bigg.metabolite" : "cbtnCCP"
+  },
+  "cpd11455" : {
+    "kegg.compound" : "C02737",
+    "bigg.metabolite" : "ps_hs",
+    "metacyc.compound" : "META:L-1-PHOSPHATIDYL-SERINE"
+  },
+  "cpd15813" : {
+    "bigg.metabolite" : "3hdgggps"
+  },
+  "cpd11456" : {
+    "kegg.compound" : "C00350",
+    "bigg.metabolite" : "pe_cho",
+    "metacyc.compound" : "META:L-1-PHOSPHATIDYL-ETHANOLAMINE"
+  },
+  "cpd15811" : {
+    "bigg.metabolite" : "3hcdgggp"
+  },
+  "cpd11693" : {
+    "kegg.compound" : "C00538",
+    "metacyc.compound" : "META:2-OXOALDEHYDE"
+  },
+  "cpd08289" : {
+    "kegg.compound" : "C11437",
+    "bigg.metabolite" : "dxyl5p",
+    "metacyc.compound" : "META:DEOXYXYLULOSE-5P"
+  },
+  "cpd03828" : {
+    "kegg.compound" : "C06393",
+    "bigg.metabolite" : "23dappa",
+    "metacyc.compound" : "META:23-Diaminopropanoate"
+  },
+  "cpd00558" : {
+    "bigg.metabolite" : "sprm"
+  },
+  "cpd00557" : {
+    "kegg.compound" : "C00748",
+    "bigg.metabolite" : "sheme",
+    "metacyc.compound" : "META:SIROHEME"
+  },
+  "cpd01646" : {
+    "kegg.compound" : "C02504",
+    "bigg.metabolite" : "3c3hmp",
+    "metacyc.compound" : "META:3-CARBOXY-3-HYDROXY-ISOCAPROATE"
+  },
+  "cpd00559" : {
+    "kegg.compound" : "C00751",
+    "bigg.metabolite" : "sql",
+    "metacyc.compound" : "META:SQUALENE"
+  },
+  "cpd01889" : {
+    "kegg.compound" : "C02946",
+    "bigg.metabolite" : "4aabutn",
+    "metacyc.compound" : "META:CPD-35"
+  },
+  "cpd02978" : {
+    "kegg.compound" : "C04895",
+    "bigg.metabolite" : "ahdt",
+    "metacyc.compound" : "META:DIHYDRONEOPTERIN-P3"
+  },
+  "cpd00322" : {
+    "kegg.compound" : "C00407",
+    "bigg.metabolite" : "ile__L",
+    "metacyc.compound" : "META:ILE"
+  },
+  "cpd01653" : {
+    "kegg.compound" : "C02514",
+    "bigg.metabolite" : "fumpyr",
+    "metacyc.compound" : "META:CPD-277"
+  },
+  "cpd01654" : {
+    "kegg.compound" : "C02515",
+    "bigg.metabolite" : "3ityr__L"
+  },
+  "cpd00324" : {
+    "kegg.compound" : "C00409",
+    "bigg.metabolite" : "ch4s",
+    "metacyc.compound" : "META:CPD-7671"
+  },
+  "cpd02740" : {
+    "kegg.compound" : "C04494",
+    "bigg.metabolite" : "gdptp"
+  },
+  "cpd00561" : {
+    "kegg.compound" : "C00755",
+    "bigg.metabolite" : "vanln",
+    "metacyc.compound" : "META:VANILLIN"
+  },
+  "cpd00321" : {
+    "kegg.compound" : "C00406",
+    "bigg.metabolite" : "ferulcoa",
+    "metacyc.compound" : "META:FERULOYL-COA"
+  },
+  "cpd00320" : {
+    "kegg.compound" : "C00402",
+    "bigg.metabolite" : "asp__D",
+    "metacyc.compound" : "META:CPD-302"
+  },
+  "cpd22312" : {
+    "kegg.compound" : "C15813",
+    "bigg.metabolite" : "athis",
+    "metacyc.compound" : "META:Adenylated-ThiS-Proteins"
+  },
+  "cpd15807" : {
+    "kegg.compound" : "C18910",
+    "bigg.metabolite" : "25dthpp",
+    "metacyc.compound" : "META:CPD-10809"
+  },
+  "cpd15808" : {
+    "bigg.metabolite" : "2ood"
+  },
+  "cpd12773" : {
+    "kegg.compound" : "C05784"
+  },
+  "cpd00309" : {
+    "kegg.compound" : "C00385",
+    "bigg.metabolite" : "xan",
+    "metacyc.compound" : "META:XANTHINE"
+  },
+  "cpd00308" : {
+    "kegg.compound" : "C00383",
+    "bigg.metabolite" : "malon",
+    "metacyc.compound" : "META:MALONATE"
+  },
+  "cpd02729" : {
+    "kegg.compound" : "C04477",
+    "bigg.metabolite" : "mi1346p",
+    "metacyc.compound" : "META:CPD-505"
+  },
+  "cpd00305" : {
+    "kegg.compound" : "C00378",
+    "bigg.metabolite" : "thm",
+    "metacyc.compound" : "META:THIAMINE"
+  },
+  "cpd01879" : {
+    "kegg.compound" : "C02934",
+    "bigg.metabolite" : "3dsphgn",
+    "metacyc.compound" : "META:DEHYDROSPHINGANINE"
+  },
+  "cpd00307" : {
+    "kegg.compound" : "C00380",
+    "bigg.metabolite" : "csn",
+    "metacyc.compound" : "META:CYTOSINE"
+  },
+  "cpd02724" : {
+    "kegg.compound" : "C04462",
+    "bigg.metabolite" : "sl2a6o",
+    "metacyc.compound" : "META:N-SUCCINYL-2-AMINO-6-KETOPIMELATE"
+  },
+  "cpd00549" : {
+    "kegg.compound" : "C00739",
+    "bigg.metabolite" : "lys__D",
+    "metacyc.compound" : "META:CPD-219"
+  },
+  "cpd01636" : {
+    "kegg.compound" : "C02488",
+    "metacyc.compound" : "META:CPD-620"
+  },
+  "cpd00311" : {
+    "kegg.compound" : "C00387",
+    "bigg.metabolite" : "gsn",
+    "metacyc.compound" : "META:GUANOSINE"
+  },
+  "cpd00797" : {
+    "kegg.compound" : "C01089",
+    "bigg.metabolite" : "bhb",
+    "metacyc.compound" : "META:CPD-335"
+  },
+  "cpd21472" : {
+    "kegg.compound" : "C20239",
+    "bigg.metabolite" : "cph4",
+    "metacyc.compound" : "META:CPD0-1699"
+  },
+  "cpd01882" : {
+    "kegg.compound" : "C02939",
+    "bigg.metabolite" : "ivcoa",
+    "metacyc.compound" : "META:ISOVALERYL-COA"
+  },
+  "cpd00792" : {
+    "kegg.compound" : "C01080",
+    "bigg.metabolite" : "f420_2h2"
+  },
+  "cpd00550" : {
+    "kegg.compound" : "C00740",
+    "bigg.metabolite" : "ser__D",
+    "metacyc.compound" : "META:D-SERINE"
+  },
+  "cpd00791" : {
+    "kegg.compound" : "C01079",
+    "bigg.metabolite" : "pppg9",
+    "metacyc.compound" : "META:PROTOPORPHYRINOGEN"
+  },
+  "cpd00794" : {
+    "kegg.compound" : "C01083",
+    "bigg.metabolite" : "tre",
+    "metacyc.compound" : "META:TREHALOSE"
+  },
+  "cpd00793" : {
+    "kegg.compound" : "C01081",
+    "bigg.metabolite" : "thmmp",
+    "metacyc.compound" : "META:THIAMINE-P"
+  },
+  "cpd00790" : {
+    "kegg.compound" : "C01077",
+    "bigg.metabolite" : "achms",
+    "metacyc.compound" : "META:CPD-667"
+  },
+  "cpd11436" : {
+    "bigg.metabolite" : "fa3"
+  },
+  "cpd12769" : {
+    "kegg.compound" : "C05780"
+  },
+  "cpd11231" : {
+    "kegg.compound" : "C15563",
+    "metacyc.compound" : "META:CPD-10808"
+  },
+  "cpd11474" : {
+    "kegg.compound" : "C05755",
+    "bigg.metabolite" : "dcaACP",
+    "metacyc.compound" : "META:Decanoyl-ACPs"
+  },
+  "cpd11475" : {
+    "kegg.compound" : "C05754",
+    "bigg.metabolite" : "tdec2eACP",
+    "metacyc.compound" : "META:Trans-D2-decenoyl-ACPs"
+  },
+  "cpd11470" : {
+    "kegg.compound" : "C05752",
+    "bigg.metabolite" : "ocACP",
+    "metacyc.compound" : "META:Octanoyl-ACPs"
+  },
+  "cpd11471" : {
+    "kegg.compound" : "C05751",
+    "bigg.metabolite" : "toct2eACP",
+    "metacyc.compound" : "META:2-Octenoyl-ACPs"
+  },
+  "cpd03608" : {
+    "kegg.compound" : "C06056",
+    "bigg.metabolite" : "4hthr",
+    "metacyc.compound" : "META:CPD0-2189"
+  },
+  "cpd00338" : {
+    "kegg.compound" : "C00430",
+    "bigg.metabolite" : "5aop",
+    "metacyc.compound" : "META:5-AMINO-LEVULINATE"
+  },
+  "cpd03606" : {
+    "kegg.compound" : "C06054",
+    "bigg.metabolite" : "ohpb",
+    "metacyc.compound" : "META:3OH-4P-OH-ALPHA-KETOBUTYRATE"
+  },
+  "cpd03848" : {
+    "kegg.compound" : "C06425",
+    "bigg.metabolite" : "arach"
+  },
+  "cpd03847" : {
+    "kegg.compound" : "C06424",
+    "bigg.metabolite" : "ttdca",
+    "metacyc.compound" : "META:CPD-7836"
+  },
+  "cpd03846" : {
+    "kegg.compound" : "C06423",
+    "bigg.metabolite" : "octa",
+    "metacyc.compound" : "META:CPD-195"
+  },
+  "cpd00587" : {
+    "kegg.compound" : "C00793",
+    "bigg.metabolite" : "cys__D",
+    "metacyc.compound" : "META:D-CYSTEINE"
+  },
+  "cpd00345" : {
+    "kegg.compound" : "C00440",
+    "bigg.metabolite" : "5mthf"
+  },
+  "cpd00103" : {
+    "kegg.compound" : "C00119",
+    "bigg.metabolite" : "prpp",
+    "metacyc.compound" : "META:PRPP"
+  },
+  "cpd00102" : {
+    "kegg.compound" : "C00118",
+    "bigg.metabolite" : "g3p",
+    "metacyc.compound" : "META:GAP"
+  },
+  "cpd00344" : {
+    "kegg.compound" : "C00439",
+    "bigg.metabolite" : "forglu",
+    "metacyc.compound" : "META:N-FORMIMINO-L-GLUTAMATE"
+  },
+  "cpd01678" : {
+    "kegg.compound" : "C02564",
+    "metacyc.compound" : "META:N-FERULOYLGLYCINE"
+  },
+  "cpd00347" : {
+    "kegg.compound" : "C00445",
+    "bigg.metabolite" : "methf"
+  },
+  "cpd00105" : {
+    "kegg.compound" : "C00121",
+    "bigg.metabolite" : "rib__D",
+    "metacyc.compound" : "META:D-Ribofuranose"
+  },
+  "cpd02522" : {
+    "kegg.compound" : "C04076",
+    "bigg.metabolite" : "L2aadp6sa",
+    "metacyc.compound" : "META:ALLYSINE"
+  },
+  "cpd00104" : {
+    "kegg.compound" : "C00120",
+    "bigg.metabolite" : "btn",
+    "metacyc.compound" : "META:BIOTIN"
+  },
+  "cpd26978" : {
+    "kegg.compound" : "C00030",
+    "metacyc.compound" : "META:Donor-H2"
+  },
+  "cpd00346" : {
+    "kegg.compound" : "C00441",
+    "bigg.metabolite" : "aspsa",
+    "metacyc.compound" : "META:L-ASPARTATE-SEMIALDEHYDE"
+  },
+  "cpd00341" : {
+    "kegg.compound" : "C00436",
+    "bigg.metabolite" : "Ncbmpts",
+    "metacyc.compound" : "META:CPD-597"
+  },
+  "cpd00583" : {
+    "kegg.compound" : "C00788",
+    "bigg.metabolite" : "adrnl"
+  },
+  "cpd24799" : {
+    "metacyc.compound" : "META:CPD-7600"
+  },
+  "cpd00343" : {
+    "kegg.compound" : "C00438",
+    "bigg.metabolite" : "cbasp",
+    "metacyc.compound" : "META:CARBAMYUL-L-ASPARTATE"
+  },
+  "cpd00342" : {
+    "kegg.compound" : "C00437",
+    "bigg.metabolite" : "acorn",
+    "metacyc.compound" : "META:N-ALPHA-ACETYLORNITHINE"
+  },
+  "cpd00100" : {
+    "kegg.compound" : "C00116",
+    "bigg.metabolite" : "glyc",
+    "metacyc.compound" : "META:GLYCEROL"
+  },
+  "cpd25880" : {
+    "bigg.metabolite" : "3dphb"
+  },
+  "cpd15829" : {
+    "bigg.metabolite" : "7ohp"
+  },
+  "cpd15827" : {
+    "bigg.metabolite" : "7mhp"
+  },
+  "cpd15825" : {
+    "bigg.metabolite" : "5hbzid"
+  },
+  "cpd15826" : {
+    "bigg.metabolite" : "5pr5hbz"
+  },
+  "cpd11465" : {
+    "kegg.compound" : "C04246",
+    "bigg.metabolite" : "but2eACP"
+  },
+  "cpd11466" : {
+    "kegg.compound" : "C05761",
+    "bigg.metabolite" : "myrsACP",
+    "metacyc.compound" : "META:Myristoyl-ACPs"
+  },
+  "cpd11225" : {
+    "kegg.compound" : "C15556",
+    "bigg.metabolite" : "db4p",
+    "metacyc.compound" : "META:DIHYDROXY-BUTANONE-P"
+  },
+  "cpd11467" : {
+    "bigg.metabolite" : "tmrs2eACP"
+  },
+  "cpd11468" : {
+    "kegg.compound" : "C05223",
+    "bigg.metabolite" : "ddcaACP",
+    "metacyc.compound" : "META:Dodecanoyl-ACPs"
+  },
+  "cpd11461" : {
+    "kegg.compound" : "C00039",
+    "bigg.metabolite" : "dna"
+  },
+  "cpd11463" : {
+    "kegg.compound" : "C00017",
+    "metacyc.compound" : "META:General-Protein-Substrates"
+  },
+  "cpd11464" : {
+    "kegg.compound" : "C05745",
+    "bigg.metabolite" : "butACP",
+    "metacyc.compound" : "META:Butanoyl-ACPs"
+  },
+  "cpd00327" : {
+    "kegg.compound" : "C00412",
+    "bigg.metabolite" : "stcoa",
+    "metacyc.compound" : "META:STEAROYL-COA"
+  },
+  "cpd02746" : {
+    "kegg.compound" : "C17432",
+    "bigg.metabolite" : "decdp",
+    "metacyc.compound" : "META:CPD-9610"
+  },
+  "cpd00334" : {
+    "kegg.compound" : "C00424",
+    "bigg.metabolite" : "lald__L",
+    "metacyc.compound" : "META:LACTALD"
+  },
+  "cpd02755" : {
+    "kegg.compound" : "C04525",
+    "bigg.metabolite" : "fecost",
+    "metacyc.compound" : "META:FECOSTEROL"
+  },
+  "cpd02513" : {
+    "kegg.compound" : "C04063",
+    "bigg.metabolite" : "mi34p",
+    "metacyc.compound" : "META:D-MYO-INOSITOL-34-BISPHOSPHATE"
+  },
+  "cpd02512" : {
+    "kegg.compound" : "C04062",
+    "bigg.metabolite" : "mi13p",
+    "metacyc.compound" : "META:D-MYO-INOSITOL-13-BISPHOSPHATE"
+  },
+  "cpd01662" : {
+    "kegg.compound" : "C02527",
+    "bigg.metabolite" : "butpi",
+    "metacyc.compound" : "META:BUTYRYL-P"
+  },
+  "cpd00330" : {
+    "kegg.compound" : "C00415",
+    "bigg.metabolite" : "dhf",
+    "metacyc.compound" : "META:DIHYDROFOLATE"
+  },
+  "cpd00332" : {
+    "kegg.compound" : "C00418",
+    "bigg.metabolite" : "mev__R",
+    "metacyc.compound" : "META:MEVALONATE"
+  },
+  "cpd11459" : {
+    "bigg.metabolite" : "tcam"
+  },
+  "cpd11494" : {
+    "kegg.compound" : "C03939",
+    "bigg.metabolite" : "acACP",
+    "metacyc.compound" : "META:ACETYL-ACP"
+  },
+  "cpd12100" : {
+    "kegg.compound" : "C02412",
+    "bigg.metabolite" : "glytrna",
+    "metacyc.compound" : "META:Charged-GLY-tRNAs"
+  },
+  "cpd26708" : {
+    "kegg.compound" : "C02839",
+    "bigg.metabolite" : "tyrtrna",
+    "metacyc.compound" : "META:Charged-TYR-tRNAs"
+  },
+  "cpd11491" : {
+    "kegg.compound" : "C05759",
+    "bigg.metabolite" : "3omrsACP",
+    "metacyc.compound" : "META:3-oxo-myristoyl-ACPs"
+  },
+  "cpd11492" : {
+    "kegg.compound" : "C01209",
+    "bigg.metabolite" : "malACP",
+    "metacyc.compound" : "META:MALONYL-ACP"
+  },
+  "cpd11493" : {
+    "kegg.compound" : "C00229",
+    "bigg.metabolite" : "ACP",
+    "metacyc.compound" : "META:ACP"
+  },
+  "cpd00118" : {
+    "kegg.compound" : "C00134",
+    "bigg.metabolite" : "ptrc",
+    "metacyc.compound" : "META:PUTRESCINE"
+  },
+  "cpd10162" : {
+    "kegg.compound" : "C14463",
+    "bigg.metabolite" : "3hmop",
+    "metacyc.compound" : "META:CPD-15104"
+  },
+  "cpd00359" : {
+    "kegg.compound" : "C00463",
+    "bigg.metabolite" : "indole",
+    "metacyc.compound" : "META:INDOLE"
+  },
+  "cpd26705" : {
+    "kegg.compound" : "C02553",
+    "bigg.metabolite" : "sertrna",
+    "metacyc.compound" : "META:Charged-SER-tRNAs"
+  },
+  "cpd00117" : {
+    "kegg.compound" : "C00133",
+    "bigg.metabolite" : "ala__D",
+    "metacyc.compound" : "META:D-ALANINE"
+  },
+  "cpd01449" : {
+    "kegg.compound" : "C02139",
+    "bigg.metabolite" : "chlld",
+    "metacyc.compound" : "META:CHLOROPHYLLIDE-A"
+  },
+  "cpd00119" : {
+    "kegg.compound" : "C00135",
+    "bigg.metabolite" : "his__L",
+    "metacyc.compound" : "META:HIS"
+  },
+  "cpd02546" : {
+    "kegg.compound" : "C04121",
+    "bigg.metabolite" : "ckdo",
+    "metacyc.compound" : "META:CMP-KDO"
+  },
+  "cpd00125" : {
+    "kegg.compound" : "C00143",
+    "bigg.metabolite" : "mlthf"
+  },
+  "cpd00367" : {
+    "kegg.compound" : "C00475",
+    "bigg.metabolite" : "cytd",
+    "metacyc.compound" : "META:CYTIDINE"
+  },
+  "cpd00127" : {
+    "kegg.compound" : "C00146",
+    "bigg.metabolite" : "phenol",
+    "metacyc.compound" : "META:PHENOL"
+  },
+  "cpd00126" : {
+    "kegg.compound" : "C00144",
+    "bigg.metabolite" : "gmp",
+    "metacyc.compound" : "META:GMP"
+  },
+  "cpd00121" : {
+    "kegg.compound" : "C00137",
+    "bigg.metabolite" : "inost",
+    "metacyc.compound" : "META:MYO-INOSITOL"
+  },
+  "cpd00363" : {
+    "kegg.compound" : "C00469",
+    "bigg.metabolite" : "etoh",
+    "metacyc.compound" : "META:ETOH"
+  },
+  "cpd01211" : {
+    "kegg.compound" : "C01755",
+    "bigg.metabolite" : "tcynt",
+    "metacyc.compound" : "META:HSCN"
+  },
+  "cpd00120" : {
+    "kegg.compound" : "C00136",
+    "bigg.metabolite" : "btcoa",
+    "metacyc.compound" : "META:BUTYRYL-COA"
+  },
+  "cpd00123" : {
+    "kegg.compound" : "C00141",
+    "bigg.metabolite" : "3mob",
+    "metacyc.compound" : "META:2-KETO-ISOVALERATE"
+  },
+  "cpd01693" : {
+    "kegg.compound" : "C16688",
+    "bigg.metabolite" : "suc6p"
+  },
+  "cpd00122" : {
+    "kegg.compound" : "C00140",
+    "bigg.metabolite" : "acgam",
+    "metacyc.compound" : "META:N-ACETYL-D-GLUCOSAMINE"
+  },
+  "cpd20171" : {
+    "kegg.compound" : "C18911",
+    "metacyc.compound" : "META:CPD-12760"
+  },
+  "cpd15605" : {
+    "bigg.metabolite" : "glyphe"
+  },
+  "cpd15606" : {
+    "bigg.metabolite" : "gly_tyr__L"
+  },
+  "cpd15603" : {
+    "bigg.metabolite" : "gly_cys__L"
+  },
+  "cpd11487" : {
+    "kegg.compound" : "C05753",
+    "bigg.metabolite" : "3odecACP",
+    "metacyc.compound" : "META:3-oxo-decanoyl-ACPs"
+  },
+  "cpd11488" : {
+    "kegg.compound" : "C05744",
+    "bigg.metabolite" : "actACP",
+    "metacyc.compound" : "META:Acetoacetyl-ACPs"
+  },
+  "cpd15604" : {
+    "bigg.metabolite" : "leugly"
+  },
+  "cpd15601" : {
+    "bigg.metabolite" : "fa9"
+  },
+  "cpd12336" : {
+    "kegg.compound" : "C03512",
+    "bigg.metabolite" : "trptrna",
+    "metacyc.compound" : "META:Charged-TRP-tRNAs"
+  },
+  "cpd14514" : {
+    "kegg.compound" : "C15777",
+    "bigg.metabolite" : "epist",
+    "metacyc.compound" : "META:EPISTEROL"
+  },
+  "cpd11485" : {
+    "kegg.compound" : "C05762",
+    "bigg.metabolite" : "3opalmACP",
+    "metacyc.compound" : "META:3-oxo-palmitoyl-ACPs"
+  },
+  "cpd11486" : {
+    "kegg.compound" : "C05746",
+    "bigg.metabolite" : "3ohexACP",
+    "metacyc.compound" : "META:3-oxo-hexanoyl-ACPs"
+  },
+  "cpd22119" : {
+    "kegg.compound" : "C06055",
+    "bigg.metabolite" : "phthr",
+    "metacyc.compound" : "META:4-PHOSPHONOOXY-THREONINE"
+  },
+  "cpd11482" : {
+    "kegg.compound" : "C04619",
+    "bigg.metabolite" : "3hdecACP",
+    "metacyc.compound" : "META:Beta-hydroxydecanoyl-ACPs"
+  },
+  "cpd00107" : {
+    "kegg.compound" : "C00123",
+    "bigg.metabolite" : "leu__L",
+    "metacyc.compound" : "META:LEU"
+  },
+  "cpd00349" : {
+    "kegg.compound" : "C00447",
+    "bigg.metabolite" : "s17bp",
+    "metacyc.compound" : "META:D-SEDOHEPTULOSE-1-7-P2"
+  },
+  "cpd00348" : {
+    "kegg.compound" : "C00446",
+    "bigg.metabolite" : "gal1p",
+    "metacyc.compound" : "META:GALACTOSE-1P"
+  },
+  "cpd00106" : {
+    "kegg.compound" : "C00122",
+    "bigg.metabolite" : "fum",
+    "metacyc.compound" : "META:FUM"
+  },
+  "cpd00108" : {
+    "kegg.compound" : "C00124",
+    "bigg.metabolite" : "gal"
+  },
+  "cpd00114" : {
+    "kegg.compound" : "C00130",
+    "bigg.metabolite" : "imp",
+    "metacyc.compound" : "META:IMP"
+  },
+  "cpd00356" : {
+    "kegg.compound" : "C00458",
+    "bigg.metabolite" : "dctp",
+    "metacyc.compound" : "META:DCTP"
+  },
+  "cpd03625" : {
+    "kegg.compound" : "C06083",
+    "metacyc.compound" : "META:CPD-11533"
+  },
+  "cpd19198" : {
+    "kegg.compound" : "C16831",
+    "metacyc.compound" : "META:CPD-392"
+  },
+  "cpd00355" : {
+    "kegg.compound" : "C00455",
+    "bigg.metabolite" : "nmn",
+    "metacyc.compound" : "META:NICOTINAMIDE_NUCLEOTIDE"
+  },
+  "cpd00113" : {
+    "kegg.compound" : "C00129",
+    "bigg.metabolite" : "ipdp",
+    "metacyc.compound" : "META:DELTA3-ISOPENTENYL-PP"
+  },
+  "cpd01447" : {
+    "kegg.compound" : "C02137",
+    "metacyc.compound" : "META:PHENYLGLYOXYLATE"
+  },
+  "cpd00358" : {
+    "kegg.compound" : "C00460",
+    "bigg.metabolite" : "dutp",
+    "metacyc.compound" : "META:DUTP"
+  },
+  "cpd00116" : {
+    "kegg.compound" : "C00132",
+    "bigg.metabolite" : "meoh",
+    "metacyc.compound" : "META:METOH"
+  },
+  "cpd00115" : {
+    "kegg.compound" : "C00131",
+    "bigg.metabolite" : "datp",
+    "metacyc.compound" : "META:DATP"
+  },
+  "cpd00357" : {
+    "kegg.compound" : "C00459",
+    "bigg.metabolite" : "dttp",
+    "metacyc.compound" : "META:TTP"
+  },
+  "cpd00351" : {
+    "kegg.compound" : "C00449",
+    "bigg.metabolite" : "saccrp__L",
+    "metacyc.compound" : "META:SACCHAROPINE"
+  },
+  "cpd00596" : {
+    "kegg.compound" : "C00802",
+    "bigg.metabolite" : "oxur",
+    "metacyc.compound" : "META:CPD-389"
+  },
+  "cpd01441" : {
+    "kegg.compound" : "C02130",
+    "bigg.metabolite" : "acmalt",
+    "metacyc.compound" : "META:CPD-18529"
+  },
+  "cpd01680" : {
+    "bigg.metabolite" : "N1sprm",
+    "metacyc.compound" : "META:N1-ACETYLSPERMINE"
+  },
+  "cpd00350" : {
+    "kegg.compound" : "C00448",
+    "bigg.metabolite" : "frdp",
+    "metacyc.compound" : "META:FARNESYL-PP"
+  },
+  "cpd00592" : {
+    "kegg.compound" : "C00798",
+    "bigg.metabolite" : "forcoa",
+    "metacyc.compound" : "META:FORMYL-COA"
+  },
+  "cpd15839" : {
+    "kegg.compound" : "C19154",
+    "bigg.metabolite" : "ddhrb",
+    "metacyc.compound" : "META:CPD-7602"
+  },
+  "cpd15836" : {
+    "bigg.metabolite" : "carn"
+  },
+  "cpd09199" : {
+    "kegg.compound" : "C12448",
+    "bigg.metabolite" : "egme",
+    "metacyc.compound" : "META:CPD-9777"
+  },
+  "cpd14545" : {
+    "kegg.compound" : "C15809",
+    "bigg.metabolite" : "imgly",
+    "metacyc.compound" : "META:CPD-12279"
+  },
+  "cpd15876" : {
+    "kegg.compound" : "C00139",
+    "bigg.metabolite" : "fdox",
+    "metacyc.compound" : "META:Oxidized-ferredoxins"
+  },
+  "cpd15877" : {
+    "kegg.compound" : "C00138",
+    "bigg.metabolite" : "fdred",
+    "metacyc.compound" : "META:Reduced-ferredoxins"
+  },
+  "cpd15632" : {
+    "bigg.metabolite" : "ser_L_tyr__L"
+  },
+  "cpd15872" : {
+    "bigg.metabolite" : "f420_7"
+  },
+  "cpd15873" : {
+    "bigg.metabolite" : "f430p1"
+  },
+  "cpd15871" : {
+    "bigg.metabolite" : "f420_6"
+  },
+  "cpd00139" : {
+    "kegg.compound" : "C00160",
+    "bigg.metabolite" : "glyclt",
+    "metacyc.compound" : "META:GLYCOLLATE"
+  },
+  "cpd01237" : {
+    "kegg.compound" : "C01794",
+    "bigg.metabolite" : "cholcoa",
+    "metacyc.compound" : "META:CPD-202"
+  },
+  "cpd21088" : {
+    "kegg.compound" : "C19846",
+    "bigg.metabolite" : "pmeACP",
+    "metacyc.compound" : "META:Pimeloyl-ACP-methyl-esters"
+  },
+  "cpd00147" : {
+    "kegg.compound" : "C00170",
+    "bigg.metabolite" : "5mta"
+  },
+  "cpd00146" : {
+    "kegg.compound" : "C00169",
+    "bigg.metabolite" : "cbp",
+    "metacyc.compound" : "META:CARBAMOYL-P"
+  },
+  "cpd00388" : {
+    "kegg.compound" : "C00499",
+    "bigg.metabolite" : "alltt",
+    "metacyc.compound" : "META:ALLANTOATE"
+  },
+  "cpd00149" : {
+    "kegg.compound" : "C00175",
+    "bigg.metabolite" : "cobalt2",
+    "metacyc.compound" : "META:CO+2"
+  },
+  "cpd02566" : {
+    "kegg.compound" : "C04171",
+    "bigg.metabolite" : "23ddhb",
+    "metacyc.compound" : "META:DIHYDRO-DIOH-BENZOATE"
+  },
+  "cpd21087" : {
+    "kegg.compound" : "C19845",
+    "bigg.metabolite" : "pimACP",
+    "metacyc.compound" : "META:Pimeloyl-ACPs"
+  },
+  "cpd00143" : {
+    "kegg.compound" : "C00166",
+    "bigg.metabolite" : "phpyr",
+    "metacyc.compound" : "META:PHENYL-PYRUVATE"
+  },
+  "cpd00142" : {
+    "kegg.compound" : "C00164",
+    "bigg.metabolite" : "acac",
+    "metacyc.compound" : "META:3-KETOBUTYRATE"
+  },
+  "cpd03411" : {
+    "kegg.compound" : "C05730",
+    "bigg.metabolite" : "gtspmd",
+    "metacyc.compound" : "META:GLUTATHIONYLSPERMIDINE"
+  },
+  "cpd01476" : {
+    "kegg.compound" : "C02191",
+    "bigg.metabolite" : "ppp9",
+    "metacyc.compound" : "META:PROTOPORPHYRIN_IX"
+  },
+  "cpd00145" : {
+    "kegg.compound" : "C00168",
+    "bigg.metabolite" : "hpyr",
+    "metacyc.compound" : "META:OH-PYR"
+  },
+  "cpd00387" : {
+    "bigg.metabolite" : "adpglc"
+  },
+  "cpd25681" : {
+    "kegg.compound" : "C21250",
+    "metacyc.compound" : "META:CPD-9421"
+  },
+  "cpd27861" : {
+    "metacyc.compound" : "META:Phospho-Microsomal-membrane-proteins"
+  },
+  "cpd00141" : {
+    "kegg.compound" : "C00163",
+    "bigg.metabolite" : "ppa",
+    "metacyc.compound" : "META:PROPIONATE"
+  },
+  "cpd00383" : {
+    "kegg.compound" : "C00493",
+    "bigg.metabolite" : "skm",
+    "metacyc.compound" : "META:SHIKIMATE"
+  },
+  "cpd15869" : {
+    "bigg.metabolite" : "f420_4"
+  },
+  "cpd15867" : {
+    "kegg.compound" : "C01080",
+    "bigg.metabolite" : "f420_2h2"
+  },
+  "cpd15868" : {
+    "kegg.compound" : "C19151",
+    "bigg.metabolite" : "f420_3",
+    "metacyc.compound" : "META:CPD-7613"
+  },
+  "cpd12116" : {
+    "kegg.compound" : "C02475"
+  },
+  "cpd15865" : {
+    "kegg.compound" : "C19152",
+    "bigg.metabolite" : "f420_1",
+    "metacyc.compound" : "META:CPD-7607"
+  },
+  "cpd15866" : {
+    "kegg.compound" : "C00876",
+    "bigg.metabolite" : "f420_2",
+    "metacyc.compound" : "META:OX-COENZYME-F420"
+  },
+  "cpd15863" : {
+    "bigg.metabolite" : "f390g",
+    "metacyc.compound" : "META:CPD-19661"
+  },
+  "cpd15864" : {
+    "kegg.compound" : "C19153",
+    "bigg.metabolite" : "f420_0",
+    "metacyc.compound" : "META:CPD-10333"
+  },
+  "cpd15862" : {
+    "bigg.metabolite" : "f390a",
+    "metacyc.compound" : "META:CPD-10017"
+  },
+  "cpd00129" : {
+    "kegg.compound" : "C00148",
+    "bigg.metabolite" : "pro__L",
+    "metacyc.compound" : "META:PRO"
+  },
+  "cpd00128" : {
+    "kegg.compound" : "C00147",
+    "bigg.metabolite" : "ade",
+    "metacyc.compound" : "META:ADENINE"
+  },
+  "cpd01217" : {
+    "kegg.compound" : "C01762",
+    "bigg.metabolite" : "xtsn",
+    "metacyc.compound" : "META:XANTHOSINE"
+  },
+  "cpd02799" : {
+    "kegg.compound" : "C04593",
+    "bigg.metabolite" : "micit",
+    "metacyc.compound" : "META:CPD-618"
+  },
+  "cpd02557" : {
+    "kegg.compound" : "C04146",
+    "bigg.metabolite" : "octdp",
+    "metacyc.compound" : "META:OCTAPRENYL-DIPHOSPHATE"
+  },
+  "cpd00136" : {
+    "kegg.compound" : "C00156",
+    "bigg.metabolite" : "4hbz",
+    "metacyc.compound" : "META:4-hydroxybenzoate"
+  },
+  "cpd00378" : {
+    "kegg.compound" : "C00488",
+    "bigg.metabolite" : "frmd",
+    "metacyc.compound" : "META:FORMAMIDE"
+  },
+  "cpd02315" : {
+    "kegg.compound" : "C03684",
+    "bigg.metabolite" : "6pthp",
+    "metacyc.compound" : "META:6-PYRUVOYL-5678-TETRAHYDROPTERIN"
+  },
+  "cpd01468" : {
+    "kegg.compound" : "C02170",
+    "bigg.metabolite" : "mm"
+  },
+  "cpd00135" : {
+    "kegg.compound" : "C00155",
+    "bigg.metabolite" : "hcys__L",
+    "metacyc.compound" : "META:HOMO-CYS"
+  },
+  "cpd00138" : {
+    "kegg.compound" : "C00159",
+    "bigg.metabolite" : "man"
+  },
+  "cpd27638" : {
+    "metacyc.compound" : "META:NAD-P-OR-NOP"
+  },
+  "cpd02798" : {
+    "kegg.compound" : "C04592",
+    "metacyc.compound" : "META:TOLUENECISDHDIOL"
+  },
+  "cpd00137" : {
+    "kegg.compound" : "C00158",
+    "bigg.metabolite" : "cit",
+    "metacyc.compound" : "META:CIT"
+  },
+  "cpd00374" : {
+    "kegg.compound" : "C00483",
+    "bigg.metabolite" : "tym",
+    "metacyc.compound" : "META:TYRAMINE"
+  },
+  "cpd00132" : {
+    "kegg.compound" : "C00152",
+    "bigg.metabolite" : "asn__L",
+    "metacyc.compound" : "META:ASN"
+  },
+  "cpd01223" : {
+    "kegg.compound" : "C01771",
+    "metacyc.compound" : "META:CROTONATE"
+  },
+  "cpd00134" : {
+    "kegg.compound" : "C00154",
+    "bigg.metabolite" : "pmtcoa",
+    "metacyc.compound" : "META:PALMITYL-COA"
+  },
+  "cpd00133" : {
+    "kegg.compound" : "C00153",
+    "bigg.metabolite" : "ncam",
+    "metacyc.compound" : "META:NIACINAMIDE"
+  },
+  "cpd00372" : {
+    "kegg.compound" : "C00481",
+    "metacyc.compound" : "META:PYRAZOLE"
+  },
+  "cpd00130" : {
+    "kegg.compound" : "C00149",
+    "bigg.metabolite" : "mal__L",
+    "metacyc.compound" : "META:MAL"
+  },
+  "cpd00371" : {
+    "kegg.compound" : "C00479",
+    "bigg.metabolite" : "ppal",
+    "metacyc.compound" : "META:CPD-665"
+  },
+  "cpd17837" : {
+    "kegg.compound" : "C17740",
+    "metacyc.compound" : "META:CPD-12184"
+  },
+  "cpd15417" : {
+    "bigg.metabolite" : "cdpdddecg"
+  },
+  "cpd15414" : {
+    "kegg.compound" : "C20386",
+    "bigg.metabolite" : "btnso",
+    "metacyc.compound" : "META:CPD-722"
+  },
+  "cpd15413" : {
+    "bigg.metabolite" : "bglycogen"
+  },
+  "cpd15894" : {
+    "bigg.metabolite" : "mleneh4spt"
+  },
+  "cpd15411" : {
+    "bigg.metabolite" : "arbtn"
+  },
+  "cpd15653" : {
+    "kegg.compound" : "C00350",
+    "bigg.metabolite" : "pe_hs",
+    "metacyc.compound" : "META:L-1-PHOSPHATIDYL-ETHANOLAMINE"
+  },
+  "cpd12381" : {
+    "kegg.compound" : "C03740",
+    "metacyc.compound" : "META:5-L-GLUTAMYL-L-AMINO-ACID"
+  },
+  "cpd15651" : {
+    "bigg.metabolite" : "eca_EC"
+  },
+  "cpd15893" : {
+    "bigg.metabolite" : "mh4spt"
+  },
+  "cpd06705" : {
+    "kegg.compound" : "C09813",
+    "metacyc.compound" : "META:CPD-554"
+  },
+  "cpd01017" : {
+    "kegg.compound" : "C01419",
+    "bigg.metabolite" : "cgly",
+    "metacyc.compound" : "META:CYS-GLY"
+  },
+  "cpd00169" : {
+    "kegg.compound" : "C00197",
+    "bigg.metabolite" : "3pg",
+    "metacyc.compound" : "META:G3P"
+  },
+  "cpd00168" : {
+    "kegg.compound" : "C00196",
+    "bigg.metabolite" : "23dhb",
+    "metacyc.compound" : "META:2-3-DIHYDROXYBENZOATE"
+  },
+  "cpd03436" : {
+    "kegg.compound" : "C05798"
+  },
+  "cpd03435" : {
+    "kegg.compound" : "C05797",
+    "bigg.metabolite" : "phphtna",
+    "metacyc.compound" : "META:CPD-8155"
+  },
+  "cpd02103" : {
+    "kegg.compound" : "C03296",
+    "bigg.metabolite" : "sucarg",
+    "metacyc.compound" : "META:CPD-421"
+  },
+  "cpd01014" : {
+    "kegg.compound" : "C01416",
+    "bigg.metabolite" : "coke",
+    "metacyc.compound" : "META:CPD-9776"
+  },
+  "cpd02345" : {
+    "kegg.compound" : "C03741",
+    "bigg.metabolite" : "glu1sa"
+  },
+  "cpd01011" : {
+    "kegg.compound" : "C01412",
+    "bigg.metabolite" : "btal",
+    "metacyc.compound" : "META:BUTANAL"
+  },
+  "cpd00166" : {
+    "kegg.compound" : "C00194",
+    "bigg.metabolite" : "adocbl",
+    "metacyc.compound" : "META:ADENOSYLCOBALAMIN"
+  },
+  "cpd04761" : {
+    "bigg.metabolite" : "feoxam"
+  },
+  "cpd00161" : {
+    "kegg.compound" : "C00188",
+    "bigg.metabolite" : "thr__L",
+    "metacyc.compound" : "META:THR"
+  },
+  "cpd03671" : {
+    "kegg.compound" : "C06156",
+    "bigg.metabolite" : "gam1p",
+    "metacyc.compound" : "META:GLUCOSAMINE-1P"
+  },
+  "cpd00160" : {
+    "kegg.compound" : "C00187",
+    "bigg.metabolite" : "chsterol",
+    "metacyc.compound" : "META:CHOLESTEROL"
+  },
+  "cpd00162" : {
+    "kegg.compound" : "C00189",
+    "bigg.metabolite" : "etha",
+    "metacyc.compound" : "META:ETHANOL-AMINE"
+  },
+  "cpd16738" : {
+    "bigg.metabolite" : "oca"
+  },
+  "cpd15405" : {
+    "bigg.metabolite" : "apg160"
+  },
+  "cpd15889" : {
+    "kegg.compound" : "C19155",
+    "bigg.metabolite" : "lppg",
+    "metacyc.compound" : "META:CPD-7601"
+  },
+  "cpd16736" : {
+    "kegg.compound" : "C04051",
+    "bigg.metabolite" : "C04051",
+    "metacyc.compound" : "META:CPD-3762"
+  },
+  "cpd15406" : {
+    "bigg.metabolite" : "apg161"
+  },
+  "cpd15403" : {
+    "bigg.metabolite" : "apg140"
+  },
+  "cpd12133" : {
+    "kegg.compound" : "C02554",
+    "bigg.metabolite" : "valtrna",
+    "metacyc.compound" : "META:Charged-VAL-tRNAs"
+  },
+  "cpd15402" : {
+    "bigg.metabolite" : "apg120"
+  },
+  "cpd02338" : {
+    "kegg.compound" : "C03733",
+    "bigg.metabolite" : "udpgalfur",
+    "metacyc.compound" : "META:UDP-D-GALACTO-14-FURANOSE"
+  },
+  "cpd03426" : {
+    "kegg.compound" : "C05778",
+    "bigg.metabolite" : "scl",
+    "metacyc.compound" : "META:SIROHYDROCHLORIN"
+  },
+  "cpd00157" : {
+    "kegg.compound" : "C00184",
+    "bigg.metabolite" : "dha",
+    "metacyc.compound" : "META:DIHYDROXYACETONE"
+  },
+  "cpd24585" : {
+    "kegg.compound" : "C02727",
+    "metacyc.compound" : "META:CPD-567"
+  },
+  "cpd00159" : {
+    "kegg.compound" : "C00186",
+    "bigg.metabolite" : "lac__L",
+    "metacyc.compound" : "META:L-LACTATE"
+  },
+  "cpd02333" : {
+    "kegg.compound" : "C03722",
+    "bigg.metabolite" : "quln",
+    "metacyc.compound" : "META:QUINOLINATE"
+  },
+  "cpd03422" : {
+    "kegg.compound" : "C05774",
+    "bigg.metabolite" : "cbi",
+    "metacyc.compound" : "META:COBINAMIDE"
+  },
+  "cpd00153" : {
+    "kegg.compound" : "C00180",
+    "bigg.metabolite" : "bz",
+    "metacyc.compound" : "META:BENZOATE"
+  },
+  "cpd00395" : {
+    "kegg.compound" : "C00506",
+    "bigg.metabolite" : "Lcyst",
+    "metacyc.compound" : "META:L-CYSTEATE"
+  },
+  "cpd04511" : {
+    "kegg.compound" : "C07303",
+    "metacyc.compound" : "META:CPD-11881"
+  },
+  "cpd00156" : {
+    "kegg.compound" : "C00183",
+    "bigg.metabolite" : "val__L",
+    "metacyc.compound" : "META:VAL"
+  },
+  "cpd03421" : {
+    "kegg.compound" : "C05773",
+    "bigg.metabolite" : "cobya",
+    "metacyc.compound" : "META:CPD-9049"
+  },
+  "cpd00155" : {
+    "bigg.metabolite" : "glycogen"
+  },
+  "cpd03420" : {
+    "kegg.compound" : "C05772",
+    "bigg.metabolite" : "pre3a",
+    "metacyc.compound" : "META:CPD-642"
+  },
+  "cpd03662" : {
+    "kegg.compound" : "C06142",
+    "bigg.metabolite" : "1btol",
+    "metacyc.compound" : "META:BUTANOL"
+  },
+  "cpd01243" : {
+    "kegg.compound" : "C01802",
+    "bigg.metabolite" : "dsmsterol",
+    "metacyc.compound" : "META:DESMOSTEROL-CPD"
+  },
+  "cpd00150" : {
+    "kegg.compound" : "C01326",
+    "bigg.metabolite" : "cyan",
+    "metacyc.compound" : "META:HCN"
+  },
+  "cpd00152" : {
+    "kegg.compound" : "C00179",
+    "bigg.metabolite" : "agm",
+    "metacyc.compound" : "META:AGMATHINE"
+  },
+  "cpd00151" : {
+    "kegg.compound" : "C00178",
+    "bigg.metabolite" : "thym",
+    "metacyc.compound" : "META:THYMINE"
+  },
+  "cpd00393" : {
+    "kegg.compound" : "C00504",
+    "bigg.metabolite" : "fol",
+    "metacyc.compound" : "META:CPD-12826"
+  },
+  "cpd21074" : {
+    "kegg.compound" : "C19832",
+    "metacyc.compound" : "META:CPD-10263"
+  },
+  "cpd21071" : {
+    "kegg.compound" : "C19828",
+    "metacyc.compound" : "META:CPD-10307"
+  },
+  "cpd15438" : {
+    "bigg.metabolite" : "cpgn_un"
+  },
+  "cpd15437" : {
+    "bigg.metabolite" : "cpgn"
+  },
+  "cpd12164" : {
+    "kegg.compound" : "C02702",
+    "bigg.metabolite" : "protrna",
+    "metacyc.compound" : "META:Charged-PRO-tRNAs"
+  },
+  "cpd03699" : {
+    "kegg.compound" : "C06189",
+    "bigg.metabolite" : "cdpg"
+  },
+  "cpd03214" : {
+    "kegg.compound" : "C05427"
+  },
+  "cpd02124" : {
+    "kegg.compound" : "C03344",
+    "bigg.metabolite" : "2maacoa",
+    "metacyc.compound" : "META:2-METHYL-ACETO-ACETYL-COA"
+  },
+  "cpd00187" : {
+    "kegg.compound" : "C00218",
+    "bigg.metabolite" : "mma",
+    "metacyc.compound" : "META:METHYLAMINE"
+  },
+  "cpd00186" : {
+    "kegg.compound" : "C00217",
+    "bigg.metabolite" : "glu__D",
+    "metacyc.compound" : "META:D-GLT"
+  },
+  "cpd03454" : {
+    "kegg.compound" : "C05822",
+    "bigg.metabolite" : "3cmp",
+    "metacyc.compound" : "META:CPD-3711"
+  },
+  "cpd03453" : {
+    "bigg.metabolite" : "enter"
+  },
+  "cpd01034" : {
+    "kegg.compound" : "C01455",
+    "bigg.metabolite" : "tol",
+    "metacyc.compound" : "META:TOLUENE"
+  },
+  "cpd00183" : {
+    "kegg.compound" : "C00213",
+    "bigg.metabolite" : "sarcs",
+    "metacyc.compound" : "META:SARCOSINE"
+  },
+  "cpd02120" : {
+    "bigg.metabolite" : "23dhdp"
+  },
+  "cpd03451" : {
+    "kegg.compound" : "C05817",
+    "bigg.metabolite" : "2shchc",
+    "metacyc.compound" : "META:CPD-9923"
+  },
+  "cpd00182" : {
+    "kegg.compound" : "C00212",
+    "bigg.metabolite" : "adn",
+    "metacyc.compound" : "META:ADENOSINE"
+  },
+  "cpd03450" : {
+    "bigg.metabolite" : "ssaltpp"
+  },
+  "cpd01270" : {
+    "kegg.compound" : "C01847",
+    "bigg.metabolite" : "fmnh2",
+    "metacyc.compound" : "META:FMNH2"
+  },
+  "cpd00180" : {
+    "kegg.compound" : "C00209",
+    "bigg.metabolite" : "oxa",
+    "metacyc.compound" : "META:OXALATE"
+  },
+  "cpd15425" : {
+    "bigg.metabolite" : "clpn120"
+  },
+  "cpd15426" : {
+    "bigg.metabolite" : "clpn140"
+  },
+  "cpd15423" : {
+    "bigg.metabolite" : "cdpdtdecg"
+  },
+  "cpd00179" : {
+    "kegg.compound" : "C00208",
+    "bigg.metabolite" : "malt",
+    "metacyc.compound" : "META:MALTOSE"
+  },
+  "cpd06708" : {
+    "kegg.compound" : "C09816",
+    "bigg.metabolite" : "bzsucc",
+    "metacyc.compound" : "META:BENZYLSUCCINATE"
+  },
+  "cpd02358" : {
+    "kegg.compound" : "C03761",
+    "bigg.metabolite" : "3h3mglt",
+    "metacyc.compound" : "META:CPD-547"
+  },
+  "cpd02113" : {
+    "bigg.metabolite" : "dtdprmn"
+  },
+  "cpd02597" : {
+    "kegg.compound" : "C04225",
+    "bigg.metabolite" : "2mcacn",
+    "metacyc.compound" : "META:CPD-1136"
+  },
+  "cpd04534" : {
+    "kegg.compound" : "C07329",
+    "bigg.metabolite" : "3mbald",
+    "metacyc.compound" : "META:CPD-7031"
+  },
+  "cpd00175" : {
+    "bigg.metabolite" : "udpacgal"
+  },
+  "cpd04533" : {
+    "kegg.compound" : "C07328",
+    "bigg.metabolite" : "iamoh",
+    "metacyc.compound" : "META:CPD-7032"
+  },
+  "cpd03442" : {
+    "kegg.compound" : "C05805",
+    "bigg.metabolite" : "2hpmhmbq"
+  },
+  "cpd00177" : {
+    "kegg.compound" : "C00206",
+    "bigg.metabolite" : "dadp",
+    "metacyc.compound" : "META:DADP"
+  },
+  "cpd01020" : {
+    "kegg.compound" : "C01424"
+  },
+  "cpd00171" : {
+    "kegg.compound" : "C00199",
+    "bigg.metabolite" : "ru5p__D",
+    "metacyc.compound" : "META:RIBULOSE-5P"
+  },
+  "cpd01260" : {
+    "kegg.compound" : "C01832",
+    "bigg.metabolite" : "ddcacoa",
+    "metacyc.compound" : "META:LAUROYLCOA-CPD"
+  },
+  "cpd02590" : {
+    "kegg.compound" : "C04216",
+    "bigg.metabolite" : "hepdp",
+    "metacyc.compound" : "META:ALL-TRANS-HEPTAPRENYL-DIPHOSPHATE"
+  },
+  "cpd17839" : {
+    "kegg.compound" : "C17742",
+    "metacyc.compound" : "META:CPD-12187"
+  },
+  "cpd15458" : {
+    "bigg.metabolite" : "eca4und"
+  },
+  "cpd15217" : {
+    "bigg.metabolite" : "alpam"
+  },
+  "cpd15456" : {
+    "bigg.metabolite" : "eca3und"
+  },
+  "cpd15454" : {
+    "bigg.metabolite" : "dtdp4aaddg"
+  },
+  "cpd15455" : {
+    "bigg.metabolite" : "eca2und"
+  },
+  "cpd16540" : {
+    "kegg.compound" : "C16737",
+    "bigg.metabolite" : "2d5kg",
+    "metacyc.compound" : "META:CPD-15127"
+  },
+  "cpd08926" : {
+    "bigg.metabolite" : "psphings"
+  },
+  "cpd27889" : {
+    "metacyc.compound" : "META:Poly-A-Tails"
+  },
+  "cpd01059" : {
+    "kegg.compound" : "C01494",
+    "bigg.metabolite" : "fer",
+    "metacyc.compound" : "META:FERULIC-ACID"
+  },
+  "cpd02147" : {
+    "kegg.compound" : "C03393",
+    "bigg.metabolite" : "4per",
+    "metacyc.compound" : "META:ERYTHRONATE-4P"
+  },
+  "cpd01298" : {
+    "kegg.compound" : "C01888",
+    "bigg.metabolite" : "aact",
+    "metacyc.compound" : "META:AMINO-ACETONE"
+  },
+  "cpd02140" : {
+    "kegg.compound" : "C03373",
+    "bigg.metabolite" : "air",
+    "metacyc.compound" : "META:5-PHOSPHORIBOSYL-5-AMINOIMIDAZOLE"
+  },
+  "cpd01293" : {
+    "kegg.compound" : "C01879",
+    "metacyc.compound" : "META:5-OXOPROLINE"
+  },
+  "cpd03471" : {
+    "kegg.compound" : "C05841",
+    "bigg.metabolite" : "nicrns",
+    "metacyc.compound" : "META:CPD-8259"
+  },
+  "cpd27640" : {
+    "metacyc.compound" : "META:NADH-P-OR-NOP"
+  },
+  "cpd03470" : {
+    "kegg.compound" : "C05840",
+    "bigg.metabolite" : "iasp",
+    "metacyc.compound" : "META:IMINOASPARTATE"
+  },
+  "cpd15447" : {
+    "bigg.metabolite" : "dsbard"
+  },
+  "cpd15446" : {
+    "bigg.metabolite" : "dsbaox"
+  },
+  "cpd15204" : {
+    "kegg.compound" : "C16217",
+    "bigg.metabolite" : "3hodcoa",
+    "metacyc.compound" : "META:CPD-10261"
+  },
+  "cpd15443" : {
+    "kegg.compound" : "C21094",
+    "bigg.metabolite" : "dhmptp",
+    "metacyc.compound" : "META:DIHYDROMONAPTERIN-TRIPHOSPHATE"
+  },
+  "cpd00198" : {
+    "kegg.compound" : "C00231",
+    "bigg.metabolite" : "xu5p__D",
+    "metacyc.compound" : "META:XYLULOSE-5-PHOSPHATE"
+  },
+  "cpd01046" : {
+    "kegg.compound" : "C04076",
+    "bigg.metabolite" : "L2aadp6sa",
+    "metacyc.compound" : "META:ALLYSINE"
+  },
+  "cpd00197" : {
+    "kegg.compound" : "C00230",
+    "bigg.metabolite" : "34dhbz",
+    "metacyc.compound" : "META:3-4-DIHYDROXYBENZOATE"
+  },
+  "cpd02375" : {
+    "kegg.compound" : "C03794",
+    "bigg.metabolite" : "dcamp",
+    "metacyc.compound" : "META:ADENYLOSUCC"
+  },
+  "cpd00199" : {
+    "kegg.compound" : "C00232",
+    "bigg.metabolite" : "sucsal",
+    "metacyc.compound" : "META:SUCC-S-ALD"
+  },
+  "cpd03221" : {
+    "kegg.compound" : "C05437",
+    "bigg.metabolite" : "zymst",
+    "metacyc.compound" : "META:ZYMOSTEROL"
+  },
+  "cpd01042" : {
+    "kegg.compound" : "C01468",
+    "metacyc.compound" : "META:CPD-108"
+  },
+  "cpd00193" : {
+    "kegg.compound" : "C00224",
+    "bigg.metabolite" : "aps",
+    "metacyc.compound" : "META:APS"
+  },
+  "cpd00196" : {
+    "kegg.compound" : "C00227",
+    "bigg.metabolite" : "actp",
+    "metacyc.compound" : "META:ACETYL-P"
+  },
+  "cpd00195" : {
+    "kegg.compound" : "C00226",
+    "metacyc.compound" : "META:Primary-Alcohols"
+  },
+  "cpd00191" : {
+    "kegg.compound" : "C00222",
+    "bigg.metabolite" : "msa",
+    "metacyc.compound" : "META:MALONATE-S-ALD"
+  },
+  "cpd15359" : {
+    "kegg.compound" : "C05813",
+    "bigg.metabolite" : "2ombzl",
+    "metacyc.compound" : "META:OCTAPRENYL-METHOXY-BENZOQUINONE"
+  },
+  "cpd12088" : {
+    "kegg.compound" : "C02391",
+    "metacyc.compound" : "META:Carboxylic-esters"
+  },
+  "cpd15358" : {
+    "bigg.metabolite" : "2odecg3p"
+  },
+  "cpd15355" : {
+    "bigg.metabolite" : "2hdecg3p"
+  },
+  "cpd15353" : {
+    "bigg.metabolite" : "2dmmql8"
+  },
+  "cpd07733" : {
+    "metacyc.compound" : "META:CPD-14389"
+  },
+  "cpd15354" : {
+    "bigg.metabolite" : "2hdec9eg3p"
+  },
+  "cpd15352" : {
+    "bigg.metabolite" : "2dmmq8"
+  },
+  "cpd15350" : {
+    "bigg.metabolite" : "2ddecg3p"
+  },
+  "cpd03375" : {
+    "kegg.compound" : "C05668",
+    "bigg.metabolite" : "3hpcoa",
+    "metacyc.compound" : "META:3-HYDROXY-PROPIONYL-COA"
+  },
+  "cpd27342" : {
+    "kegg.compound" : "C02737",
+    "bigg.metabolite" : "ps_HP",
+    "metacyc.compound" : "META:L-1-PHOSPHATIDYL-SERINE"
+  },
+  "cpd02041" : {
+    "bigg.metabolite" : "S2hglut",
+    "metacyc.compound" : "META:CPD-381"
+  },
+  "cpd27343" : {
+    "kegg.compound" : "C01194",
+    "bigg.metabolite" : "ptd1ino_SC",
+    "metacyc.compound" : "META:L-1-phosphatidyl-inositols"
+  },
+  "cpd15348" : {
+    "bigg.metabolite" : "2agpg180"
+  },
+  "cpd15346" : {
+    "bigg.metabolite" : "2agpg160"
+  },
+  "cpd15344" : {
+    "bigg.metabolite" : "2agpg140"
+  },
+  "cpd15343" : {
+    "bigg.metabolite" : "2agpg120"
+  },
+  "cpd15340" : {
+    "bigg.metabolite" : "2agpe161"
+  },
+  "cpd15582" : {
+    "bigg.metabolite" : "unagamuf"
+  },
+  "cpd15341" : {
+    "bigg.metabolite" : "2agpe180"
+  },
+  "cpd15581" : {
+    "bigg.metabolite" : "unagamu"
+  },
+  "cpd03129" : {
+    "kegg.compound" : "C05275",
+    "bigg.metabolite" : "dc2coa",
+    "metacyc.compound" : "META:T2-DECENOYL-COA"
+  },
+  "cpd03128" : {
+    "kegg.compound" : "C05274",
+    "bigg.metabolite" : "dcacoa",
+    "metacyc.compound" : "META:CPD-10267"
+  },
+  "cpd03126" : {
+    "kegg.compound" : "C05272",
+    "bigg.metabolite" : "hdd2coa",
+    "metacyc.compound" : "META:CPD0-2117"
+  },
+  "cpd03125" : {
+    "kegg.compound" : "C05271",
+    "bigg.metabolite" : "hx2coa",
+    "metacyc.compound" : "META:CPD0-2121"
+  },
+  "cpd00098" : {
+    "kegg.compound" : "C00114",
+    "bigg.metabolite" : "chol",
+    "metacyc.compound" : "META:CHOLINE"
+  },
+  "cpd03124" : {
+    "kegg.compound" : "C05270",
+    "bigg.metabolite" : "hxcoa",
+    "metacyc.compound" : "META:HEXANOYL-COA"
+  },
+  "cpd03123" : {
+    "kegg.compound" : "C05269",
+    "bigg.metabolite" : "3ohcoa",
+    "metacyc.compound" : "META:K-HEXANOYL-COA"
+  },
+  "cpd27358" : {
+    "kegg.compound" : "C01019",
+    "bigg.metabolite" : "fuc__L",
+    "metacyc.compound" : "META:CPD-10329"
+  },
+  "cpd01188" : {
+    "kegg.compound" : "C01724",
+    "bigg.metabolite" : "lanost",
+    "metacyc.compound" : "META:LANOSTEROL"
+  },
+  "cpd03364" : {
+    "kegg.compound" : "C05653",
+    "bigg.metabolite" : "nformanth"
+  },
+  "cpd03122" : {
+    "kegg.compound" : "C05268",
+    "bigg.metabolite" : "3hhcoa",
+    "metacyc.compound" : "META:OH-HEXANOYL-COA"
+  },
+  "cpd00095" : {
+    "kegg.compound" : "C00111",
+    "bigg.metabolite" : "dhap",
+    "metacyc.compound" : "META:DIHYDROXY-ACETONE-PHOSPHATE"
+  },
+  "cpd02274" : {
+    "kegg.compound" : "C03619"
+  },
+  "cpd00094" : {
+    "kegg.compound" : "C00109",
+    "bigg.metabolite" : "2obut",
+    "metacyc.compound" : "META:2-OXOBUTANOATE"
+  },
+  "cpd01186" : {
+    "kegg.compound" : "C01721",
+    "bigg.metabolite" : "fcl__L",
+    "metacyc.compound" : "META:L-FUCULOSE"
+  },
+  "cpd03121" : {
+    "kegg.compound" : "C05267",
+    "bigg.metabolite" : "3oocoa",
+    "metacyc.compound" : "META:CPD0-2106"
+  },
+  "cpd00096" : {
+    "kegg.compound" : "C00112",
+    "bigg.metabolite" : "cdp",
+    "metacyc.compound" : "META:CDP"
+  },
+  "cpd00091" : {
+    "kegg.compound" : "C00105",
+    "bigg.metabolite" : "ump",
+    "metacyc.compound" : "META:UMP"
+  },
+  "cpd00090" : {
+    "kegg.compound" : "C00104",
+    "bigg.metabolite" : "idp",
+    "metacyc.compound" : "META:IDP"
+  },
+  "cpd00093" : {
+    "kegg.compound" : "C00108",
+    "bigg.metabolite" : "anth",
+    "metacyc.compound" : "META:ANTHRANILATE"
+  },
+  "cpd00092" : {
+    "kegg.compound" : "C00106",
+    "bigg.metabolite" : "ura",
+    "metacyc.compound" : "META:URACIL"
+  },
+  "cpd02069" : {
+    "kegg.compound" : "C03232",
+    "bigg.metabolite" : "3php",
+    "metacyc.compound" : "META:3-P-HYDROXYPYRUVATE"
+  },
+  "cpd03398" : {
+    "kegg.compound" : "C05699",
+    "bigg.metabolite" : "selcyst",
+    "metacyc.compound" : "META:CPD-13717"
+  },
+  "cpd02068" : {
+    "kegg.compound" : "C03231",
+    "bigg.metabolite" : "3mgcoa",
+    "metacyc.compound" : "META:TRANS-3-METHYL-GLUTACONYL-COA"
+  },
+  "cpd04242" : {
+    "kegg.compound" : "C06892",
+    "bigg.metabolite" : "d5kg",
+    "metacyc.compound" : "META:CPD-827"
+  },
+  "cpd02060" : {
+    "kegg.compound" : "C03221",
+    "bigg.metabolite" : "dd2coa",
+    "metacyc.compound" : "META:CPD-7222"
+  },
+  "cpd15364" : {
+    "kegg.compound" : "C19771",
+    "bigg.metabolite" : "2tpr3dpcoa",
+    "metacyc.compound" : "META:2-5-TRIPHOSPHORIBOSYL-3-DEPHOSPHO-"
+  },
+  "cpd15363" : {
+    "bigg.metabolite" : "2tdecg3p"
+  },
+  "cpd15360" : {
+    "kegg.compound" : "C05815",
+    "bigg.metabolite" : "2omhmbl",
+    "metacyc.compound" : "META:OCTAPRENYL-METHYL-OH-METHOXY-BENZQ"
+  },
+  "cpd15361" : {
+    "kegg.compound" : "C05814",
+    "bigg.metabolite" : "2ommbl",
+    "metacyc.compound" : "META:OCTAPRENYL-METHYL-METHOXY-BENZQ"
+  },
+  "cpd27339" : {
+    "kegg.compound" : "C00350",
+    "bigg.metabolite" : "pe_SA",
+    "metacyc.compound" : "META:L-1-PHOSPHATIDYL-ETHANOLAMINE"
+  },
+  "cpd03148" : {
+    "kegg.compound" : "C05306",
+    "bigg.metabolite" : "cholphya",
+    "metacyc.compound" : "META:CHLOROPHYLL-A"
+  },
+  "cpd03389" : {
+    "kegg.compound" : "C05688",
+    "bigg.metabolite" : "selcys",
+    "metacyc.compound" : "META:L-SELENOCYSTEINE"
+  },
+  "cpd16006" : {
+    "bigg.metabolite" : "pat"
+  },
+  "cpd06201" : {
+    "bigg.metabolite" : "so2"
+  },
+  "cpd16003" : {
+    "bigg.metabolite" : "omtta"
+  },
+  "cpd15395" : {
+    "bigg.metabolite" : "alpp"
+  },
+  "cpd08626" : {
+    "kegg.compound" : "C11822",
+    "bigg.metabolite" : "2amsa",
+    "metacyc.compound" : "META:2-AMINOMALONATE-SEMIALDEHYDE"
+  },
+  "cpd16001" : {
+    "bigg.metabolite" : "mycolate"
+  },
+  "cpd27388" : {
+    "kegg.compound" : "C01646",
+    "bigg.metabolite" : "trnalys",
+    "metacyc.compound" : "META:LYS-tRNAs"
+  },
+  "cpd02083" : {
+    "kegg.compound" : "C03263",
+    "bigg.metabolite" : "cpppg3",
+    "metacyc.compound" : "META:COPROPORPHYRINOGEN_III"
+  },
+  "cpd15388" : {
+    "bigg.metabolite" : "LalaLglu",
+    "metacyc.compound" : "META:CPD0-1445"
+  },
+  "cpd15389" : {
+    "bigg.metabolite" : "Nmtrp",
+    "metacyc.compound" : "META:N-METHYLTRYPTOPHAN"
+  },
+  "cpd15380" : {
+    "bigg.metabolite" : "5drib"
+  },
+  "cpd28243" : {
+    "kegg.compound" : "C00787",
+    "bigg.metabolite" : "trnatyr",
+    "metacyc.compound" : "META:TYR-tRNAs"
+  },
+  "cpd00918" : {
+    "kegg.compound" : "C01250",
+    "bigg.metabolite" : "acg5sa",
+    "metacyc.compound" : "META:CPD-469"
+  },
+  "cpd00919" : {
+    "kegg.compound" : "C01251",
+    "bigg.metabolite" : "hcit",
+    "metacyc.compound" : "META:HOMO-CIT"
+  },
+  "cpd00914" : {
+    "kegg.compound" : "C01243",
+    "bigg.metabolite" : "mi134p",
+    "metacyc.compound" : "META:INOSITOL-1-3-4-TRIPHOSPHATE"
+  },
+  "cpd00916" : {
+    "kegg.compound" : "C01245",
+    "bigg.metabolite" : "mi145p",
+    "metacyc.compound" : "META:INOSITOL-1-4-5-TRISPHOSPHATE"
+  },
+  "cpd00911" : {
+    "kegg.compound" : "C01236",
+    "bigg.metabolite" : "6pgl",
+    "metacyc.compound" : "META:D-6-P-GLUCONO-DELTA-LACTONE"
+  },
+  "cpd20971" : {
+    "kegg.compound" : "C19724",
+    "metacyc.compound" : "META:CPD-15182"
+  },
+  "cpd27368" : {
+    "kegg.compound" : "C00416",
+    "bigg.metabolite" : "pa_SC",
+    "metacyc.compound" : "META:L-PHOSPHATIDATE"
+  },
+  "cpd03196" : {
+    "kegg.compound" : "C05400",
+    "bigg.metabolite" : "epm"
+  },
+  "cpd03194" : {
+    "bigg.metabolite" : "lac6p"
+  },
+  "cpd02090" : {
+    "bigg.metabolite" : "g3pg",
+    "metacyc.compound" : "META:GLYCEROPHOSPHOGLYCEROL"
+  },
+  "cpd00907" : {
+    "kegg.compound" : "C01231",
+    "bigg.metabolite" : "M01966",
+    "metacyc.compound" : "META:ALPHA-GLUCOSE-16-BISPHOSPHATE"
+  },
+  "cpd00909" : {
+    "kegg.compound" : "C01234",
+    "bigg.metabolite" : "1acpc",
+    "metacyc.compound" : "META:CPD-68"
+  },
+  "cpd00908" : {
+    "kegg.compound" : "C01233",
+    "bigg.metabolite" : "g3pe",
+    "metacyc.compound" : "META:L-1-GLYCEROPHOSPHORYLETHANOL-AMINE"
+  },
+  "cpd00902" : {
+    "kegg.compound" : "C01225",
+    "bigg.metabolite" : "g3pi",
+    "metacyc.compound" : "META:CPD-541"
+  },
+  "cpd02097" : {
+    "kegg.compound" : "C03287",
+    "bigg.metabolite" : "glu5p",
+    "metacyc.compound" : "META:L-GLUTAMATE-5-P"
+  },
+  "cpd02095" : {
+    "kegg.compound" : "C03283",
+    "bigg.metabolite" : "24dab",
+    "metacyc.compound" : "META:CPD-470"
+  },
+  "cpd00932" : {
+    "kegg.compound" : "C01269",
+    "bigg.metabolite" : "3psme",
+    "metacyc.compound" : "META:3-ENOLPYRUVYL-SHIKIMATE-5P"
+  },
+  "cpd00931" : {
+    "kegg.compound" : "C01268",
+    "bigg.metabolite" : "5apru",
+    "metacyc.compound" : "META:CPD-602"
+  },
+  "cpd00934" : {
+    "kegg.compound" : "C01272",
+    "bigg.metabolite" : "mi1345p",
+    "metacyc.compound" : "META:CPD-506"
+  },
+  "cpd16040" : {
+    "bigg.metabolite" : "tat"
+  },
+  "cpd16041" : {
+    "bigg.metabolite" : "tdm1"
+  },
+  "cpd15192" : {
+    "bigg.metabolite" : "12dgr_HP"
+  },
+  "cpd11822" : {
+    "kegg.compound" : "C01194",
+    "bigg.metabolite" : "ptd1ino_SC",
+    "metacyc.compound" : "META:L-1-phosphatidyl-inositols"
+  },
+  "cpd16037" : {
+    "bigg.metabolite" : "tmlgnc"
+  },
+  "cpd00924" : {
+    "kegg.compound" : "C01260",
+    "bigg.metabolite" : "ap4a"
+  },
+  "cpd00930" : {
+    "kegg.compound" : "C01267",
+    "bigg.metabolite" : "imacp",
+    "metacyc.compound" : "META:IMIDAZOLE-ACETOL-P"
+  },
+  "cpd11818" : {
+    "kegg.compound" : "C01153",
+    "metacyc.compound" : "META:Orthophosphoric-Monoesters"
+  },
+  "cpd19334" : {
+    "kegg.compound" : "C17883",
+    "metacyc.compound" : "META:CPD-1072"
+  },
+  "cpd11610" : {
+    "kegg.compound" : "C00030",
+    "metacyc.compound" : "META:Donor-H2"
+  },
+  "cpd18009" : {
+    "kegg.compound" : "C18026",
+    "bigg.metabolite" : "ethmalcoa",
+    "metacyc.compound" : "META:CPD-9406"
+  },
+  "cpd18004" : {
+    "kegg.compound" : "C18021",
+    "bigg.metabolite" : "phphbda",
+    "metacyc.compound" : "META:CPD-7061"
+  },
+  "cpd00957" : {
+    "kegg.compound" : "C01304",
+    "bigg.metabolite" : "25dhpp",
+    "metacyc.compound" : "META:DIAMINO-OH-PHOSPHORIBOSYLAMINO-PYR"
+  },
+  "cpd00712" : {
+    "kegg.compound" : "C00966",
+    "bigg.metabolite" : "2dhp",
+    "metacyc.compound" : "META:2-DEHYDROPANTOATE"
+  },
+  "cpd00713" : {
+    "bigg.metabolite" : "35cdamp"
+  },
+  "cpd11609" : {
+    "kegg.compound" : "C00028",
+    "metacyc.compound" : "META:Acceptor"
+  },
+  "cpd28259" : {
+    "kegg.compound" : "C15814",
+    "bigg.metabolite" : "thissh",
+    "metacyc.compound" : "META:Thiocarboxyadenylated-ThiS-Proteins"
+  },
+  "cpd10516" : {
+    "kegg.compound" : "C14819",
+    "bigg.metabolite" : "fe3",
+    "metacyc.compound" : "META:FE+3"
+  },
+  "cpd28253" : {
+    "kegg.compound" : "C15810",
+    "bigg.metabolite" : "this",
+    "metacyc.compound" : "META:Thi-S"
+  },
+  "cpd10515" : {
+    "kegg.compound" : "C14818",
+    "bigg.metabolite" : "fe2",
+    "metacyc.compound" : "META:FE+2"
+  },
+  "cpd00705" : {
+    "kegg.compound" : "C00956",
+    "bigg.metabolite" : "L2aadp",
+    "metacyc.compound" : "META:CPD-468"
+  },
+  "cpd00946" : {
+    "bigg.metabolite" : "unaga"
+  },
+  "cpd00706" : {
+    "kegg.compound" : "C00957",
+    "bigg.metabolite" : "mercppyr",
+    "metacyc.compound" : "META:3-MERCAPTO-PYRUVATE"
+  },
+  "cpd00943" : {
+    "kegg.compound" : "C01284",
+    "bigg.metabolite" : "mi13456p",
+    "metacyc.compound" : "META:CPD-1107"
+  },
+  "cpd00700" : {
+    "bigg.metabolite" : "amp2p",
+    "metacyc.compound" : "META:CPD-3705"
+  },
+  "cpd16051" : {
+    "kegg.compound" : "C20985",
+    "bigg.metabolite" : "tres"
+  },
+  "cpd16052" : {
+    "bigg.metabolite" : "triat"
+  },
+  "cpd11836" : {
+    "kegg.compound" : "C04618",
+    "bigg.metabolite" : "3haACP"
+  },
+  "cpd04073" : {
+    "kegg.compound" : "C06672",
+    "bigg.metabolite" : "vanlt",
+    "metacyc.compound" : "META:VANILLATE"
+  },
+  "cpd00738" : {
+    "kegg.compound" : "C01005",
+    "bigg.metabolite" : "pser__L",
+    "metacyc.compound" : "META:3-P-SERINE"
+  },
+  "cpd00737" : {
+    "kegg.compound" : "C01004",
+    "metacyc.compound" : "META:METHYLNICOTINATE"
+  },
+  "cpd18026" : {
+    "kegg.compound" : "C18043",
+    "bigg.metabolite" : "chsterols"
+  },
+  "cpd00739" : {
+    "kegg.compound" : "C01007",
+    "bigg.metabolite" : "rbflvrd",
+    "metacyc.compound" : "META:CPD-316"
+  },
+  "cpd00978" : {
+    "kegg.compound" : "C01346",
+    "bigg.metabolite" : "dudp",
+    "metacyc.compound" : "META:DUDP"
+  },
+  "cpd00982" : {
+    "kegg.compound" : "C01352",
+    "bigg.metabolite" : "fadh2",
+    "metacyc.compound" : "META:FADH2"
+  },
+  "cpd02921" : {
+    "kegg.compound" : "C04823",
+    "bigg.metabolite" : "25aics",
+    "metacyc.compound" : "META:P-RIBOSYL-4-SUCCCARB-AMINOIMIDAZOLE"
+  },
+  "cpd00742" : {
+    "kegg.compound" : "C01010",
+    "bigg.metabolite" : "allphn",
+    "metacyc.compound" : "META:CPD-578"
+  },
+  "cpd11623" : {
+    "kegg.compound" : "C00151",
+    "metacyc.compound" : "META:L-Amino-Acids"
+  },
+  "cpd11624" : {
+    "kegg.compound" : "C00157",
+    "bigg.metabolite" : "pchol_hs",
+    "metacyc.compound" : "META:PHOSPHATIDYLCHOLINE"
+  },
+  "cpd12713" : {
+    "kegg.compound" : "C05359",
+    "metacyc.compound" : "e<SUP>-</SUP>"
+  },
+  "cpd11625" : {
+    "kegg.compound" : "C00161",
+    "metacyc.compound" : "META:2-Oxo-carboxylates"
+  },
+  "cpd11620" : {
+    "kegg.compound" : "C00138",
+    "bigg.metabolite" : "fdred",
+    "metacyc.compound" : "META:Reduced-ferredoxins"
+  },
+  "cpd11621" : {
+    "kegg.compound" : "C00139",
+    "bigg.metabolite" : "fdox",
+    "metacyc.compound" : "META:Oxidized-ferredoxins"
+  },
+  "cpd08211" : {
+    "kegg.compound" : "C11356",
+    "bigg.metabolite" : "ttc_ggdp",
+    "metacyc.compound" : "META:CPD0-1028"
+  },
+  "cpd28083" : {
+    "bigg.metabolite" : "fldrd"
+  },
+  "cpd00727" : {
+    "kegg.compound" : "C00988",
+    "bigg.metabolite" : "2pglyc",
+    "metacyc.compound" : "META:CPD-67"
+  },
+  "cpd00726" : {
+    "kegg.compound" : "C00986",
+    "bigg.metabolite" : "13dampp",
+    "metacyc.compound" : "META:CPD-313"
+  },
+  "cpd00729" : {
+    "kegg.compound" : "C00990",
+    "bigg.metabolite" : "5apentam",
+    "metacyc.compound" : "META:5-AMINOPENTANAMIDE"
+  },
+  "cpd02904" : {
+    "kegg.compound" : "C04778",
+    "bigg.metabolite" : "5prdmbz",
+    "metacyc.compound" : "META:ALPHA-RIBAZOLE-5-P"
+  },
+  "cpd00722" : {
+    "kegg.compound" : "C00979",
+    "bigg.metabolite" : "acser",
+    "metacyc.compound" : "META:ACETYLSERINE"
+  },
+  "cpd11616" : {
+    "kegg.compound" : "C00071",
+    "metacyc.compound" : "META:Aldehydes"
+  },
+  "cpd04099" : {
+    "bigg.metabolite" : "ppt"
+  },
+  "cpd12742" : {
+    "kegg.compound" : "C05590",
+    "bigg.metabolite" : "i"
+  },
+  "cpd11650" : {
+    "kegg.compound" : "C00339",
+    "metacyc.compound" : "META:Long-chain-alcohols"
+  },
+  "cpd00518" : {
+    "kegg.compound" : "C00682",
+    "bigg.metabolite" : "2hmcnsad"
+  },
+  "cpd00759" : {
+    "kegg.compound" : "C01031",
+    "bigg.metabolite" : "Sfglutth",
+    "metacyc.compound" : "META:CPD-548"
+  },
+  "cpd00519" : {
+    "kegg.compound" : "C00683",
+    "bigg.metabolite" : "mmcoa__S",
+    "metacyc.compound" : "META:D-METHYL-MALONYL-COA"
+  },
+  "cpd00756" : {
+    "kegg.compound" : "C01026",
+    "bigg.metabolite" : "dmgly",
+    "metacyc.compound" : "META:DIMETHYL-GLYCINE"
+  },
+  "cpd00755" : {
+    "kegg.compound" : "C01024",
+    "bigg.metabolite" : "hmbil",
+    "metacyc.compound" : "META:HYDROXYMETHYLBILANE"
+  },
+  "cpd01844" : {
+    "kegg.compound" : "C02876",
+    "bigg.metabolite" : "ppap",
+    "metacyc.compound" : "META:PROPIONYL-P"
+  },
+  "cpd00758" : {
+    "bigg.metabolite" : "n8aspmd",
+    "metacyc.compound" : "META:CPD-3462"
+  },
+  "cpd00516" : {
+    "kegg.compound" : "C00680",
+    "bigg.metabolite" : "26dap__M",
+    "metacyc.compound" : "META:MESO-DIAMINOPIMELATE"
+  },
+  "cpd02701" : {
+    "kegg.compound" : "C04425",
+    "bigg.metabolite" : "amob",
+    "metacyc.compound" : "META:S-ADENOSYL-4-METHYLTHIO-2-OXOBUTANOATE"
+  },
+  "cpd01612" : {
+    "kegg.compound" : "C02445",
+    "metacyc.compound" : "META:NONANE-46-DIONE"
+  },
+  "cpd00762" : {
+    "kegg.compound" : "C01035",
+    "bigg.metabolite" : "4gudbutn",
+    "metacyc.compound" : "META:CPD-592"
+  },
+  "cpd00523" : {
+    "kegg.compound" : "C00689",
+    "bigg.metabolite" : "tre6p",
+    "metacyc.compound" : "META:TREHALOSE-6P"
+  },
+  "cpd00764" : {
+    "kegg.compound" : "C01037",
+    "bigg.metabolite" : "dann",
+    "metacyc.compound" : "META:DIAMINONONANOATE"
+  },
+  "cpd21422" : {
+    "kegg.compound" : "C20189",
+    "metacyc.compound" : "META:CPD-13881"
+  },
+  "cpd21420" : {
+    "kegg.compound" : "C20187",
+    "metacyc.compound" : "META:CPD-13880"
+  },
+  "cpd11640" : {
+    "kegg.compound" : "C00282",
+    "bigg.metabolite" : "h2",
+    "metacyc.compound" : "META:HYDROGEN-MOLECULE"
+  },
+  "cpd00507" : {
+    "kegg.compound" : "C00670",
+    "bigg.metabolite" : "g3pc",
+    "metacyc.compound" : "META:L-1-GLYCERO-PHOSPHORYLCHOLINE"
+  },
+  "cpd21426" : {
+    "kegg.compound" : "C20193",
+    "metacyc.compound" : "META:CPD-13883"
+  },
+  "cpd21427" : {
+    "kegg.compound" : "C20194",
+    "metacyc.compound" : "META:CPD-13885"
+  },
+  "cpd00506" : {
+    "kegg.compound" : "C00669",
+    "bigg.metabolite" : "glucys",
+    "metacyc.compound" : "META:L-GAMMA-GLUTAMYLCYSTEINE"
+  },
+  "cpd21424" : {
+    "kegg.compound" : "C20191",
+    "metacyc.compound" : "META:CPD-13882"
+  },
+  "cpd00508" : {
+    "kegg.compound" : "C00671",
+    "bigg.metabolite" : "3mop",
+    "metacyc.compound" : "META:2-KETO-3-METHYL-VALERATE"
+  },
+  "cpd00745" : {
+    "kegg.compound" : "C01013",
+    "bigg.metabolite" : "3hpp",
+    "metacyc.compound" : "META:3-HYDROXY-PROPIONATE"
+  },
+  "cpd00989" : {
+    "kegg.compound" : "C01368",
+    "bigg.metabolite" : "3ump",
+    "metacyc.compound" : "META:CPD-3724"
+  },
+  "cpd00988" : {
+    "kegg.compound" : "C01367",
+    "bigg.metabolite" : "3amp",
+    "metacyc.compound" : "META:CPD-3706"
+  },
+  "cpd00504" : {
+    "kegg.compound" : "C00666",
+    "bigg.metabolite" : "26dap_LL",
+    "metacyc.compound" : "META:LL-DIAMINOPIMELATE"
+  },
+  "cpd22517" : {
+    "kegg.compound" : "C00269",
+    "bigg.metabolite" : "cdpdag_hs",
+    "metacyc.compound" : "META:CDPDIACYLGLYCEROL"
+  },
+  "cpd00994" : {
+    "kegg.compound" : "C01382",
+    "bigg.metabolite" : "iodine"
+  },
+  "cpd00752" : {
+    "bigg.metabolite" : "6hnac"
+  },
+  "cpd00751" : {
+    "kegg.compound" : "C01019",
+    "bigg.metabolite" : "fuc__L",
+    "metacyc.compound" : "META:CPD-10329"
+  },
+  "cpd00996" : {
+    "kegg.compound" : "C01384",
+    "bigg.metabolite" : "male",
+    "metacyc.compound" : "META:MALEATE"
+  },
+  "cpd19117" : {
+    "kegg.compound" : "C12537",
+    "metacyc.compound" : "META:CPD-6443"
+  },
+  "cpd11313" : {
+    "kegg.compound" : "C15672",
+    "bigg.metabolite" : "hemeO",
+    "metacyc.compound" : "META:HEME_O"
+  },
+  "cpd15910" : {
+    "bigg.metabolite" : "unknown_cbl1deg"
+  },
+  "cpd11310" : {
+    "kegg.compound" : "C15667",
+    "bigg.metabolite" : "5caiz",
+    "metacyc.compound" : "META:CPD0-181"
+  },
+  "cpd00418" : {
+    "kegg.compound" : "C00533",
+    "bigg.metabolite" : "no",
+    "metacyc.compound" : "META:NITRIC-OXIDE"
+  },
+  "cpd01749" : {
+    "kegg.compound" : "C02700",
+    "bigg.metabolite" : "Lfmkynr",
+    "metacyc.compound" : "META:N-FORMYLKYNURENINE"
+  },
+  "cpd01507" : {
+    "kegg.compound" : "C02232",
+    "bigg.metabolite" : "oxadpcoa",
+    "metacyc.compound" : "META:3-KETO-ADIPYL-COA"
+  },
+  "cpd00898" : {
+    "kegg.compound" : "C01220",
+    "bigg.metabolite" : "mi14p",
+    "metacyc.compound" : "META:INOSITOL-1-4-BISPHOSPHATE"
+  },
+  "cpd01504" : {
+    "kegg.compound" : "C05665",
+    "bigg.metabolite" : "bamppald",
+    "metacyc.compound" : "META:CPD-6082"
+  },
+  "cpd00658" : {
+    "kegg.compound" : "C00885",
+    "bigg.metabolite" : "ichor",
+    "metacyc.compound" : "META:ISOCHORISMATE"
+  },
+  "cpd27900" : {
+    "kegg.compound" : "C00420",
+    "metacyc.compound" : "META:Polysaccharides"
+  },
+  "cpd19044" : {
+    "kegg.compound" : "C06002",
+    "bigg.metabolite" : "mmtsa",
+    "metacyc.compound" : "META:CH3-MALONATE-S-ALD"
+  },
+  "cpd01997" : {
+    "kegg.compound" : "C03114",
+    "bigg.metabolite" : "dmbzid",
+    "metacyc.compound" : "META:DIMETHYLBENZIMIDAZOLE"
+  },
+  "cpd00421" : {
+    "kegg.compound" : "C00536",
+    "bigg.metabolite" : "pppi",
+    "metacyc.compound" : "META:P3I"
+  },
+  "cpd00663" : {
+    "kegg.compound" : "C00894",
+    "bigg.metabolite" : "prpncoa",
+    "metacyc.compound" : "META:ACRYLYL-COA"
+  },
+  "cpd00666" : {
+    "kegg.compound" : "C00898",
+    "bigg.metabolite" : "tartr__L",
+    "metacyc.compound" : "META:TARTRATE"
+  },
+  "cpd00424" : {
+    "kegg.compound" : "C02291",
+    "bigg.metabolite" : "cyst__L",
+    "metacyc.compound" : "META:L-CYSTATHIONINE"
+  },
+  "cpd19045" : {
+    "kegg.compound" : "C06006",
+    "bigg.metabolite" : "2ahbut",
+    "metacyc.compound" : "META:2-ACETO-2-HYDROXY-BUTYRATE"
+  },
+  "cpd00423" : {
+    "kegg.compound" : "C00541",
+    "metacyc.compound" : "META:CPD-1829"
+  },
+  "cpd19046" : {
+    "kegg.compound" : "C06007",
+    "bigg.metabolite" : "23dhmp",
+    "metacyc.compound" : "META:1-KETO-2-METHYLVALERATE"
+  },
+  "cpd19047" : {
+    "kegg.compound" : "C06010",
+    "bigg.metabolite" : "alac__S",
+    "metacyc.compound" : "META:2-ACETO-LACTATE"
+  },
+  "cpd12878" : {
+    "kegg.compound" : "C06453"
+  },
+  "cpd15902" : {
+    "bigg.metabolite" : "ptp"
+  },
+  "cpd08377" : {
+    "kegg.compound" : "C11555",
+    "bigg.metabolite" : "mi1456p",
+    "metacyc.compound" : "META:INOSITOL-1456-TETRAKISPHOSPHATE"
+  },
+  "cpd03919" : {
+    "kegg.compound" : "C06509",
+    "bigg.metabolite" : "adocbip",
+    "metacyc.compound" : "META:ADENOSYLCOBINAMIDE-P"
+  },
+  "cpd00408" : {
+    "kegg.compound" : "C00522",
+    "bigg.metabolite" : "pant__R",
+    "metacyc.compound" : "META:L-PANTOATE"
+  },
+  "cpd03918" : {
+    "kegg.compound" : "C06508",
+    "bigg.metabolite" : "adocbi",
+    "metacyc.compound" : "META:ADENOSYLCOBINAMIDE"
+  },
+  "cpd00649" : {
+    "kegg.compound" : "C00876",
+    "bigg.metabolite" : "f420_2",
+    "metacyc.compound" : "META:OX-COENZYME-F420"
+  },
+  "cpd03916" : {
+    "kegg.compound" : "C06506",
+    "bigg.metabolite" : "adcobdam",
+    "metacyc.compound" : "META:CPD-690"
+  },
+  "cpd03915" : {
+    "kegg.compound" : "C06505",
+    "bigg.metabolite" : "co1dam",
+    "metacyc.compound" : "META:CPD-694"
+  },
+  "cpd02826" : {
+    "kegg.compound" : "C04640",
+    "bigg.metabolite" : "fpram",
+    "metacyc.compound" : "META:5-PHOSPHORIBOSYL-N-FORMYLGLYCINEAMIDINE"
+  },
+  "cpd03914" : {
+    "kegg.compound" : "C06504",
+    "bigg.metabolite" : "co2dam",
+    "metacyc.compound" : "META:CPD-689"
+  },
+  "cpd00406" : {
+    "kegg.compound" : "C00519",
+    "bigg.metabolite" : "hyptaur",
+    "metacyc.compound" : "META:HYPOTAURINE"
+  },
+  "cpd03913" : {
+    "kegg.compound" : "C06503",
+    "bigg.metabolite" : "hgbam",
+    "metacyc.compound" : "META:CPD-688"
+  },
+  "cpd01977" : {
+    "kegg.compound" : "C03082",
+    "bigg.metabolite" : "4pasp",
+    "metacyc.compound" : "META:L-BETA-ASPARTYL-P"
+  },
+  "cpd03912" : {
+    "bigg.metabolite" : "tyrp"
+  },
+  "cpd01501" : {
+    "kegg.compound" : "C02225",
+    "bigg.metabolite" : "2mcit",
+    "metacyc.compound" : "META:CPD-622"
+  },
+  "cpd00655" : {
+    "kegg.compound" : "C00882",
+    "bigg.metabolite" : "dpcoa",
+    "metacyc.compound" : "META:DEPHOSPHO-COA"
+  },
+  "cpd01741" : {
+    "kegg.compound" : "C02679",
+    "bigg.metabolite" : "ddca",
+    "metacyc.compound" : "META:DODECANOATE"
+  },
+  "cpd00413" : {
+    "kegg.compound" : "C00527",
+    "bigg.metabolite" : "glutcoa",
+    "metacyc.compound" : "META:GLUTARYL-COA"
+  },
+  "cpd00412" : {
+    "kegg.compound" : "C00526",
+    "bigg.metabolite" : "duri",
+    "metacyc.compound" : "META:DEOXYURIDINE"
+  },
+  "cpd00896" : {
+    "kegg.compound" : "C01218",
+    "bigg.metabolite" : "6p2dhglcn"
+  },
+  "cpd01981" : {
+    "kegg.compound" : "C03089",
+    "bigg.metabolite" : "5mtr"
+  },
+  "cpd01982" : {
+    "kegg.compound" : "C03090",
+    "bigg.metabolite" : "pram",
+    "metacyc.compound" : "META:5-P-BETA-D-RIBOSYL-AMINE"
+  },
+  "cpd00650" : {
+    "kegg.compound" : "C00877",
+    "bigg.metabolite" : "b2coa",
+    "metacyc.compound" : "META:CROTONYL-COA"
+  },
+  "cpd09254" : {
+    "bigg.metabolite" : "dhcinnm"
+  },
+  "cpd09253" : {
+    "bigg.metabolite" : "cenchddd"
+  },
+  "cpd15931" : {
+    "bigg.metabolite" : "arachcoa"
+  },
+  "cpd09255" : {
+    "kegg.compound" : "C12624",
+    "bigg.metabolite" : "hkntd"
+  },
+  "cpd02857" : {
+    "kegg.compound" : "C04691",
+    "bigg.metabolite" : "2dda7p",
+    "metacyc.compound" : "META:3-DEOXY-D-ARABINO-HEPTULOSONATE-7-P"
+  },
+  "cpd00438" : {
+    "kegg.compound" : "C00559",
+    "bigg.metabolite" : "dad_2",
+    "metacyc.compound" : "META:DEOXYADENOSINE"
+  },
+  "cpd00202" : {
+    "kegg.compound" : "C00235",
+    "bigg.metabolite" : "dmpp",
+    "metacyc.compound" : "META:CPD-4211"
+  },
+  "cpd00444" : {
+    "kegg.compound" : "C00570",
+    "bigg.metabolite" : "cdpea",
+    "metacyc.compound" : "META:CDP-ETHANOLAMINE"
+  },
+  "cpd00201" : {
+    "kegg.compound" : "C00234",
+    "bigg.metabolite" : "10fthf",
+    "metacyc.compound" : "META:10-FORMYL-THF"
+  },
+  "cpd00443" : {
+    "kegg.compound" : "C00568"
+  },
+  "cpd01775" : {
+    "kegg.compound" : "C02739",
+    "bigg.metabolite" : "prbatp",
+    "metacyc.compound" : "META:PHOSPHORIBOSYL-ATP"
+  },
+  "cpd19024" : {
+    "bigg.metabolite" : "12ppd__S",
+    "metacyc.compound" : "META:PROPANE-1-2-DIOL"
+  },
+  "cpd00203" : {
+    "kegg.compound" : "C00236",
+    "bigg.metabolite" : "13dpg",
+    "metacyc.compound" : "META:DPG"
+  },
+  "cpd02861" : {
+    "kegg.compound" : "C05892",
+    "bigg.metabolite" : "uAgl"
+  },
+  "cpd01773" : {
+    "kegg.compound" : "C02734",
+    "bigg.metabolite" : "pphos",
+    "metacyc.compound" : "META:PHENOL-PHOSPHATE"
+  },
+  "cpd21104" : {
+    "kegg.compound" : "C19863",
+    "metacyc.compound" : "META:CPD-6951"
+  },
+  "cpd00200" : {
+    "kegg.compound" : "C00233",
+    "bigg.metabolite" : "4mop",
+    "metacyc.compound" : "META:2K-4CH3-PENTANOATE"
+  },
+  "cpd02860" : {
+    "kegg.compound" : "C04698"
+  },
+  "cpd00441" : {
+    "kegg.compound" : "C00565",
+    "metacyc.compound" : "META:TRIMETHYLAMINE"
+  },
+  "cpd09252" : {
+    "bigg.metabolite" : "3hcinnm"
+  },
+  "cpd01518" : {
+    "kegg.compound" : "C02247",
+    "metacyc.compound" : "META:2-AMINOBENZOYL-COA"
+  },
+  "cpd02605" : {
+    "kegg.compound" : "C04236",
+    "bigg.metabolite" : "3c4mop",
+    "metacyc.compound" : "META:CPD-7100"
+  },
+  "cpd01758" : {
+    "kegg.compound" : "C02714",
+    "bigg.metabolite" : "aprut",
+    "metacyc.compound" : "META:CPD-569"
+  },
+  "cpd00426" : {
+    "kegg.compound" : "C00544",
+    "bigg.metabolite" : "hgentis",
+    "metacyc.compound" : "META:HOMOGENTISATE"
+  },
+  "cpd00425" : {
+    "kegg.compound" : "C00543",
+    "bigg.metabolite" : "dma",
+    "metacyc.compound" : "META:DIMETHYLAMINE"
+  },
+  "cpd00428" : {
+    "kegg.compound" : "C00546",
+    "bigg.metabolite" : "mthgxl",
+    "metacyc.compound" : "META:METHYL-GLYOXAL"
+  },
+  "cpd19030" : {
+    "kegg.compound" : "C04272",
+    "bigg.metabolite" : "23dhmb",
+    "metacyc.compound" : "META:CPD-13357"
+  },
+  "cpd03702" : {
+    "kegg.compound" : "C06194",
+    "bigg.metabolite" : "23cgmp",
+    "metacyc.compound" : "META:CPD-3709"
+  },
+  "cpd01765" : {
+    "kegg.compound" : "C02722",
+    "metacyc.compound" : "META:N-METHYLHEXANAMIDE"
+  },
+  "cpd02612" : {
+    "kegg.compound" : "C04257",
+    "bigg.metabolite" : "acmanap",
+    "metacyc.compound" : "META:N-ACETYL-D-MANNOSAMINE-6P"
+  },
+  "cpd24620" : {
+    "kegg.compound" : "C04593",
+    "bigg.metabolite" : "micit",
+    "metacyc.compound" : "META:CPD-618"
+  },
+  "cpd03701" : {
+    "kegg.compound" : "C06193",
+    "bigg.metabolite" : "3gmp",
+    "metacyc.compound" : "META:CPD-3708"
+  },
+  "cpd00435" : {
+    "kegg.compound" : "C00556",
+    "bigg.metabolite" : "bzalc",
+    "metacyc.compound" : "META:BENZYL-ALCOHOL"
+  },
+  "cpd00434" : {
+    "kegg.compound" : "C00555",
+    "bigg.metabolite" : "4abutn",
+    "metacyc.compound" : "META:4-AMINO-BUTYRALDEHYDE"
+  },
+  "cpd02611" : {
+    "kegg.compound" : "C04501",
+    "bigg.metabolite" : "acgam1p",
+    "metacyc.compound" : "META:N-ACETYL-D-GLUCOSAMINE-1-P"
+  },
+  "cpd01761" : {
+    "kegg.compound" : "C02717",
+    "metacyc.compound" : "META:CPD-440"
+  },
+  "cpd02851" : {
+    "kegg.compound" : "C04677",
+    "bigg.metabolite" : "aicar",
+    "metacyc.compound" : "META:AICAR"
+  },
+  "cpd15914" : {
+    "kegg.compound" : "C21505",
+    "bigg.metabolite" : "4hbzACP"
+  },
+  "cpd15955" : {
+    "bigg.metabolite" : "galfragund"
+  },
+  "cpd15953" : {
+    "bigg.metabolite" : "mcbtt"
+  },
+  "cpd12689" : {
+    "kegg.compound" : "C05261",
+    "bigg.metabolite" : "3otdcoa",
+    "metacyc.compound" : "META:CPD-10284"
+  },
+  "cpd15952" : {
+    "bigg.metabolite" : "fcmcbtt"
+  },
+  "cpd11596" : {
+    "bigg.metabolite" : "butso3"
+  },
+  "cpd15950" : {
+    "bigg.metabolite" : "dmbhn"
+  },
+  "cpd22249" : {
+    "kegg.compound" : "C01635",
+    "bigg.metabolite" : "trnaala",
+    "metacyc.compound" : "META:ALA-tRNAs"
+  },
+  "cpd00216" : {
+    "kegg.compound" : "C00251",
+    "bigg.metabolite" : "chor",
+    "metacyc.compound" : "META:CHORISMATE"
+  },
+  "cpd00458" : {
+    "kegg.compound" : "C00590",
+    "bigg.metabolite" : "confrl",
+    "metacyc.compound" : "META:CONIFERYL-ALCOHOL"
+  },
+  "cpd03726" : {
+    "bigg.metabolite" : "feenter"
+  },
+  "cpd00219" : {
+    "kegg.compound" : "C00254",
+    "bigg.metabolite" : "pphn",
+    "metacyc.compound" : "META:PREPHENATE"
+  },
+  "cpd00218" : {
+    "kegg.compound" : "C00253",
+    "bigg.metabolite" : "nac",
+    "metacyc.compound" : "META:NIACINE"
+  },
+  "cpd01306" : {
+    "kegg.compound" : "C01902",
+    "bigg.metabolite" : "cyart",
+    "metacyc.compound" : "META:CYCLOARTENOL"
+  },
+  "cpd25523" : {
+    "kegg.compound" : "C15667",
+    "bigg.metabolite" : "5caiz",
+    "metacyc.compound" : "META:CPD0-181"
+  },
+  "cpd01799" : {
+    "kegg.compound" : "C02787",
+    "metacyc.compound" : "META:CPD-630"
+  },
+  "cpd00223" : {
+    "kegg.compound" : "C00258",
+    "bigg.metabolite" : "glyc__R",
+    "metacyc.compound" : "META:GLYCERATE"
+  },
+  "cpd00465" : {
+    "kegg.compound" : "C00603",
+    "bigg.metabolite" : "urdglyc",
+    "metacyc.compound" : "META:CPD-1091"
+  },
+  "cpd01557" : {
+    "kegg.compound" : "C02331",
+    "bigg.metabolite" : "vaccoa",
+    "metacyc.compound" : "META:CPD-226"
+  },
+  "cpd26855" : {
+    "kegg.compound" : "C00641",
+    "bigg.metabolite" : "dag_hs",
+    "metacyc.compound" : "META:DIACYLGLYCEROL"
+  },
+  "cpd00226" : {
+    "kegg.compound" : "C00262",
+    "bigg.metabolite" : "hxan",
+    "metacyc.compound" : "META:HYPOXANTHINE"
+  },
+  "cpd03732" : {
+    "bigg.metabolite" : "uacmamu"
+  },
+  "cpd02402" : {
+    "kegg.compound" : "C03851",
+    "metacyc.compound" : "META:CPD-487"
+  },
+  "cpd00467" : {
+    "kegg.compound" : "C00606",
+    "bigg.metabolite" : "3sala",
+    "metacyc.compound" : "META:3-SULFINOALANINE"
+  },
+  "cpd00220" : {
+    "kegg.compound" : "C00255",
+    "bigg.metabolite" : "ribflv",
+    "metacyc.compound" : "META:RIBOFLAVIN"
+  },
+  "cpd02884" : {
+    "kegg.compound" : "C04734",
+    "bigg.metabolite" : "fprica",
+    "metacyc.compound" : "META:PHOSPHORIBOSYL-FORMAMIDO-CARBOXAMIDE"
+  },
+  "cpd00461" : {
+    "kegg.compound" : "C00596",
+    "bigg.metabolite" : "op4en"
+  },
+  "cpd01311" : {
+    "kegg.compound" : "C01909",
+    "bigg.metabolite" : "dtbt",
+    "metacyc.compound" : "META:DETHIOBIOTIN"
+  },
+  "cpd02642" : {
+    "kegg.compound" : "C04302",
+    "bigg.metabolite" : "pran",
+    "metacyc.compound" : "META:N-5-PHOSPHORIBOSYL-ANTHRANILATE"
+  },
+  "cpd00222" : {
+    "kegg.compound" : "C00257",
+    "bigg.metabolite" : "glcn",
+    "metacyc.compound" : "META:GLUCONATE"
+  },
+  "cpd02882" : {
+    "kegg.compound" : "C04732",
+    "bigg.metabolite" : "4r5au",
+    "metacyc.compound" : "META:AMINO-RIBOSYLAMINO-1H-3H-PYR-DIONE"
+  },
+  "cpd00221" : {
+    "kegg.compound" : "C00256",
+    "bigg.metabolite" : "lac__D",
+    "metacyc.compound" : "META:D-LACTATE"
+  },
+  "cpd15940" : {
+    "bigg.metabolite" : "cmcbtt"
+  },
+  "cpd00209" : {
+    "kegg.compound" : "C00244",
+    "bigg.metabolite" : "no3",
+    "metacyc.compound" : "META:NITRATE"
+  },
+  "cpd11580" : {
+    "bigg.metabolite" : "gly_gln__L"
+  },
+  "cpd00448" : {
+    "kegg.compound" : "C00577",
+    "bigg.metabolite" : "glyald",
+    "metacyc.compound" : "META:GLYCERALD"
+  },
+  "cpd00206" : {
+    "kegg.compound" : "C00239",
+    "bigg.metabolite" : "dcmp",
+    "metacyc.compound" : "META:DCMP"
+  },
+  "cpd00689" : {
+    "kegg.compound" : "C00931",
+    "bigg.metabolite" : "ppbng",
+    "metacyc.compound" : "META:PORPHOBILINOGEN"
+  },
+  "cpd00447" : {
+    "kegg.compound" : "C00576",
+    "bigg.metabolite" : "betald",
+    "metacyc.compound" : "META:BETAINE_ALDEHYDE"
+  },
+  "cpd00208" : {
+    "kegg.compound" : "C00243",
+    "bigg.metabolite" : "lcts",
+    "metacyc.compound" : "META:CPD-15972"
+  },
+  "cpd00207" : {
+    "kegg.compound" : "C00242",
+    "bigg.metabolite" : "gua",
+    "metacyc.compound" : "META:GUANINE"
+  },
+  "cpd00449" : {
+    "bigg.metabolite" : "dhlam"
+  },
+  "cpd00697" : {
+    "kegg.compound" : "C00942",
+    "bigg.metabolite" : "35cgmp",
+    "metacyc.compound" : "META:CGMP"
+  },
+  "cpd00213" : {
+    "bigg.metabolite" : "lpam"
+  },
+  "cpd03724" : {
+    "bigg.metabolite" : "fecrm"
+  },
+  "cpd00457" : {
+    "kegg.compound" : "C00588",
+    "bigg.metabolite" : "cholp",
+    "metacyc.compound" : "META:PHOSPHORYL-CHOLINE"
+  },
+  "cpd00699" : {
+    "kegg.compound" : "C00944",
+    "bigg.metabolite" : "3dhq",
+    "metacyc.compound" : "META:DEHYDROQUINATE"
+  },
+  "cpd01544" : {
+    "kegg.compound" : "C02294",
+    "metacyc.compound" : "META:CPD-593"
+  },
+  "cpd00214" : {
+    "kegg.compound" : "C00249",
+    "bigg.metabolite" : "hdca",
+    "metacyc.compound" : "META:PALMITATE"
+  },
+  "cpd01302" : {
+    "kegg.compound" : "C01894"
+  },
+  "cpd00693" : {
+    "kegg.compound" : "C00937",
+    "bigg.metabolite" : "lald__D",
+    "metacyc.compound" : "META:CPD-358"
+  },
+  "cpd00451" : {
+    "kegg.compound" : "C00581",
+    "metacyc.compound" : "META:GUANIDOACETIC_ACID"
+  },
+  "cpd02631" : {
+    "kegg.compound" : "C04287",
+    "bigg.metabolite" : "dkdi",
+    "metacyc.compound" : "META:CPD-1133"
+  },
+  "cpd00211" : {
+    "kegg.compound" : "C00246",
+    "bigg.metabolite" : "but",
+    "metacyc.compound" : "META:BUTYRIC_ACID"
+  },
+  "cpd00210" : {
+    "kegg.compound" : "C00245",
+    "bigg.metabolite" : "taur",
+    "metacyc.compound" : "META:TAURINE"
+  },
+  "cpd15971" : {
+    "bigg.metabolite" : "mbhn"
+  },
+  "cpd15972" : {
+    "bigg.metabolite" : "fmcbtt"
+  },
+  "cpd15970" : {
+    "bigg.metabolite" : "marach"
+  },
+  "cpd00239" : {
+    "kegg.compound" : "C00283",
+    "bigg.metabolite" : "h2s",
+    "metacyc.compound" : "META:HS"
+  },
+  "cpd00238" : {
+    "kegg.compound" : "C05382",
+    "bigg.metabolite" : "s7p",
+    "metacyc.compound" : "META:D-SEDOHEPTULOSE-7-P"
+  },
+  "cpd01328" : {
+    "kegg.compound" : "C01934",
+    "bigg.metabolite" : "rhmn",
+    "metacyc.compound" : "META:L-RHAMNONATE"
+  },
+  "cpd00004" : {
+    "kegg.compound" : "C00004",
+    "bigg.metabolite" : "nadh",
+    "metacyc.compound" : "META:NADH"
+  },
+  "cpd00246" : {
+    "kegg.compound" : "C00294",
+    "bigg.metabolite" : "ins",
+    "metacyc.compound" : "META:INOSINE"
+  },
+  "cpd00245" : {
+    "kegg.compound" : "C00292",
+    "metacyc.compound" : "META:ANILINE"
+  },
+  "cpd00003" : {
+    "kegg.compound" : "C00003",
+    "bigg.metabolite" : "nad",
+    "metacyc.compound" : "META:NAD"
+  },
+  "cpd00487" : {
+    "kegg.compound" : "C00638",
+    "metacyc.compound" : "META:Long-Chain-Fatty-Acids"
+  },
+  "cpd00006" : {
+    "kegg.compound" : "C00006",
+    "bigg.metabolite" : "nadp",
+    "metacyc.compound" : "META:NADP"
+  },
+  "cpd00247" : {
+    "kegg.compound" : "C00295",
+    "bigg.metabolite" : "orot",
+    "metacyc.compound" : "META:OROTATE"
+  },
+  "cpd00005" : {
+    "kegg.compound" : "C00005",
+    "bigg.metabolite" : "nadph",
+    "metacyc.compound" : "META:NADPH"
+  },
+  "cpd01577" : {
+    "kegg.compound" : "C02362",
+    "metacyc.compound" : "META:2-OXOSUCCINAMATE"
+  },
+  "cpd01335" : {
+    "kegg.compound" : "C01944",
+    "bigg.metabolite" : "occoa",
+    "metacyc.compound" : "META:CPD-196"
+  },
+  "cpd00242" : {
+    "kegg.compound" : "C00288",
+    "bigg.metabolite" : "hco3",
+    "metacyc.compound" : "META:HCO3"
+  },
+  "cpd00484" : {
+    "kegg.compound" : "C00633",
+    "bigg.metabolite" : "4hbald",
+    "metacyc.compound" : "META:4-HYDROXYBENZALDEHYDE"
+  },
+  "cpd00241" : {
+    "kegg.compound" : "C00286",
+    "bigg.metabolite" : "dgtp",
+    "metacyc.compound" : "META:DGTP"
+  },
+  "cpd01572" : {
+    "kegg.compound" : "C02355",
+    "bigg.metabolite" : "23cump",
+    "metacyc.compound" : "META:CPD-3725"
+  },
+  "cpd00244" : {
+    "bigg.metabolite" : "ni2"
+  },
+  "cpd00486" : {
+    "kegg.compound" : "C00637",
+    "bigg.metabolite" : "id3acald",
+    "metacyc.compound" : "META:INDOLE_ACETALDEHYDE"
+  },
+  "cpd00002" : {
+    "kegg.compound" : "C00002",
+    "bigg.metabolite" : "atp",
+    "metacyc.compound" : "META:ATP"
+  },
+  "cpd00485" : {
+    "kegg.compound" : "C00636",
+    "bigg.metabolite" : "man1p",
+    "metacyc.compound" : "META:MANNOSE-1P"
+  },
+  "cpd00001" : {
+    "kegg.compound" : "C00001",
+    "bigg.metabolite" : "h2o",
+    "metacyc.compound" : "META:WATER"
+  },
+  "cpd00480" : {
+    "bigg.metabolite" : "2dhglcn"
+  },
+  "cpd01570" : {
+    "kegg.compound" : "C02353",
+    "bigg.metabolite" : "23camp",
+    "metacyc.compound" : "META:CPD-3707"
+  },
+  "cpd01571" : {
+    "kegg.compound" : "C02354",
+    "bigg.metabolite" : "23ccmp",
+    "metacyc.compound" : "META:CPD-3713"
+  },
+  "cpd00482" : {
+    "kegg.compound" : "C00631",
+    "bigg.metabolite" : "2pg",
+    "metacyc.compound" : "META:2-PG"
+  },
+  "cpd00481" : {
+    "kegg.compound" : "C00630",
+    "bigg.metabolite" : "ibcoa",
+    "metacyc.compound" : "META:ISOBUTYRYL-COA"
+  },
+  "cpd15961" : {
+    "bigg.metabolite" : "hpmtria"
+  },
+  "cpd00227" : {
+    "kegg.compound" : "C00263",
+    "bigg.metabolite" : "hom__L",
+    "metacyc.compound" : "META:HOMO-SER"
+  },
+  "cpd03736" : {
+    "kegg.compound" : "C06251",
+    "bigg.metabolite" : "kdo2lipid4p",
+    "metacyc.compound" : "META:KDO2-LAUROYL-LIPID-IVA"
+  },
+  "cpd00229" : {
+    "kegg.compound" : "C00266",
+    "bigg.metabolite" : "gcald",
+    "metacyc.compound" : "META:GLYCOLALDEHYDE"
+  },
+  "cpd00477" : {
+    "kegg.compound" : "C00624",
+    "bigg.metabolite" : "acglu",
+    "metacyc.compound" : "META:ACETYL-GLU"
+  },
+  "cpd00235" : {
+    "kegg.compound" : "C00275",
+    "bigg.metabolite" : "man6p",
+    "metacyc.compound" : "META:MANNOSE-6P"
+  },
+  "cpd02656" : {
+    "kegg.compound" : "C04332",
+    "bigg.metabolite" : "dmlz",
+    "metacyc.compound" : "META:DIMETHYL-D-RIBITYL-LUMAZINE"
+  },
+  "cpd01324" : {
+    "kegg.compound" : "C01929",
+    "bigg.metabolite" : "histda",
+    "metacyc.compound" : "META:HISTIDINAL"
+  },
+  "cpd00236" : {
+    "kegg.compound" : "C00279",
+    "bigg.metabolite" : "e4p",
+    "metacyc.compound" : "META:ERYTHROSE-4P"
+  },
+  "cpd00231" : {
+    "kegg.compound" : "C00268",
+    "bigg.metabolite" : "dhbpt"
+  },
+  "cpd00475" : {
+    "kegg.compound" : "C00620",
+    "bigg.metabolite" : "r1p",
+    "metacyc.compound" : "META:RIBOSE-1P"
+  },
+  "cpd00233" : {
+    "kegg.compound" : "C00272",
+    "bigg.metabolite" : "thbpt"
+  },
+  "cpd21157" : {
+    "metacyc.compound" : "META:CPD-13879"
+  },
+  "cpd02893" : {
+    "kegg.compound" : "C04751",
+    "bigg.metabolite" : "5aizc",
+    "metacyc.compound" : "META:PHOSPHORIBOSYL-CARBOXY-AMINOIMIDAZOLE"
+  },
+  "cpd00470" : {
+    "bigg.metabolite" : "N1aspmd",
+    "metacyc.compound" : "META:CPD-568"
+  },
+  "cpd15995" : {
+    "bigg.metabolite" : "mqn6"
+  },
+  "cpd15993" : {
+    "bigg.metabolite" : "motre"
+  },
+  "cpd15994" : {
+    "bigg.metabolite" : "mql6"
+  },
+  "cpd15991" : {
+    "bigg.metabolite" : "mmycolate"
+  },
+  "cpd12240" : {
+    "kegg.compound" : "C03029"
+  },
+  "cpd15990" : {
+    "bigg.metabolite" : "mmmycolate"
+  },
+  "cpd00019" : {
+    "kegg.compound" : "C00021",
+    "bigg.metabolite" : "ahcys",
+    "metacyc.compound" : "META:ADENOSYL-HOMO-CYS"
+  },
+  "cpd00018" : {
+    "kegg.compound" : "C00020",
+    "bigg.metabolite" : "amp",
+    "metacyc.compound" : "META:AMP"
+  },
+  "cpd01107" : {
+    "kegg.compound" : "C01571",
+    "bigg.metabolite" : "dca",
+    "metacyc.compound" : "META:CPD-3617"
+  },
+  "cpd03527" : {
+    "kegg.compound" : "C05933",
+    "bigg.metabolite" : "nwharg",
+    "metacyc.compound" : "META:CPD-13518"
+  },
+  "cpd00026" : {
+    "kegg.compound" : "C00029",
+    "bigg.metabolite" : "udpg",
+    "metacyc.compound" : "META:CPD-12575"
+  },
+  "cpd00268" : {
+    "kegg.compound" : "C00320",
+    "bigg.metabolite" : "tsul",
+    "metacyc.compound" : "META:S2O3"
+  },
+  "cpd00025" : {
+    "kegg.compound" : "C00027",
+    "bigg.metabolite" : "h2o2",
+    "metacyc.compound" : "META:HYDROGEN-PEROXIDE"
+  },
+  "cpd00028" : {
+    "kegg.compound" : "C00032",
+    "bigg.metabolite" : "pheme",
+    "metacyc.compound" : "META:Heme-b"
+  },
+  "cpd00027" : {
+    "kegg.compound" : "C00031",
+    "bigg.metabolite" : "glc__D",
+    "metacyc.compound" : "META:Glucopyranose"
+  },
+  "cpd02446" : {
+    "kegg.compound" : "C06892",
+    "bigg.metabolite" : "d5kg",
+    "metacyc.compound" : "META:CPD-827"
+  },
+  "cpd00264" : {
+    "kegg.compound" : "C00315",
+    "bigg.metabolite" : "spmd",
+    "metacyc.compound" : "META:SPERMIDINE"
+  },
+  "cpd02685" : {
+    "kegg.compound" : "C04390",
+    "bigg.metabolite" : "26dapime",
+    "metacyc.compound" : "META:CPD-1771"
+  },
+  "cpd00022" : {
+    "kegg.compound" : "C00024",
+    "bigg.metabolite" : "accoa",
+    "metacyc.compound" : "META:ACETYL-COA"
+  },
+  "cpd00021" : {
+    "kegg.compound" : "C14818",
+    "bigg.metabolite" : "fe2",
+    "metacyc.compound" : "META:FE+2"
+  },
+  "cpd01113" : {
+    "kegg.compound" : "C01585",
+    "bigg.metabolite" : "hxa",
+    "metacyc.compound" : "META:HEXANOATE"
+  },
+  "cpd00024" : {
+    "kegg.compound" : "C00026",
+    "bigg.metabolite" : "akg",
+    "metacyc.compound" : "META:2-KETOGLUTARATE"
+  },
+  "cpd03773" : {
+    "bigg.metabolite" : "acanth"
+  },
+  "cpd22058" : {
+    "kegg.compound" : "C03584",
+    "metacyc.compound" : "META:3-URACIL-1-YL-L-SERINE"
+  },
+  "cpd00023" : {
+    "kegg.compound" : "C00025",
+    "bigg.metabolite" : "glu__L",
+    "metacyc.compound" : "META:GLT"
+  },
+  "cpd00260" : {
+    "kegg.compound" : "C00311",
+    "bigg.metabolite" : "icit",
+    "metacyc.compound" : "META:THREO-DS-ISO-CITRATE"
+  },
+  "cpd22290" : {
+    "kegg.compound" : "C00028",
+    "metacyc.compound" : "META:Acceptor"
+  },
+  "cpd00020" : {
+    "kegg.compound" : "C00022",
+    "bigg.metabolite" : "pyr",
+    "metacyc.compound" : "META:PYRUVATE"
+  },
+  "cpd15500" : {
+    "bigg.metabolite" : "mqn8"
+  },
+  "cpd00008" : {
+    "kegg.compound" : "C00008",
+    "bigg.metabolite" : "adp",
+    "metacyc.compound" : "META:ADP"
+  },
+  "cpd00249" : {
+    "kegg.compound" : "C00299",
+    "bigg.metabolite" : "uri",
+    "metacyc.compound" : "META:URIDINE"
+  },
+  "cpd00007" : {
+    "kegg.compound" : "C00007",
+    "bigg.metabolite" : "o2",
+    "metacyc.compound" : "META:OXYGEN-MOLECULE"
+  },
+  "cpd03518" : {
+    "kegg.compound" : "C05922",
+    "bigg.metabolite" : "HC01651"
+  },
+  "cpd03517" : {
+    "kegg.compound" : "C05921",
+    "bigg.metabolite" : "btamp",
+    "metacyc.compound" : "META:BIO-5-AMP"
+  },
+  "cpd01339" : {
+    "kegg.compound" : "C01949",
+    "metacyc.compound" : "META:PENTAN-2-ONE"
+  },
+  "cpd03758" : {
+    "kegg.compound" : "C06317",
+    "metacyc.compound" : "META:VANILLYL-ALCOHOL"
+  },
+  "cpd00009" : {
+    "kegg.compound" : "C00009",
+    "bigg.metabolite" : "pi",
+    "metacyc.compound" : "META:Pi"
+  },
+  "cpd03526" : {
+    "kegg.compound" : "C05932",
+    "bigg.metabolite" : "sucgsa",
+    "metacyc.compound" : "META:CPD-822"
+  },
+  "cpd00015" : {
+    "kegg.compound" : "C00016",
+    "bigg.metabolite" : "fad",
+    "metacyc.compound" : "META:FAD"
+  },
+  "cpd02678" : {
+    "kegg.compound" : "C04376",
+    "bigg.metabolite" : "fgam",
+    "metacyc.compound" : "META:5-P-RIBOSYL-N-FORMYLGLYCINEAMIDE"
+  },
+  "cpd00256" : {
+    "kegg.compound" : "C00307",
+    "bigg.metabolite" : "cdpchol",
+    "metacyc.compound" : "META:CDP-CHOLINE"
+  },
+  "cpd00498" : {
+    "kegg.compound" : "C06006",
+    "bigg.metabolite" : "2ahbut",
+    "metacyc.compound" : "META:2-ACETO-2-HYDROXY-BUTYRATE"
+  },
+  "cpd00014" : {
+    "kegg.compound" : "C00015",
+    "bigg.metabolite" : "udp",
+    "metacyc.compound" : "META:UDP"
+  },
+  "cpd00017" : {
+    "kegg.compound" : "C00019",
+    "bigg.metabolite" : "amet",
+    "metacyc.compound" : "META:S-ADENOSYLMETHIONINE"
+  },
+  "cpd00259" : {
+    "kegg.compound" : "C00310",
+    "bigg.metabolite" : "xylu__D",
+    "metacyc.compound" : "META:D-XYLULOSE"
+  },
+  "cpd23154" : {
+    "metacyc.compound" : "META:CPD-11951"
+  },
+  "cpd27758" : {
+    "bigg.metabolite" : "fldox"
+  },
+  "cpd00011" : {
+    "kegg.compound" : "C00011",
+    "bigg.metabolite" : "co2",
+    "metacyc.compound" : "META:CARBON-DIOXIDE"
+  },
+  "cpd00010" : {
+    "kegg.compound" : "C00010",
+    "bigg.metabolite" : "coa",
+    "metacyc.compound" : "META:CO-A"
+  },
+  "cpd03521" : {
+    "kegg.compound" : "C05925",
+    "bigg.metabolite" : "dhpmp",
+    "metacyc.compound" : "META:DIHYDRONEOPTERIN-P"
+  },
+  "cpd00497" : {
+    "kegg.compound" : "C00655",
+    "bigg.metabolite" : "xmp",
+    "metacyc.compound" : "META:XANTHOSINE-5-PHOSPHATE"
+  },
+  "cpd00013" : {
+    "kegg.compound" : "C00014",
+    "bigg.metabolite" : "nh4",
+    "metacyc.compound" : "META:AMMONIUM"
+  },
+  "cpd00254" : {
+    "kegg.compound" : "C00305",
+    "bigg.metabolite" : "mg2",
+    "metacyc.compound" : "META:MG+2"
+  },
+  "cpd00012" : {
+    "kegg.compound" : "C00013",
+    "bigg.metabolite" : "ppi",
+    "metacyc.compound" : "META:PPI"
+  },
+  "cpd02431" : {
+    "kegg.compound" : "C03912",
+    "bigg.metabolite" : "1pyr5c",
+    "metacyc.compound" : "META:L-DELTA1-PYRROLINE_5-CARBOXYLATE"
+  },
+  "cpd12228" : {
+    "kegg.compound" : "C02988",
+    "bigg.metabolite" : "histrna",
+    "metacyc.compound" : "META:Charged-HIS-tRNAs"
+  },
+  "cpd12229" : {
+    "kegg.compound" : "C02992",
+    "bigg.metabolite" : "thrtrna",
+    "metacyc.compound" : "META:Charged-THR-tRNAs"
+  },
+  "cpd15538" : {
+    "bigg.metabolite" : "pg160"
+  },
+  "cpd15535" : {
+    "bigg.metabolite" : "pg120"
+  },
+  "cpd15536" : {
+    "bigg.metabolite" : "pg140"
+  },
+  "cpd15533" : {
+    "bigg.metabolite" : "pe180"
+  },
+  "cpd15532" : {
+    "bigg.metabolite" : "pe161"
+  },
+  "cpd03307" : {
+    "kegg.compound" : "C05577",
+    "bigg.metabolite" : "34dhmald"
+  },
+  "cpd00048" : {
+    "kegg.compound" : "C00059",
+    "bigg.metabolite" : "so4",
+    "metacyc.compound" : "META:SULFATE"
+  },
+  "cpd00047" : {
+    "kegg.compound" : "C00058",
+    "bigg.metabolite" : "for",
+    "metacyc.compound" : "META:FORMATE"
+  },
+  "cpd00289" : {
+    "kegg.compound" : "C00353",
+    "bigg.metabolite" : "ggdp",
+    "metacyc.compound" : "META:GERANYLGERANYL-PP"
+  },
+  "cpd02467" : {
+    "kegg.compound" : "C03979",
+    "bigg.metabolite" : "lkdr",
+    "metacyc.compound" : "META:DEHYDRO-3-DEOXY-L-RHAMNONATE"
+  },
+  "cpd00049" : {
+    "kegg.compound" : "C00060",
+    "metacyc.compound" : "META:Carboxylates"
+  },
+  "cpd00044" : {
+    "kegg.compound" : "C00053",
+    "bigg.metabolite" : "paps",
+    "metacyc.compound" : "META:PAPS"
+  },
+  "cpd02465" : {
+    "kegg.compound" : "C03972",
+    "bigg.metabolite" : "thdp",
+    "metacyc.compound" : "META:DELTA1-PIPERIDEINE-2-6-DICARBOXYLATE"
+  },
+  "cpd00043" : {
+    "kegg.compound" : "C00052",
+    "bigg.metabolite" : "udpgal",
+    "metacyc.compound" : "META:CPD-14553"
+  },
+  "cpd00285" : {
+    "kegg.compound" : "C00346",
+    "bigg.metabolite" : "ethamp",
+    "metacyc.compound" : "META:PHOSPHORYL-ETHANOLAMINE"
+  },
+  "cpd00288" : {
+    "kegg.compound" : "C00352",
+    "bigg.metabolite" : "gam6p",
+    "metacyc.compound" : "META:D-GLUCOSAMINE-6-P"
+  },
+  "cpd00046" : {
+    "kegg.compound" : "C00055",
+    "bigg.metabolite" : "cmp",
+    "metacyc.compound" : "META:CMP"
+  },
+  "cpd22279" : {
+    "metacyc.compound" : "META:APO-CITRATE-LYASE"
+  },
+  "cpd00287" : {
+    "kegg.compound" : "C00349",
+    "bigg.metabolite" : "2mop"
+  },
+  "cpd00045" : {
+    "kegg.compound" : "C00054",
+    "bigg.metabolite" : "pap",
+    "metacyc.compound" : "META:3-5-ADP"
+  },
+  "cpd00282" : {
+    "kegg.compound" : "C00337",
+    "bigg.metabolite" : "dhor__S",
+    "metacyc.compound" : "META:DI-H-OROTATE"
+  },
+  "cpd00040" : {
+    "kegg.compound" : "C00048",
+    "bigg.metabolite" : "glx",
+    "metacyc.compound" : "META:GLYOX"
+  },
+  "cpd00281" : {
+    "kegg.compound" : "C00334",
+    "bigg.metabolite" : "4abut",
+    "metacyc.compound" : "META:4-AMINO-BUTYRATE"
+  },
+  "cpd00284" : {
+    "kegg.compound" : "C00345",
+    "bigg.metabolite" : "6pgc",
+    "metacyc.compound" : "META:CPD-2961"
+  },
+  "cpd00042" : {
+    "kegg.compound" : "C00051",
+    "bigg.metabolite" : "gthrd",
+    "metacyc.compound" : "META:GLUTATHIONE"
+  },
+  "cpd00283" : {
+    "kegg.compound" : "C00341",
+    "bigg.metabolite" : "grdp",
+    "metacyc.compound" : "META:GERANYL-PP"
+  },
+  "cpd00041" : {
+    "kegg.compound" : "C00049",
+    "bigg.metabolite" : "asp__L",
+    "metacyc.compound" : "META:L-ASPARTATE"
+  },
+  "cpd15528" : {
+    "bigg.metabolite" : "pe120"
+  },
+  "cpd15526" : {
+    "bigg.metabolite" : "pa180"
+  },
+  "cpd12259" : {
+    "kegg.compound" : "C03135",
+    "metacyc.compound" : "META:N-ACETYL-D-AMINO-ACID"
+  },
+  "cpd15524" : {
+    "bigg.metabolite" : "pa160"
+  },
+  "cpd15522" : {
+    "bigg.metabolite" : "pa140"
+  },
+  "cpd12255" : {
+    "kegg.compound" : "C03125",
+    "bigg.metabolite" : "cystrna",
+    "metacyc.compound" : "META:Charged-CYS-tRNAs"
+  },
+  "cpd12256" : {
+    "kegg.compound" : "C03127",
+    "bigg.metabolite" : "iletrna",
+    "metacyc.compound" : "META:Charged-ILE-tRNAs"
+  },
+  "cpd15521" : {
+    "bigg.metabolite" : "pa120"
+  },
+  "cpd12493" : {
+    "kegg.compound" : "C04202"
+  },
+  "cpd00029" : {
+    "kegg.compound" : "C00033",
+    "bigg.metabolite" : "ac",
+    "metacyc.compound" : "META:ACET"
+  },
+  "cpd02216" : {
+    "kegg.compound" : "C03516",
+    "bigg.metabolite" : "mppp9",
+    "metacyc.compound" : "META:MG-PROTOPORPHYRIN"
+  },
+  "cpd00279" : {
+    "kegg.compound" : "C00332",
+    "bigg.metabolite" : "aacoa",
+    "metacyc.compound" : "META:ACETOACETYL-COA"
+  },
+  "cpd00278" : {
+    "kegg.compound" : "C00331",
+    "bigg.metabolite" : "indpyr",
+    "metacyc.compound" : "META:INDOLE_PYRUVATE"
+  },
+  "cpd00036" : {
+    "kegg.compound" : "C00042",
+    "bigg.metabolite" : "succ",
+    "metacyc.compound" : "META:SUC"
+  },
+  "cpd02698" : {
+    "kegg.compound" : "C04421",
+    "bigg.metabolite" : "sl26da",
+    "metacyc.compound" : "META:N-SUCCINYLLL-2-6-DIAMINOPIMELATE"
+  },
+  "cpd00039" : {
+    "kegg.compound" : "C00047",
+    "bigg.metabolite" : "lys__L",
+    "metacyc.compound" : "META:LYS"
+  },
+  "cpd01367" : {
+    "kegg.compound" : "C01996",
+    "bigg.metabolite" : "ach",
+    "metacyc.compound" : "META:ACETYLCHOLINE"
+  },
+  "cpd00038" : {
+    "kegg.compound" : "C00044",
+    "bigg.metabolite" : "gtp",
+    "metacyc.compound" : "META:GTP"
+  },
+  "cpd00033" : {
+    "kegg.compound" : "C00037",
+    "bigg.metabolite" : "gly",
+    "metacyc.compound" : "META:GLY"
+  },
+  "cpd00275" : {
+    "kegg.compound" : "C00328",
+    "bigg.metabolite" : "Lkynr",
+    "metacyc.compound" : "META:CPD-14736"
+  },
+  "cpd00032" : {
+    "kegg.compound" : "C00036",
+    "bigg.metabolite" : "oaa",
+    "metacyc.compound" : "META:OXALACETIC_ACID"
+  },
+  "cpd00274" : {
+    "kegg.compound" : "C00327",
+    "bigg.metabolite" : "citr__L",
+    "metacyc.compound" : "META:L-CITRULLINE"
+  },
+  "cpd00035" : {
+    "kegg.compound" : "C00041",
+    "bigg.metabolite" : "ala__L",
+    "metacyc.compound" : "META:L-ALPHA-ALANINE"
+  },
+  "cpd00277" : {
+    "kegg.compound" : "C00330",
+    "bigg.metabolite" : "dgsn",
+    "metacyc.compound" : "META:DEOXYGUANOSINE"
+  },
+  "cpd02211" : {
+    "kegg.compound" : "C03508",
+    "bigg.metabolite" : "2aobut",
+    "metacyc.compound" : "META:AMINO-OXOBUT"
+  },
+  "cpd02693" : {
+    "kegg.compound" : "C04411",
+    "bigg.metabolite" : "3c2hmp",
+    "metacyc.compound" : "META:2-D-THREO-HYDROXY-3-CARBOXY-ISOCAPROATE"
+  },
+  "cpd00031" : {
+    "kegg.compound" : "C00035",
+    "bigg.metabolite" : "gdp",
+    "metacyc.compound" : "META:GDP"
+  },
+  "cpd15318" : {
+    "bigg.metabolite" : "1agpg120"
+  },
+  "cpd15313" : {
+    "bigg.metabolite" : "1agpe120"
+  },
+  "cpd16886" : {
+    "bigg.metabolite" : "man2mi1p__D"
+  },
+  "cpd16887" : {
+    "bigg.metabolite" : "manmi1p__D"
+  },
+  "cpd15551" : {
+    "bigg.metabolite" : "progly"
+  },
+  "cpd16883" : {
+    "bigg.metabolite" : "fecostest_SC"
+  },
+  "cpd15552" : {
+    "bigg.metabolite" : "ps120"
+  },
+  "cpd02008" : {
+    "kegg.compound" : "C03139",
+    "metacyc.compound" : "META:CPD-599"
+  },
+  "cpd00069" : {
+    "kegg.compound" : "C00082",
+    "bigg.metabolite" : "tyr__L",
+    "metacyc.compound" : "META:TYR"
+  },
+  "cpd00066" : {
+    "kegg.compound" : "C00079",
+    "bigg.metabolite" : "phe__L",
+    "metacyc.compound" : "META:PHE"
+  },
+  "cpd26697" : {
+    "kegg.compound" : "C03127",
+    "bigg.metabolite" : "iletrna",
+    "metacyc.compound" : "META:Charged-ILE-tRNAs"
+  },
+  "cpd00065" : {
+    "kegg.compound" : "C00078",
+    "bigg.metabolite" : "trp__L",
+    "metacyc.compound" : "META:TRP"
+  },
+  "cpd00068" : {
+    "kegg.compound" : "C00081",
+    "bigg.metabolite" : "itp",
+    "metacyc.compound" : "META:ITP"
+  },
+  "cpd01155" : {
+    "kegg.compound" : "C01672",
+    "bigg.metabolite" : "15dap",
+    "metacyc.compound" : "META:CADAVERINE"
+  },
+  "cpd00067" : {
+    "kegg.compound" : "C00080",
+    "bigg.metabolite" : "h",
+    "metacyc.compound" : "META:PROTON"
+  },
+  "cpd26699" : {
+    "kegg.compound" : "C01931",
+    "bigg.metabolite" : "lystrna",
+    "metacyc.compound" : "META:Charged-LYS-tRNAs"
+  },
+  "cpd00062" : {
+    "kegg.compound" : "C00075",
+    "bigg.metabolite" : "utp",
+    "metacyc.compound" : "META:UTP"
+  },
+  "cpd02484" : {
+    "kegg.compound" : "C04006",
+    "bigg.metabolite" : "mi3p__D",
+    "metacyc.compound" : "META:1-L-MYO-INOSITOL-1-P"
+  },
+  "cpd03572" : {
+    "kegg.compound" : "C06000",
+    "bigg.metabolite" : "3hibutcoa",
+    "metacyc.compound" : "META:CPD-12173"
+  },
+  "cpd00061" : {
+    "kegg.compound" : "C00074",
+    "bigg.metabolite" : "pep",
+    "metacyc.compound" : "META:PHOSPHO-ENOL-PYRUVATE"
+  },
+  "cpd00064" : {
+    "kegg.compound" : "C00077",
+    "bigg.metabolite" : "orn__L",
+    "metacyc.compound" : "META:L-ORNITHINE"
+  },
+  "cpd00060" : {
+    "kegg.compound" : "C00073",
+    "bigg.metabolite" : "met__L",
+    "metacyc.compound" : "META:MET"
+  },
+  "cpd15306" : {
+    "bigg.metabolite" : "12dgr120"
+  },
+  "cpd15542" : {
+    "bigg.metabolite" : "pgp120"
+  },
+  "cpd15543" : {
+    "bigg.metabolite" : "pgp140"
+  },
+  "cpd15540" : {
+    "bigg.metabolite" : "pg180"
+  },
+  "cpd02229" : {
+    "kegg.compound" : "C04574",
+    "bigg.metabolite" : "udcpdp",
+    "metacyc.compound" : "META:UNDECAPRENYL-DIPHOSPHATE"
+  },
+  "cpd00058" : {
+    "kegg.compound" : "C00070",
+    "bigg.metabolite" : "cu2",
+    "metacyc.compound" : "META:CU+2"
+  },
+  "cpd02234" : {
+    "kegg.compound" : "C03561",
+    "bigg.metabolite" : "3hbcoa__R",
+    "metacyc.compound" : "META:CPD-650"
+  },
+  "cpd00297" : {
+    "kegg.compound" : "C00363",
+    "bigg.metabolite" : "dtdp",
+    "metacyc.compound" : "META:TDP"
+  },
+  "cpd00055" : {
+    "kegg.compound" : "C00067",
+    "bigg.metabolite" : "fald",
+    "metacyc.compound" : "META:FORMALDEHYDE"
+  },
+  "cpd00054" : {
+    "kegg.compound" : "C00065",
+    "bigg.metabolite" : "ser__L",
+    "metacyc.compound" : "META:SER"
+  },
+  "cpd00296" : {
+    "kegg.compound" : "C00362",
+    "bigg.metabolite" : "dgmp",
+    "metacyc.compound" : "META:DGMP"
+  },
+  "cpd00057" : {
+    "kegg.compound" : "C00069",
+    "metacyc.compound" : "META:Alcohols"
+  },
+  "cpd00299" : {
+    "kegg.compound" : "C00365",
+    "bigg.metabolite" : "dump",
+    "metacyc.compound" : "META:DUMP"
+  },
+  "cpd03564" : {
+    "kegg.compound" : "C05989",
+    "bigg.metabolite" : "3opcoa"
+  },
+  "cpd00298" : {
+    "kegg.compound" : "C00364",
+    "bigg.metabolite" : "dtmp",
+    "metacyc.compound" : "META:TMP"
+  },
+  "cpd00056" : {
+    "kegg.compound" : "C00068",
+    "bigg.metabolite" : "thmpp",
+    "metacyc.compound" : "META:THIAMINE-PYROPHOSPHATE"
+  },
+  "cpd00293" : {
+    "kegg.compound" : "C00357",
+    "bigg.metabolite" : "acgam6p",
+    "metacyc.compound" : "META:N-ACETYL-D-GLUCOSAMINE-6-P"
+  },
+  "cpd00051" : {
+    "kegg.compound" : "C00062",
+    "bigg.metabolite" : "arg__L",
+    "metacyc.compound" : "META:ARG"
+  },
+  "cpd00292" : {
+    "kegg.compound" : "C00356",
+    "bigg.metabolite" : "hmgcoa",
+    "metacyc.compound" : "META:3-HYDROXY-3-METHYL-GLUTARYL-COA"
+  },
+  "cpd03561" : {
+    "kegg.compound" : "C05984",
+    "bigg.metabolite" : "2hbut"
+  },
+  "cpd00050" : {
+    "kegg.compound" : "C00061",
+    "bigg.metabolite" : "fmn",
+    "metacyc.compound" : "META:FMN"
+  },
+  "cpd03560" : {
+    "kegg.compound" : "C05983",
+    "bigg.metabolite" : "ppad"
+  },
+  "cpd00053" : {
+    "kegg.compound" : "C00064",
+    "bigg.metabolite" : "gln__L",
+    "metacyc.compound" : "META:GLN"
+  },
+  "cpd00295" : {
+    "kegg.compound" : "C00361",
+    "bigg.metabolite" : "dgdp",
+    "metacyc.compound" : "META:DGDP"
+  },
+  "cpd00052" : {
+    "kegg.compound" : "C00063",
+    "bigg.metabolite" : "ctp",
+    "metacyc.compound" : "META:CTP"
+  },
+  "cpd00294" : {
+    "kegg.compound" : "C00360",
+    "bigg.metabolite" : "damp",
+    "metacyc.compound" : "META:DAMP"
+  },
+  "cpd15539" : {
+    "bigg.metabolite" : "pg161"
+  },
+  "cpd00290" : {
+    "kegg.compound" : "C00354",
+    "bigg.metabolite" : "fdp",
+    "metacyc.compound" : "META:FRUCTOSE-16-DIPHOSPHATE"
+  },
+  "cpd15337" : {
+    "bigg.metabolite" : "2agpe140"
+  },
+  "cpd15336" : {
+    "bigg.metabolite" : "2agpe120"
+  },
+  "cpd15331" : {
+    "bigg.metabolite" : "1tdecg3p"
+  },
+  "cpd15332" : {
+    "bigg.metabolite" : "23dhbzs"
+  },
+  "cpd05535" : {
+    "kegg.compound" : "C08628",
+    "metacyc.compound" : "META:CPD-90"
+  },
+  "cpd15330" : {
+    "bigg.metabolite" : "1tdec7eg3p"
+  },
+  "cpd03119" : {
+    "kegg.compound" : "C05265",
+    "bigg.metabolite" : "3odcoa",
+    "metacyc.compound" : "META:CPD0-2123"
+  },
+  "cpd29705" : {
+    "kegg.compound" : "C16529",
+    "bigg.metabolite" : "ttccoa"
+  },
+  "cpd03117" : {
+    "kegg.compound" : "C05263",
+    "bigg.metabolite" : "3oddcoa",
+    "metacyc.compound" : "META:CPD0-2105"
+  },
+  "cpd29703" : {
+    "bigg.metabolite" : "25drapp"
+  },
+  "cpd03116" : {
+    "kegg.compound" : "C05262",
+    "bigg.metabolite" : "3hddcoa"
+  },
+  "cpd03115" : {
+    "kegg.compound" : "C05260",
+    "bigg.metabolite" : "3htdcoa",
+    "metacyc.compound" : "META:CPD0-2171"
+  },
+  "cpd00087" : {
+    "kegg.compound" : "C00101",
+    "bigg.metabolite" : "thf"
+  },
+  "cpd27521" : {
+    "metacyc.compound" : "META:Microsomal-membrane-proteins"
+  },
+  "cpd00089" : {
+    "kegg.compound" : "C00103",
+    "bigg.metabolite" : "g1p",
+    "metacyc.compound" : "META:GLC-1-P"
+  },
+  "cpd00084" : {
+    "kegg.compound" : "C00097",
+    "bigg.metabolite" : "cys__L",
+    "metacyc.compound" : "META:CYS"
+  },
+  "cpd00083" : {
+    "kegg.compound" : "C00096",
+    "bigg.metabolite" : "gdpmann",
+    "metacyc.compound" : "META:GDP-MANNOSE"
+  },
+  "cpd00086" : {
+    "kegg.compound" : "C00100",
+    "bigg.metabolite" : "ppcoa",
+    "metacyc.compound" : "META:PROPIONYL-COA"
+  },
+  "cpd00085" : {
+    "kegg.compound" : "C00099",
+    "bigg.metabolite" : "ala_B",
+    "metacyc.compound" : "META:B-ALANINE"
+  },
+  "cpd02262" : {
+    "bigg.metabolite" : "xol7a"
+  },
+  "cpd00080" : {
+    "kegg.compound" : "C00093",
+    "bigg.metabolite" : "glyc3p",
+    "metacyc.compound" : "META:GLYCEROL-3P"
+  },
+  "cpd00082" : {
+    "kegg.compound" : "C00095",
+    "bigg.metabolite" : "fru"
+  },
+  "cpd00081" : {
+    "kegg.compound" : "C00094",
+    "bigg.metabolite" : "so3",
+    "metacyc.compound" : "META:SO3"
+  },
+  "cpd15328" : {
+    "bigg.metabolite" : "1odec11eg3p"
+  },
+  "cpd15329" : {
+    "bigg.metabolite" : "1odecg3p"
+  },
+  "cpd15326" : {
+    "bigg.metabolite" : "1hdec9eg3p"
+  },
+  "cpd15327" : {
+    "bigg.metabolite" : "1hdecg3p"
+  },
+  "cpd16416" : {
+    "kegg.compound" : "C16612",
+    "bigg.metabolite" : "citalald"
+  },
+  "cpd15325" : {
+    "bigg.metabolite" : "1ddecg3p"
+  },
+  "cpd15564" : {
+    "bigg.metabolite" : "seramp"
+  },
+  "cpd14478" : {
+    "kegg.compound" : "C15521",
+    "metacyc.compound" : "META:Alkanesulfonates"
+  },
+  "cpd15323" : {
+    "bigg.metabolite" : "1agpg180"
+  },
+  "cpd16412" : {
+    "kegg.compound" : "C16608",
+    "bigg.metabolite" : "dmcital"
+  },
+  "cpd15562" : {
+    "bigg.metabolite" : "ragund"
+  },
+  "cpd12293" : {
+    "kegg.compound" : "C03317",
+    "metacyc.compound" : "META:CPD-8569"
+  },
+  "cpd05522" : {
+    "kegg.compound" : "C08615",
+    "metacyc.compound" : "META:CPD-8250"
+  },
+  "cpd15560" : {
+    "kegg.compound" : "C17569",
+    "bigg.metabolite" : "q8"
+  },
+  "cpd15561" : {
+    "bigg.metabolite" : "q8h2",
+    "metacyc.compound" : "META:CPD-9956"
+  },
+  "cpd02258" : {
+    "kegg.compound" : "C03589",
+    "bigg.metabolite" : "4h2opntn"
+  },
+  "cpd03105" : {
+    "kegg.compound" : "C05235",
+    "bigg.metabolite" : "acetol",
+    "metacyc.compound" : "META:ACETOL"
+  },
+  "cpd02014" : {
+    "kegg.compound" : "C03147",
+    "metacyc.compound" : "META:CPD-422"
+  },
+  "cpd00077" : {
+    "kegg.compound" : "C00090",
+    "bigg.metabolite" : "catechol",
+    "metacyc.compound" : "META:CATECHOL"
+  },
+  "cpd03587" : {
+    "bigg.metabolite" : "lipa_cold"
+  },
+  "cpd00076" : {
+    "kegg.compound" : "C00089",
+    "bigg.metabolite" : "sucr",
+    "metacyc.compound" : "META:SUCROSE"
+  },
+  "cpd00079" : {
+    "kegg.compound" : "C00092",
+    "bigg.metabolite" : "g6p",
+    "metacyc.compound" : "META:D-glucopyranose-6-phosphate"
+  },
+  "cpd26688" : {
+    "kegg.compound" : "C00886",
+    "bigg.metabolite" : "alatrna",
+    "metacyc.compound" : "META:Charged-ALA-tRNAs"
+  },
+  "cpd03101" : {
+    "kegg.compound" : "C05226",
+    "metacyc.compound" : "META:N-Carbamoyl-D-Amino-Acids"
+  },
+  "cpd00078" : {
+    "kegg.compound" : "C00091",
+    "bigg.metabolite" : "succoa",
+    "metacyc.compound" : "META:SUC-COA"
+  },
+  "cpd02494" : {
+    "kegg.compound" : "C04030",
+    "bigg.metabolite" : "23dhba",
+    "metacyc.compound" : "META:CPD-62"
+  },
+  "cpd00073" : {
+    "kegg.compound" : "C00086",
+    "bigg.metabolite" : "urea",
+    "metacyc.compound" : "META:UREA"
+  },
+  "cpd02010" : {
+    "kegg.compound" : "C03141",
+    "metacyc.compound" : "META:CPD-423"
+  },
+  "cpd00072" : {
+    "kegg.compound" : "C00085",
+    "bigg.metabolite" : "f6p",
+    "metacyc.compound" : "META:FRUCTOSE-6P"
+  },
+  "cpd02253" : {
+    "kegg.compound" : "C03584",
+    "metacyc.compound" : "META:3-URACIL-1-YL-L-SERINE"
+  },
+  "cpd00075" : {
+    "kegg.compound" : "C00088",
+    "bigg.metabolite" : "no2",
+    "metacyc.compound" : "META:NITRITE"
+  },
+  "cpd01160" : {
+    "kegg.compound" : "C01678",
+    "bigg.metabolite" : "cysam",
+    "metacyc.compound" : "META:CPD-239"
+  },
+  "cpd15319" : {
+    "bigg.metabolite" : "1agpg140"
+  },
+  "cpd00071" : {
+    "kegg.compound" : "C00084",
+    "bigg.metabolite" : "acald",
+    "metacyc.compound" : "META:ACETALD"
+  },
+  "cpd00070" : {
+    "kegg.compound" : "C00083",
+    "bigg.metabolite" : "malcoa",
+    "metacyc.compound" : "META:MALONYL-COA"
+  }
+}

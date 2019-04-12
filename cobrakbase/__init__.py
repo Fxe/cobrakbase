@@ -11,7 +11,7 @@ import cobrakbase.modelseed.modelseed
 
 __author__  = "Filipe Liu"
 __email__   = "fliu@anl.gov"
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 
 print("cobrakbase", __version__)
 
@@ -70,6 +70,13 @@ def convert_biomass_to_reaction(biomass, mets):
     reaction.annotation[SBO_ANNOTATION] = "SBO:0000629" 
     return reaction
 
+def get_int(k, def_value, d):
+    if k in d:
+        if d[k] == None:
+            return def_value
+        return int(d[k])
+    return def_value
+
 def convert_kmodel(kmodel, media=None):
     model_test = cobra.Model("kbase")
 
@@ -88,7 +95,7 @@ def convert_kmodel(kmodel, media=None):
         #print(mc.keys())
         formula = mc['formula']
         name = mc['name']
-        charge = mc['charge']
+        charge = get_int('charge', 0, mc)
         mc_id = mc['id']
         annotation = {}
         if 'dblinks' in mc:
@@ -436,6 +443,18 @@ def get_old_alias(alias, feature, gene_aliases):
     else:
         1
 
+def get_db_xrefs(feature):
+    aliases = {}
+    if 'db_xrefs' in feature:
+        for ref in feature['db_xrefs']:
+            db = ref[0]
+            value = ref[1]
+            if db == 'EcoGene':
+                aliases['ecogene'] = value
+            elif db == 'GeneID':
+                aliases['ncbigene'] = value
+    return aliases
+        
 def read_genome_aliases(genome):
     gene_aliases = {}
     for feature in genome['features']:
@@ -450,6 +469,8 @@ def read_genome_aliases(genome):
                     get_old_alias(alias, feature, gene_aliases)
                     #print('discard', alias)
         #print(feature['aliases' in ])
+        db_refs = get_db_xrefs(feature)
+        gene_aliases[feature['id']].update(db_refs)
     return gene_aliases
 
 def is_transport(r):
@@ -481,3 +502,92 @@ def is_translocation(r):
         cmps.add(m.compartment)
     
     return len(cmps) > 1
+
+def annotate_model_with_genome(model, genome):
+    gene_aliases = cobrakbase.read_genome_aliases(genome)
+    for g in model.genes:
+        if g.id in gene_aliases:
+            g.annotation.update(gene_aliases[g.id])
+
+def annotate_model_metabolites_with_modelseed(model, modelseed):
+    for m in model.metabolites:
+        seed_id = None
+        if 'seed.compound' in m.annotation:
+            annotation = {}
+            seed_id = m.annotation['seed.compound']
+            seed_cpd = modelseed.get_seed_compound(seed_id)
+            if not seed_cpd == None:
+                if not seed_cpd.inchi == None:
+                    annotation['inchi'] = seed_cpd.inchi
+                if not seed_cpd.inchikey == None:
+                    annotation['inchikey'] = seed_cpd.inchikey
+                alias = seed_cpd.aliases
+                if 'BiGG' in alias:
+                    annotation['bigg.metabolite'] = list(alias['BiGG'])
+                if 'KEGG' in alias:
+                    annotation['kegg.compound'] = list(alias['KEGG'])
+                if 'metanetx.chemical' in alias:
+                    annotation['metanetx.chemical'] = list(alias['metanetx.chemical'])
+                if 'MetaCyc' in alias:
+                    annotation['biocyc'] = list(map(lambda x : 'META:' + x, alias['MetaCyc']))
+            m.annotation.update(annotation)
+            
+def annotate_model_reactions_with_modelseed(model, modelseed):
+    for r in model.reactions:
+        seed_id = None
+        if 'seed.reaction' in r.annotation:
+            annotation = {}
+            seed_id = r.annotation['seed.reaction']
+            seed_rxn = modelseed.get_seed_reaction(seed_id)
+            
+            if not seed_rxn == None:
+                alias = seed_rxn.aliases
+                if 'BiGG' in alias:
+                    annotation['bigg.reaction'] = list(alias['BiGG'])
+                if 'KEGG' in alias:
+                    annotation['kegg.reaction'] = list(alias['KEGG'])
+                if 'rhea' in alias:
+                    annotation['rhea'] = list(alias['rhea'])
+                if 'metanetx.reaction' in alias:
+                    annotation['metanetx.reaction'] = list(alias['metanetx.reaction'])
+                if 'MetaCyc' in alias:
+                    annotation['biocyc'] = list(map(lambda x : 'META:' + x, alias['MetaCyc']))
+            ec_numbers = set()
+            if 'Enzyme Class' in seed_rxn.ec_numbers:
+                for ec in seed_rxn.ec_numbers['Enzyme Class']:
+                    if ec.startswith('EC-'):
+                        ec_numbers.add(ec[3:])
+                    else:
+                        ec_numbers.add(ec)
+            if len(ec_numbers) > 0:
+                annotation['ec-code'] = list(ec_numbers)
+            r.annotation.update(annotation)
+            
+def annotate_model_with_modelseed(model, modelseed):
+    annotate_model_metabolites_with_modelseed(model, modelseed)
+    annotate_model_reactions_with_modelseed(model, modelseed)
+            
+    for r in model.reactions:
+        if cobrakbase.is_translocation(r):
+            if cobrakbase.is_transport(r):
+                r.annotation['sbo'] = 'SBO:0000655'
+            else:
+                r.annotation['sbo'] = 'SBO:0000185'
+                
+    kbase_sinks = ['rxn13783_c0', 'rxn13784_c0', 'rxn13782_c0']
+    
+    for r in model.reactions:
+        #r.annotation['ec-code'] = '1.1.1.1'
+        #r.annotation['metanetx.reaction'] = 'MNXR103371'
+        if r.id in kbase_sinks:
+            r.annotation['sbo'] = 'SBO:0000632'
+        if r.id.startswith('DM_'):
+            r.annotation['sbo'] = 'SBO:0000628'
+            
+def detect_gapfilling_constrainst(kmodel, api):
+    if 'gapfillings' in kmodel and len(kmodel['gapfillings']) > 0:
+        print("Pulling media from gapfilling...", kmodel['gapfillings'])
+        ref = api.get_object_info_from_ref(kmodel['gapfillings'][0]['media_ref'])
+        o_data = api.get_object(ref.id, ref.workspace_id)
+        return convert_media(o_data)
+    return None

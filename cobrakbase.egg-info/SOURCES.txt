@@ -14,4 +14,9 @@ cobrakbase/Workspace/__init__.py
 cobrakbase/Workspace/authclient.py
 cobrakbase/Workspace/baseclient.py
 cobrakbase/core/__init__.py
+cobrakbase/core/cobra_to_kbase.py
 cobrakbase/core/model.py
+cobrakbase/core/utils.py
+cobrakbase/modelseed/__init__.py
+cobrakbase/modelseed/modelseed.py
+cobrakbase/modelseed/utils.py

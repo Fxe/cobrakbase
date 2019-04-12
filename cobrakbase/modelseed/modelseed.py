@@ -20,22 +20,140 @@ def make_alias_dict(compound_aliases):
             compound_alias[alias] = {'seed_id' : seed_id}
     return compound_alias
 
+def get_lhs_rhs(seed_reaction, eval_func):
+    result = {}
+    result_no_zero = {}
+    stoichiometry = seed_reaction['stoichiometry']
+    if type(stoichiometry) == str:
+        for reagent_str in stoichiometry.split(';'):
+            reagent_data = reagent_str.split(':')
+            cpd_id = reagent_data[1]
+            value = float(reagent_data[0])
+            if eval_func(value):
+                if not cpd_id in result:
+                    result[cpd_id] = 0
+                result[reagent_data[1]] += value
+            elif value == 0:
+                raise Exception('zero value stoich: ' + stoichiometry)
+        
+    for cpd_id in result:
+        if result[cpd_id] == 0:
+            print(f'{seed_reaction["id"]} contains compound bein transported {cpd_id}')
+        else:
+            result_no_zero[cpd_id] = result[cpd_id]
+    return result_no_zero
+
 def get_stoichiometry(seed_reaction):
     result = {}
+    result_no_zero = {}
     stoichiometry = seed_reaction['stoichiometry']
-    for reagent_str in stoichiometry.split(';'):
-        reagent_data = reagent_str.split(':')
-        if not reagent_data[1] in result:
-            result[reagent_data[1]] = 0
+    if type(stoichiometry) == str:
+        for reagent_str in stoichiometry.split(';'):
+            reagent_data = reagent_str.split(':')
+            cpd_id = reagent_data[1]
+            if not cpd_id in result:
+                result[cpd_id] = 0
+            result[reagent_data[1]] += float(reagent_data[0])
+        
+    for cpd_id in result:
+        if result[cpd_id] == 0:
+            print(f'{seed_reaction["id"]} contains compound bein transported {cpd_id}')
         else:
-            print('duplicate', reagent_data, stoichiometry)
-        result[reagent_data[1]] = float(reagent_data[0])
-    return result
+            result_no_zero[cpd_id] = result[cpd_id]
+    return result_no_zero
+                  
+def get_cstoichiometry(seed_reaction):
+    result = {}
+    result_no_zero = {}
+    stoichiometry = seed_reaction['stoichiometry']
+    #print(stoichiometry)
+    if type(stoichiometry) == str:
+        for reagent_str in stoichiometry.split(';'):
+            reagent_data = reagent_str.split(':')
+            value = reagent_data[0]
+            cpd_id = reagent_data[1]
+            cmp_index = reagent_data[2]
+            if not (cpd_id, cmp_index) in result:
+                result[(cpd_id, cmp_index)] = 0
+            result[(cpd_id, cmp_index)] += float(value)
+        
+    for p in result:
+        if result[p] == 0:
+            print(f'{seed_reaction["id"]} contains compound bein transported {p}')
+        else:
+            result_no_zero[p] = result[p]
+    return result_no_zero
 
+class ModelSEEDCompound:
+    
+    def __init__(self, data, api=None):
+        self.data = data
+        self.api = api
+        
+    @property
+    def id(self):
+        return self.data['id']
+    
+    @property
+    def formula(self):
+        return self.data['formula']
+                  
+    @property
+    def database(self):
+        return "seed.compound"
+
+    @property
+    def inchi(self):
+        if not self.api == None:
+            if self.id in self.api.compound_structures and 'InChI' in self.api.compound_structures[self.id]:
+                  return self.api.compound_structures[self.id]['InChI']
+        return None
+                  
+    @property
+    def inchikey(self):
+        if not self.api == None:
+            if self.id in self.api.compound_structures and 'InChIKey' in self.api.compound_structures[self.id]:
+                  return self.api.compound_structures[self.id]['InChIKey']
+        if pd.isna(self.data['inchikey']):
+            return None
+        return self.data['inchikey']
+                  
+    @property
+    def smiles(self):
+        if not self.api == None:
+            if self.id in self.api.compound_structures and 'SMILE' in self.api.compound_structures[self.id]:
+                  return self.api.compound_structures[self.id]['SMILE']
+        if pd.isna(self.data['smiles']):
+            return None
+        return self.data['smiles']
+                  
+    @property
+    def aliases(self):
+        if not self.api == None:
+            if self.id in self.api.compound_aliases:
+                  return self.api.compound_aliases[self.id]
+        return {}
+    
+    @property
+    def deltag(self):
+        return self.data['deltag']
+    
+    @property
+    def is_obsolete(self):
+        if 'is_obsolete' in self.data:
+            is_obsolete = self.data['is_obsolete']
+            if is_obsolete == 0:
+                return False
+            else:
+                return True
+        return False
+                  
 class ModelSEEDReaction:
     
-    def __init__(self, data):
+    def __init__(self, data, api=None):
         self.data = data
+        self.api = api
+        self.compounds = {}
         
     @property
     def id(self):
@@ -43,26 +161,49 @@ class ModelSEEDReaction:
     
     @property
     def stoichiometry(self):
-        result = {}
-        stoichiometry = self.data['stoichiometry']
-        for reagent_str in stoichiometry.split(';'):
-            reagent_data = reagent_str.split(':')
-            if not reagent_data[1] in result:
-                result[reagent_data[1]] = 0
-            else:
-                print('duplicate', reagent_data, stoichiometry)
-            result[reagent_data[1]] = float(reagent_data[0])
-        return result
+        return get_stoichiometry(self.data)
+                  
+    @property
+    def cstoichiometry(self):
+        return get_cstoichiometry(self.data)
+
+    @property
+    def ec_numbers(self):
+        if not self.api == None:
+            if self.id in self.api.reaction_ecs:
+                  return self.api.reaction_ecs[self.id]
+        return {}
+                  
+    @property
+    def database(self):
+        return "seed.reaction"
+                  
+    @property
+    def lhs(self):
+        return get_lhs_rhs(self.data, lambda x : x < 0)
+                  
+    @property
+    def rhs(self):
+        return get_lhs_rhs(self.data, lambda x : x > 0)
     
     @property
     def is_transport(self):
         if 'is_transport' in self.data:
             is_transport = self.data['is_transport']
-            if is_transport == 0:
-                return False
-            else:
+            if is_transport == 1:
                 return True
+                  
+        if not len(self.lhs.keys() & self.rhs.keys()) == 0:
+            return True
+                  
         return False
+                  
+    @property
+    def aliases(self):
+        if not self.api == None:
+            if self.id in self.api.reaction_aliases:
+                  return self.api.reaction_aliases[self.id]
+        return {}
     
     @property
     def is_obsolete(self):
@@ -76,12 +217,21 @@ class ModelSEEDReaction:
 
 class ModelSEED:
     
-    def __init__(self, compounds, reactions, alias_to_database_to_cpd = {}, alias_to_database_to_rxn = {}):
+    def __init__(self, compounds, reactions, 
+                 compound_aliases = {},
+                 reaction_aliases = {},
+                 compound_structures = {},
+                 reaction_ecs = {}):
         self.compounds = compounds
         self.reactions = reactions
-        self.alias_to_database_to_cpd = alias_to_database_to_cpd
-        self.alias_to_database_to_rxn = alias_to_database_to_rxn
+        self.compound_aliases = compound_aliases
+        self.reaction_aliases = reaction_aliases
+        self.compound_structures = compound_structures
+        self.reaction_ecs = reaction_ecs
+                  
+    def summary(self):
         print("cpds:", len(self.compounds), "rxns:", len(self.reactions))
+        print('structures', len(self.compound_structures))
         
     def get_formula(self, seed_id):
         return self.get_attribute('formula', seed_id)
@@ -124,12 +274,12 @@ class ModelSEED:
 
     def get_seed_compound(self, seed_id):
         if seed_id in self.compounds:
-            return self.compounds[seed_id]
+            return ModelSEEDCompound(self.compounds[seed_id], self)
         return None
     
     def get_seed_reaction(self, seed_id):
         if seed_id in self.reactions:
-            return self.reactions[seed_id]
+            return ModelSEEDReaction(self.reactions[seed_id], self)
         return None
 
     def is_abstract(self, seed_id):
@@ -152,7 +302,19 @@ class ModelSEED:
                 o = self.reactions[o_id]
                 break
         return o
-    
+
+def get_aliases_from_df(df):
+    aliases = {}
+    for t in df.itertuples():
+        seed_id = t[1]
+        database_id = t[2]
+        database = t[3]
+        if not seed_id in aliases:
+            aliases[seed_id] = {}
+        if not database in aliases[seed_id]:
+            aliases[seed_id][database] = set()
+        aliases[seed_id][database].add(database_id)
+    return aliases
     
 def from_github(commit):
     print(commit)
@@ -162,12 +324,13 @@ def from_github(commit):
     compounds_url = database_repo + '/%s/Biochemistry/compounds.tsv' % commit
     reactions_aliases_url = database_repo + '/%s/Biochemistry/Aliases/Unique_ModelSEED_Reaction_Aliases.txt' % commit
     compounds_aliases_url = database_repo + '/%s/Biochemistry/Aliases/Unique_ModelSEED_Compound_Aliases.txt' % commit
-    
+    compounds_structures_url = database_repo + '/%s/Biochemistry/Structures/Unique_ModelSEED_Structures.txt' % commit
+    reactions_ec_url = database_repo + '/%s/Biochemistry/Aliases/Unique_ModelSEED_Reaction_ECs.txt' % commit
     compounds = {}
     reactions = {}
 
     print('load:', reactions_url)
-    seed_reactions = pd.read_csv(reactions_url, sep='\t')
+    seed_reactions = pd.read_csv(reactions_url, sep='\t', low_memory=False)
     
     for row_id, d in seed_reactions.iterrows():
         seed_reaction = build_reaction(d)
@@ -184,12 +347,80 @@ def from_github(commit):
     compound_aliases = pd.read_csv(compounds_aliases_url, sep='\t')
     reaction_aliases = pd.read_csv(reactions_aliases_url, sep='\t')
     
-    alias_to_database_to_cpd = make_alias_dict(compound_aliases)
-    alias_to_database_to_rxn = make_alias_dict(reaction_aliases)
+    alias_to_database_to_cpd = get_aliases_from_df(compound_aliases)
+    alias_to_database_to_rxn = get_aliases_from_df(reaction_aliases)
+    print('load:', reactions_ec_url)
+    df_reaction_ecs = pd.read_csv(reactions_ec_url, sep='\t')
+    print('load:', compounds_structures_url)
+    df_structures = pd.read_csv(compounds_structures_url, sep='\t')
+
+    compound_structures = get_structures(df_structures)
+    reaction_ecs = get_aliases_from_df(df_reaction_ecs)
     
-    modelseed = ModelSEED(compounds, reactions, alias_to_database_to_cpd, alias_to_database_to_rxn)
+    modelseed = ModelSEED(compounds, reactions, alias_to_database_to_cpd, alias_to_database_to_rxn, compound_structures, reaction_ecs)
     return modelseed
 
+def from_local(path):
+    database_repo = path
+    reactions_url = database_repo + '/Biochemistry/reactions.tsv'
+    compounds_url = database_repo + '/Biochemistry/compounds.tsv'
+    reactions_aliases_url = database_repo + '/Biochemistry/Aliases/Unique_ModelSEED_Reaction_Aliases.txt' 
+    compounds_aliases_url = database_repo + '/Biochemistry/Aliases/Unique_ModelSEED_Compound_Aliases.txt' 
+    reactions_names_url = database_repo + '/Biochemistry/Aliases/Unique_ModelSEED_Reaction_Names.txt'
+    compounds_names_url = database_repo + '/Biochemistry/Aliases/Unique_ModelSEED_Compound_Names.txt'
+    compounds_structures_url = database_repo + '/Biochemistry/Structures/Unique_ModelSEED_Structures.txt'
+    reactions_ec_url = database_repo + '/Biochemistry/Aliases/Unique_ModelSEED_Reaction_ECs.txt'
+    
+    compounds = {}
+    reactions = {}
+    
+    print('load:', reactions_url)
+    seed_reactions = pd.read_csv(reactions_url, sep='\t', low_memory=False)
+    print('load:', compounds_url)
+    seed_compounds = pd.read_csv(compounds_url, sep='\t', low_memory=False) #Columns (10,14,15) have mixed types.
+    
+    for row_id, d in seed_reactions.iterrows():
+        seed_reaction = build_reaction(d)
+        reactions[seed_reaction['id']] = seed_reaction
+
+    for row_id, d in seed_compounds.iterrows():
+        seed_compound = build_compound(d)
+        compounds[seed_compound['id']] = seed_compound
+        
+    print('load:', compounds_structures_url)
+    df_structures = pd.read_csv(compounds_structures_url, sep='\t')
+    compound_structures = get_structures(df_structures)
+
+    print('load:', compounds_aliases_url)
+    df_compound_aliases = pd.read_csv(compounds_aliases_url, sep='\t')
+    print('load:', reactions_aliases_url)
+    df_reaction_aliases = pd.read_csv(reactions_aliases_url, sep='\t')
+    print('load:', reactions_ec_url)
+    df_reaction_ecs = pd.read_csv(reactions_ec_url, sep='\t')
+    
+    compound_aliases = get_aliases_from_df(df_compound_aliases)
+    reaction_aliases = get_aliases_from_df(df_reaction_aliases)
+    reaction_ecs = get_aliases_from_df(df_reaction_ecs)
+    
+    modelseed = ModelSEED(compounds, reactions, compound_aliases, reaction_aliases, compound_structures, reaction_ecs)
+    
+    return modelseed
+
+def get_structures(seed_structures):
+    compound_structures = {}
+    
+    for row_id, d in seed_structures.iterrows():
+        seed_id = d['ID']
+        t = d['Type']
+        value = d['Structure']
+        if not seed_id in compound_structures:
+            compound_structures[seed_id] = {}
+        if t in compound_structures[seed_id]:
+            print('warning duplicate structure:', t, seed_id)
+        compound_structures[seed_id][t] = value
+    
+    return compound_structures
+                  
 def build_compound(d):
     seed_compound = {
         'id': d['id'],
