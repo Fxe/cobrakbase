@@ -84,15 +84,21 @@ def get_cstoichiometry(seed_reaction):
             result_no_zero[p] = result[p]
     return result_no_zero
 
-class ModelSEEDCompound:
+class ModelSEEDObject:
     
     def __init__(self, data, api=None):
         self.data = data
         self.api = api
-        
+                  
     @property
     def id(self):
         return self.data['id']
+                  
+    @property
+    def name(self):
+        return self.data['name']
+                  
+class ModelSEEDCompound(ModelSEEDObject):
     
     @property
     def formula(self):

@@ -1,17 +1,21 @@
+import logging
 import os
 import json
 import cobra
+from cobrakbase.core.utils import get_str, get_int, get_id_from_ref
+from cobrakbase.core.converters import KBaseFBAModelToCobraBuilder
 from cobrakbase.kbaseapi import KBaseAPI
 from cobrakbase.Workspace.WorkspaceClient import Workspace as WorkspaceClient
 from cobra.core import Gene, Metabolite, Model, Reaction
 from cobra.util.solver import linear_reaction_coefficients
 import cobrakbase.core.model
+import cobrakbase.core.converters
 import cobrakbase.modelseed.utils
 import cobrakbase.modelseed.modelseed
 
 __author__  = "Filipe Liu"
 __email__   = "fliu@anl.gov"
-__version__ = "0.1.5"
+__version__ = "0.1.9"
 
 print("cobrakbase", __version__)
 
@@ -23,6 +27,9 @@ SBO_ANNOTATION = "sbo"
 bigg = False
 
 API = None
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
 
 def read_model(id, workspace):
     if API == None:
@@ -70,15 +77,25 @@ def convert_biomass_to_reaction(biomass, mets):
     reaction.annotation[SBO_ANNOTATION] = "SBO:0000629" 
     return reaction
 
-def get_int(k, def_value, d):
-    if k in d:
-        if d[k] == None:
-            return def_value
-        return int(d[k])
-    return def_value
+def get_reaction_constraints(data):
+    #clean this function !
+    if 'maxrevflux' in data and 'maxforflux' in data:
+        if data['maxrevflux'] == 1000000 and data['maxforflux'] == 1000000:
+            if 'direction' in data:
+                if data['direction'] == '>':
+                    return 0, 1000
+                elif data['direction'] == '<':
+                    return -1000, 0
+                else:
+                    return -1000, 1000
+            else:
+                return -1 * data['maxrevflux'], data['maxforflux']
+        else:
+            return -1 * data['maxrevflux'], data['maxforflux']
+    return -1000, 1000
 
-def convert_kmodel(kmodel, media=None):
-    model_test = cobra.Model("kbase")
+def convert_kmodel(kmodel, media=None, exchanges = True, model_id = "kbase"):
+    model_test = cobra.Model(model_id)
 
     comps = {}
     mets = {}
@@ -93,7 +110,9 @@ def convert_kmodel(kmodel, media=None):
 
     for mc in kmodel["modelcompounds"]:
         #print(mc.keys())
-        formula = mc['formula']
+        formula = None
+        if not mc['formula'] == 'null':
+            formula = mc['formula']
         name = mc['name']
         charge = get_int('charge', 0, mc)
         mc_id = mc['id']
@@ -108,7 +127,7 @@ def convert_kmodel(kmodel, media=None):
                 #print(id)
         
         if mc_id in SINK:
-            print("Add Sink", mc_id)
+            logger.info('Add Sink: [%s]', mc_id)
             extra.add(mc_id)
             sink.add(mc_id)
         if compartment.startswith("e"):
@@ -128,12 +147,7 @@ def convert_kmodel(kmodel, media=None):
         mr_id = mr['id']
         name = mr['name']
         
-        lower_bound = 0
-        upper_bound = 0
-        if 'maxrevflux' in mr:
-            lower_bound = -1 * mr['maxrevflux']
-        if 'maxforflux' in mr:
-            upper_bound = mr['maxforflux']
+        lower_bound, upper_bound = get_reaction_constraints(mr)
         annotation = {}
         if 'dblinks' in mr:
             annotation = get_rxn_annotation(mr['dblinks'])
@@ -176,30 +190,31 @@ def convert_kmodel(kmodel, media=None):
         #print(biomass)
     #print(media)
     
-    print("Setup Drains. EX:", len(extra), "SK:", len(sink))
-    for e in extra:
-        met = mets[e]
-        prefix = "EX_"
-        if e in sink:
-            prefix = "DM_"
-        id = prefix + met.id
-        lower_bound = COBRA_DEFAULT_LB
-        upper_bound = COBRA_DEFAULT_UB
-        if not media == None:
-            lower_bound = 0
-        if not media == None and e.split("_")[0] in media:
-            ct = media[e.split("_")[0]]
-            lower_bound = ct[0]
-            upper_bound = ct[1]
-            
-        #print(e, met, id, lower_bound, upper_bound)
-        
-        object_stoichiometry = {met : -1}
-        reaction = Reaction(id=id, name="Exchange for " + met.name, lower_bound=lower_bound, upper_bound=upper_bound)
-        reaction.add_metabolites(object_stoichiometry)
-        reaction.annotation[SBO_ANNOTATION] = "SBO:0000627" #exchange reaction - ... provide matter influx or efflux to a model, for example to replenish a metabolic network with raw materials ... 
-        reactions.append(reaction)
-        #print(reaction.name)
+    if exchanges:
+        logger.info('Setup Drains. EX: %d SK: %d', len(extra), len(sink))
+        for e in extra:
+            met = mets[e]
+            prefix = "EX_"
+            if e in sink:
+                prefix = "DM_"
+            id = prefix + met.id
+            lower_bound = COBRA_DEFAULT_LB
+            upper_bound = COBRA_DEFAULT_UB
+            if not media == None:
+                lower_bound = 0
+            if not media == None and e.split("_")[0] in media:
+                ct = media[e.split("_")[0]]
+                lower_bound = ct[0]
+                upper_bound = ct[1]
+
+            #print(e, met, id, lower_bound, upper_bound)
+
+            object_stoichiometry = {met : -1}
+            reaction = Reaction(id=id, name="Exchange for " + met.name, lower_bound=lower_bound, upper_bound=upper_bound)
+            reaction.add_metabolites(object_stoichiometry)
+            reaction.annotation[SBO_ANNOTATION] = "SBO:0000627" #exchange reaction - ... provide matter influx or efflux to a model, for example to replenish a metabolic network with raw materials ... 
+            reactions.append(reaction)
+            #print(reaction.name)
     #print("Genes:", genes)
     for g in genes:
         gene = Gene(id=build_gene_id(g), name=g)
@@ -247,8 +262,6 @@ def convert_media(kmedia):
 
 def read_kbase_media(filename):
     return read_json(filename, convert_media)
-
-
 
 def get_compartment_id(modelcompound, simple=False):
     modelcompartment_ref = modelcompound['modelcompartment_ref']
@@ -298,20 +311,27 @@ def build_gene_id(str):
 
 def build_cpd_id(str):
     if str.startswith("M_"):
-        return str[2:]
-    if str.startswith("M-"):
-        return str[2:]
+        str = str[2:]
+    elif str.startswith("M-"):
+        str = str[2:]
+    str_fix = str
+    if '-' in str_fix:
+        str_fix = str_fix.replace('-', '__DASH__')
+    if not str == str_fix:
+        logger.debug('[Species] rename: [%s] -> [%s]', str, str_fix)
     return str
 
 def build_rxn_id(str):
     if str.startswith("R_"):
-        return str[2:]
-    if str.startswith("R-"):
-        return str[2:]
-    return str
-
-def get_id_from_ref(str, stok='/'):
-    return str.split(stok)[-1]
+        str = str[2:]
+    elif str.startswith("R-"):
+        str = str[2:]
+    str_fix = str
+    if '-' in str_fix:
+        str_fix = str_fix.replace('-', '__DASH__')
+    if not str == str_fix:
+        logger.debug('[Reaction] rename: [%s] -> [%s]', str, str_fix)
+    return str_fix
 
 def get_genes(gpr):
     genes = set()

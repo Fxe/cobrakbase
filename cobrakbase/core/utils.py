@@ -1,4 +1,7 @@
+import logging
 import math
+
+logger = logging.getLogger(__name__)
 
 def multiply(s, v):
     s_ = {}
@@ -124,6 +127,21 @@ def get_bounds(r):
         
     return maxrevflux, maxforflux, direction
 
+def seed_coefficients_to_string(coeff_list, op = '<=>'):
+    lhs = []
+    rhs = []
+    pair_to_str = lambda v, id : id if math.fabs(v) == 1 else str(math.fabs(v)) + ' ' + id
+    for o in coeff_list:
+        cpd_id = o['modelcompound_ref'].split('/')[-1]
+        value = o['coefficient']
+        if value > 0:
+            rhs.append(pair_to_str(value, cpd_id))
+        elif value < 0:
+            lhs.append(pair_to_str(value, cpd_id))
+        else:
+            logger.warning("zero value found: %s", o)
+    return "{} {} {}".format(' + '.join(lhs), op, ' + '.join(rhs))
+
 def print_stoich(stoich, eq="<=>"):
     l = {}
     r = {}
@@ -147,3 +165,20 @@ def print_stoich(stoich, eq="<=>"):
         r_text.append(r[i] + i)
     #print(l_text, r_text)
     return ' + '.join(l_text) + " " + eq + " " + ' + '.join(r_text)
+
+def get_str(k, def_value, d):
+    if k in d:
+        if d[k] == None:
+            return def_value
+        return str(d[k])
+    return def_value
+
+def get_int(k, def_value, d):
+    if k in d:
+        if d[k] == None:
+            return def_value
+        return int(d[k])
+    return def_value
+
+def get_id_from_ref(str, stok='/'):
+    return str.split(stok)[-1]

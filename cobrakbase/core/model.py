@@ -1,40 +1,63 @@
-class KBaseObjectBase:
+import logging
+from cobrakbase.core.kbaseobject import KBaseObjectBase
+from cobrakbase.core.utils import seed_coefficients_to_string
+from cobrakbase.core.utils import get_str, get_int, get_id_from_ref
+
+logger = logging.getLogger(__name__)
+
+
     
-    def __init__(self, json=None):
-        if not json == None:
-            self.data = json
-        else:
-            self.data = {}
-        
-    @property
-    def id(self):
-        return self.data['id']
+class KBaseFBASolution(KBaseObjectBase):
     
-    @property
-    def name(self):
-        return self.data['name']
-    
-class KBaseFBAModelCompartment:
-    
-    def __init__(self, json=None):
-        1
-    
-class KBaseFBAModelMetabolite:
-    
-    def __init__(self, json=None):
-        if not json == None:
-            self.data = json
-        else:
-            self.data = {}
-            
-    @property
-    def id(self):
-        return self.data['id']
+    def get_reaction_variable_by_id(self, rxn_id):
+        for v in self.dara['FBAReactionVariables']:
+            v_id = v['modelreaction_ref'].split('/')[-1]
+            if rxn_id == v_id:
+                return v
+        return None
     
     @property
-    def name(self):
-        return self.data['name']
-            
+    def objective_value(self):
+        return self.data['objectiveValue']
+    
+class KBaseFBAModelCompartment(KBaseObjectBase):
+    pass
+    
+class KBaseFBAModelMetabolite(KBaseObjectBase):
+    
+    @property
+    def formula(self):
+        return get_str('formula', None, self.data)
+    
+    @property
+    def charge(self):
+        return get_int('charge', 0, self.data)
+    
+    @property
+    def compartment(self):
+        return self.data['modelcompartment_ref'].split('/')[-1]
+    
+    @property
+    def annotation(self):
+        annotation = {}
+        if 'dblinks' in self.data:
+            for db in self.data['dblinks']:
+                if db == "BiGG2":
+                    annotation["bigg.metabolite"] = self.data['dblinks'][db][0]
+                if db == "LigandCompound":
+                    annotation["kegg.compound"] = self.data['dblinks'][db][0]
+                if db == "ChEBI":
+                    annotation["chebi"] = self.data['dblinks'][db][0]
+                if db == "MetaNetX":
+                    annotation["metanetx.chemical"] = self.data['dblinks'][db][0]
+                if db == "MetaCyc":
+                    annotation["biocyc"] = self.data['dblinks'][db][0]
+                if db == "ModelSeed":
+                    annotation["seed.compound"] = self.data['dblinks'][db][0]
+                if db == "HMDB":  
+                    annotation["hmdb"] = self.data['dblinks'][db][0]
+        return annotation
+    
     def get_seed_id(self):
         return self.data['compound_ref'].split('/')[-1]
         
@@ -56,6 +79,9 @@ class KBaseFBAModelMetabolite:
         if 'string_attributes' in self.data and 'original_id' in self.data['string_attributes']:
             return self.data['string_attributes']['original_id']
         return None
+    
+    def __str__(self):
+        return self.id
 
 class KBaseFBAModelReaction:
     
@@ -87,6 +113,56 @@ class KBaseFBAModelReaction:
                 'reaction_ref': '~/template/reactions/id/' + reaction.id, 
                 'string_attributes': {}
             }
+    
+    @property
+    def gene_reaction_rule(self):
+        gpr = self.get_gpr()
+        return self.get_gpr_string(gpr)
+    
+    @property
+    def direction(self):
+        lb, ub = self.get_reaction_constraints()
+        if lb < 0 and ub > 0:
+            return '='
+        elif lb == 0 and ub > 0:
+            return '>'
+        elif lb < 0 and ub == 0:
+            return '<'
+        return '?'
+    
+    @property
+    def annotation(self):
+        annotation = {}
+        if 'dblinks' in self.data:
+            for db in self.data['dblinks']:
+                if db == "BiGG":
+                    annotation["bigg.reaction"] = self.data['dblinks'][db][0]
+                if db == "LigandReaction":
+                    annotation["kegg.reaction"] = self.data['dblinks'][db][0]
+                if db == "MetaCyc":
+                    annotation["biocyc"] = self.data['dblinks'][db][0]
+                if db == "ModelSeedReaction":
+                    annotation["seed.reaction"] = self.data['dblinks'][db][0]
+        return annotation
+        
+    def get_reaction_constraints_from_direction(self):
+        if 'direction' in self.data:
+            if self.data['direction'] == '>':
+                return 0, 1000
+            elif self.data['direction'] == '<':
+                return -1000, 0
+            else:
+                return -1000, 1000
+        return None, None
+    
+    def get_reaction_constraints(self):
+        #clean this function !
+        if 'maxrevflux' in self.data and 'maxforflux' in self.data:
+            if self.data['maxrevflux'] == 1000000 and self.data['maxforflux'] == 1000000 and 'direction' in self.data:
+                return self.get_reaction_constraints_from_direction()
+                
+            return -1 * self.data['maxrevflux'], self.data['maxforflux']
+        return -1000, 1000
         
     def get_reference(self, database):
         if 'dblinks' in self.data and database in self.data['dblinks']:
@@ -136,14 +212,53 @@ class KBaseFBAModelReaction:
             direction = '0'
 
         return maxrevflux, maxforflux, direction
-            
-class KBaseFBAModel:
     
-    def __init__(self, json=None):
-        if not json == None:
-            self.data = json
+    def get_gpr_string(self, gpr):
+        ors = []
+        for ands in gpr:
+            a = []
+            for g in ands:
+                a.append(g)
+            ors.append(" and ".join(a))
+        gpr_string = "(" + (") or (".join(ors)) + ")"
+        if gpr_string == "()":
+            return ""
+        #if gpr_string.startswith("(") and gpr_string.endswith(")"):
+        #    gpr_string = gpr_string[1:-1].strip()
+        return gpr_string
+
+    def get_gpr(self):
+        gpr = []
+        for mrp in self.data['modelReactionProteins']:
+            #print(mrp.keys())
+            gpr_and = set()
+            for mrps in mrp['modelReactionProteinSubunits']:
+                #print(mrps.keys())
+                for feature_ref in mrps['feature_refs']:
+                    gpr_and.add(get_id_from_ref(feature_ref))
+            if len(gpr_and) > 0:
+                gpr.append(gpr_and)
+        return gpr
+    
+    def __str__(self):
+        direction = self.direction
+        op =  '<?>'
+        if direction == '=':
+            op = '<=>'
+        elif direction == '>':
+            op = '-->'
+        elif direction == '<':
+            op = '<--'
         else:
-            self.data = {}
+            op =  '<?>'
+            
+        eq = seed_coefficients_to_string(self.data['modelReactionReagents'], op)
+            
+        return '{}: {}'.format(self.id, eq)
+
+
+    
+class KBaseFBAModel(KBaseObjectBase):
         
     def get_compartments(self):
         return self.data['modelcompartments']

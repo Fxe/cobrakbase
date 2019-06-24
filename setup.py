@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='cobrakbase',
-      version='0.1.5',
+      version='0.1.9',
       description='KBase interface for COBRApy',
       url='https://github.com/Fxe/cobrakbase',
       author='Filipe Liu',
@@ -9,6 +9,6 @@ setup(name='cobrakbase',
       license='MIT',
       packages=find_packages(),
       install_requires=[
-          "cobra >= 0.13.4"
+          "cobra >= 0.14.2"
       ],
       zip_safe=False)
