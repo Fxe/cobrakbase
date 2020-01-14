@@ -1,4 +1,7 @@
 import logging
+
+from cobra.core.dictlist import DictList
+
 from cobrakbase.core.kbaseobject import KBaseObjectBase
 from cobrakbase.core.utils import seed_coefficients_to_string
 from cobrakbase.core.utils import get_str, get_int, get_id_from_ref
@@ -85,7 +88,9 @@ class KBaseFBAModelMetabolite(KBaseObjectBase):
 
 class KBaseFBAModelReaction:
     
-    def __init__(self, json=None, dblinks={}, name="reaction", id="rxn00000"):
+    def __init__(self, json=None, dblinks={}, name="reaction", id="rxn00000", model=None):
+        self.model = model
+        
         if not json == None:
             self.data = json
         else:
@@ -113,6 +118,39 @@ class KBaseFBAModelReaction:
                 'reaction_ref': '~/template/reactions/id/' + reaction.id, 
                 'string_attributes': {}
             }
+    
+    @property
+    def bounds(self):
+        bounds = self.get_bounds()
+        return (bounds[0], bounds[1])
+    
+    @property
+    def compartments(self):
+        return set(map(lambda m : m.compartment, self.metabolites))
+    
+    @property
+    def metabolites(self):
+        metabolites = {}
+        stoichiometry = self.stoichiometry
+        if not self.model == None:
+            found = set()
+            for cpd_id in stoichiometry:
+                if self.model.metabolites.has_id(cpd_id):
+                    metabolite = self.model.metabolites.get_by_id(cpd_id)
+                    metabolites[metabolite] = stoichiometry[metabolite.id]
+                    found.add(metabolite.id)
+                    
+            #for metabolite in self.model.metabolites:
+            #    if metabolite.id in stoichiometry.keys():
+            #        found.add(metabolite.id)
+            #        metabolites[metabolite] = stoichiometry[metabolite.id]
+                    
+            missing = set(stoichiometry) - found
+            if len(missing) > 0:
+                logger.warning('undeclated metabolites: %s', missing)
+        else:
+            logger.warning('model not assigned')
+        return metabolites
     
     @property
     def gene_reaction_rule(self):
@@ -259,14 +297,31 @@ class KBaseFBAModelReaction:
 
     
 class KBaseFBAModel(KBaseObjectBase):
+    
+    def __init__(self, json=None):
+        super().__init__(json=json)
+        self.update_indexes()
         
+    #@property
+    #def metabolites(self):
+    #    return [KBaseFBAModelMetabolite(i) for i in self.get_metabolites()]
+    
+    def update_indexes(self):
+        self.metabolites = DictList()
+        if not self.data == None:
+            self.metabolites += [KBaseFBAModelMetabolite(i) for i in self.get_metabolites()]
+    
     def get_compartments(self):
         return self.data['modelcompartments']
     
     def get_reactions(self):
+        if self.data == None or not 'modelreactions' in self.data:
+            return []
         return self.data['modelreactions']
     
     def get_metabolites(self):
+        if self.data == None or not 'modelcompounds' in self.data:
+            return []
         return self.data['modelcompounds']
     
     def get_compartment(self, id):
@@ -284,13 +339,11 @@ class KBaseFBAModel(KBaseObjectBase):
     def get_metabolite_degree(self, cpd_id):
         return len(self.find_reaction_by_compound_id(cpd_id))
     
-    @property
-    def metabolites(self):
-        return [KBaseFBAModelMetabolite(i) for i in self.get_metabolites()]
+
     
     @property
     def reactions(self):
-        return [KBaseFBAModelReaction(i) for i in self.get_reactions()]
+        return [KBaseFBAModelReaction(i, model=self) for i in self.get_reactions()]
     
     def get_reaction(self, id):
         for r in self.get_reactions():
@@ -424,12 +477,11 @@ class KBaseFBAModel(KBaseObjectBase):
     def clean_enzymes_from_metabolites(self, store=True):
         to_delete = set()
         for m in self.data['modelcompounds']:
-            if m['id'].startswith('E-') or m['id'].startswith('Cx-'):
+            if m['id'].startswith('E-') or m['id'].startswith('Cx-') or \
+               m['id'].startswith('E_') or m['id'].startswith('Cx_'):
                 to_delete.add(m['id'])
         self.delete_compounds(to_delete, store=store)
         return to_delete
-    
-    
     
     def clean_reactions_without_genes(self, store=True):
         if store:

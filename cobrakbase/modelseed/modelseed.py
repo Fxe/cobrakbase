@@ -256,14 +256,14 @@ class ModelSEED:
         return None
     
     def get_non_obsolete(self, seed_reaction):
-        if not seed_reaction['is_obsolete'] == 0 and 'linked_reaction' in seed_reaction:
-            for id in seed_reaction['linked_reaction'].split(';'):
+        if seed_reaction.is_obsolete and 'linked_reaction' in seed_reaction.data:
+            for id in seed_reaction.data['linked_reaction'].split(';'):
                 other = self.get_seed_reaction(id)
                 if not other == None:
-                    if other['is_obsolete'] == 0:
-                        return other['id']
+                    if not other.is_obsolete:
+                        return other.id
 
-        return seed_reaction['id']
+        return seed_reaction.id
 
     def is_obsolete(self, seed_id):
         seed = self.get_seed_compound(seed_id)

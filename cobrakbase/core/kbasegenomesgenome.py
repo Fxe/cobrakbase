@@ -1,7 +1,19 @@
+import re
 from cobrakbase.core.kbaseobject import KBaseObjectBase
 from cobrakbase.core.utils import get_id_from_ref
+from cobrakbase.core.kbasegenomes_feature import KBaseGenomeFeature
+
+def normalize_role(s):
+    #print(s)
+    s = s.strip().lower()
+    s = re.sub('[\W_]+', '', s) 
+    return s
 
 class KBaseGenome(KBaseObjectBase):
+    
+    @property
+    def features(self):
+        return list(self.data['features'])
     
     def read_genome_aliases(self):
         gene_aliases = {}
@@ -48,3 +60,24 @@ class KBaseGenome(KBaseObjectBase):
             gene_aliases[feature['id']]['ncbigene'] = alias.split(':')[1]
         else:
             1
+            
+    def get_annotation(self):
+        annotation = {}
+        for f in genome.data['features']:
+            gene_id = f['id']
+            #print(f)
+            if 'functions' in f:
+                annotation[gene_id] = set(f['functions'])
+            elif 'function' in f:
+                annotation[gene_id] = set([f['function']])
+            else:
+                annotation[gene_id] = set([None])
+        return annotation
+    
+    def get_annotation2f(self, f):
+        annotation = set([None])
+        if 'functions' in f:
+            annotation = set(f['functions'])
+        elif 'function' in f:
+            annotation = set([f['function']])
+        return annotation

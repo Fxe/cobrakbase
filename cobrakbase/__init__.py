@@ -15,7 +15,7 @@ import cobrakbase.modelseed.modelseed
 
 __author__  = "Filipe Liu"
 __email__   = "fliu@anl.gov"
-__version__ = "0.1.9"
+__version__ = "0.2.3"
 
 print("cobrakbase", __version__)
 
@@ -572,15 +572,15 @@ def annotate_model_reactions_with_modelseed(model, modelseed):
                     annotation['metanetx.reaction'] = list(alias['metanetx.reaction'])
                 if 'MetaCyc' in alias:
                     annotation['biocyc'] = list(map(lambda x : 'META:' + x, alias['MetaCyc']))
-            ec_numbers = set()
-            if 'Enzyme Class' in seed_rxn.ec_numbers:
-                for ec in seed_rxn.ec_numbers['Enzyme Class']:
-                    if ec.startswith('EC-'):
-                        ec_numbers.add(ec[3:])
-                    else:
-                        ec_numbers.add(ec)
-            if len(ec_numbers) > 0:
-                annotation['ec-code'] = list(ec_numbers)
+                ec_numbers = set()
+                if 'Enzyme Class' in seed_rxn.ec_numbers:
+                    for ec in seed_rxn.ec_numbers['Enzyme Class']:
+                        if ec.startswith('EC-'):
+                            ec_numbers.add(ec[3:])
+                        else:
+                            ec_numbers.add(ec)
+                if len(ec_numbers) > 0:
+                    annotation['ec-code'] = list(ec_numbers)
             r.annotation.update(annotation)
             
 def annotate_model_with_modelseed(model, modelseed):
