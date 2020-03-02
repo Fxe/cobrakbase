@@ -1,11 +1,11 @@
 class KBaseObjectBase:
     
-    def __init__(self, json=None):
+    def __init__(self, json=None, api=None):
         if not json == None:
             self.data = json
         else:
             self.data = {}
-            
+        self.api = api
         self.otype = None
         self.otype_version = None
         
@@ -24,8 +24,8 @@ class KBaseObjectBase:
     
     @property
     def kbase_type(self):
-        if 'name' in self.data:
-            return self.data['name']
+        if '_type' in self.data:
+            return self.data['_type']
         return None
     
     @property
