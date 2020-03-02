@@ -17,7 +17,7 @@ import cobrakbase.modelseed.modelseed
 
 __author__  = "Filipe Liu"
 __email__   = "fliu@anl.gov"
-__version__ = "0.2.3"
+__version__ = "0.2.4"
 
 print("cobrakbase", __version__)
 
