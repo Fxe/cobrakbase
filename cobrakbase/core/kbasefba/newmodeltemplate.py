@@ -71,13 +71,19 @@ class NewModelTemplate(KBaseObjectBase):
             #print(cpx, roles)
             self.role_set_to_cpx[';'.join(sorted(roles))] = cpx['id']
         
+    def get_role_sources(self):
+        pass
+    
+    def get_complex_sources(self):
+        pass
+        
     def get_complex_from_role(self, roles):
         cpx_role_str = ';'.join(sorted(roles))
         if cpx_role_str in self.role_set_to_cpx:
             return self.role_set_to_cpx[cpx_role_str]
         return None
         
-    def add_role(self, name):
+    def add_role(self, name, source = 'ModelSEED'):
         sn = normalize_role(name)
         if sn in self.search_name_to_role_id:
             return self.search_name_to_role_id[sn]
@@ -88,12 +94,12 @@ class NewModelTemplate(KBaseObjectBase):
             'features': [],
             'id': role_id,
             'name': name,
-            'source': 'Manual'
+            'source': source
         })
         self.search_name_to_role_id[sn] = role_id
         return role_id
     
-    def add_complex_from_role_names(self, role_names):
+    def add_complex_from_role_names(self, role_names, source = 'ModelSEED'):
         role_ids = set(map(lambda o : self.add_role(o), role_names))
         complex_id = self.get_complex_from_role(role_ids)
         if complex_id == None:
@@ -105,7 +111,7 @@ class NewModelTemplate(KBaseObjectBase):
                 'id': complex_id,
                 'name': complex_id,
                 'reference': 'null',
-                'source': 'Manual'
+                'source': source
             }
             for role_id in role_ids:
                 complex_data['complexroles'].append({
@@ -113,6 +119,7 @@ class NewModelTemplate(KBaseObjectBase):
                     'templaterole_ref': '~/roles/id/' + role_id,
                     'triggering': 1
                 })
+            self.data['complexes'].append(complex_data)
             self.role_set_to_cpx[';'.join(sorted(role_ids))] = complex_id
             
         return complex_id

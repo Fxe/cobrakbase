@@ -131,6 +131,44 @@ def single_hasher(s, ex1 = []):
         'no_h_rev' : h_rev
     }
     return hashes
+
+def single_hasher2(s, ex1 = []):
+    s_copy = copy.deepcopy(s)
+    #print(s_copy)
+    std = hash(frozenset(s_copy.items()))
+    for a in s_copy:
+        s_copy[a] = -1 * s_copy[a]
+    rev = hash(frozenset(s_copy.items()))
+
+    s_copy = copy.deepcopy(s)
+    delete = []
+    for o in ex1:
+        for p in s_copy:
+            if o == p:
+                delete.append(p)
+                
+    #print(f'delete: {delete} -> {ex1}')
+    for p in delete:
+        del s_copy[p]
+    
+    #print(s_copy)
+    h_std = hash(frozenset(s_copy.items()))
+    for a in s_copy:
+        s_copy[a] = -1 * s_copy[a]
+    h_rev = hash(frozenset(s_copy.items()))
+    
+    remove_stoich_val_std = dict(map(lambda x : (x[0], x[1] / math.fabs(x[1])), s_copy.items()))
+    remove_stoich_val_rev = dict(map(lambda x : (x[0], -1 * x[1]), remove_stoich_val_std.items()))
+    #print(remove_stoich_val, remove_stoich_val_rev)
+    hashes = {
+        'std' : std,
+        'rev' : rev,
+        'no_h_std' : h_std,
+        'no_h_rev' : h_rev,
+        'no_s_std' : hash(frozenset(remove_stoich_val_std.items())),
+        'no_s_rev' : hash(frozenset(remove_stoich_val_rev.items()))
+    }
+    return hashes
         
 
 def filter_hash(ccs):
