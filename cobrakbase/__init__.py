@@ -10,6 +10,7 @@ from cobra.core import Gene, Metabolite, Model, Reaction
 from cobra.util.solver import linear_reaction_coefficients
 import cobrakbase.core.model
 import cobrakbase.core.converters
+import cobrakbase.core.kbasefba
 import cobrakbase.modelseed.utils
 import cobrakbase.modelseed.stoich_integration
 import cobrakbase.modelseed.hierarchical_ontology
@@ -17,7 +18,7 @@ import cobrakbase.modelseed.modelseed
 
 __author__  = "Filipe Liu"
 __email__   = "fliu@anl.gov"
-__version__ = "0.2.4"
+__version__ = "0.2.5"
 
 print("cobrakbase", __version__)
 

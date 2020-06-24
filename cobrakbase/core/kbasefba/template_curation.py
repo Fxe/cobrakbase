@@ -1,3 +1,7 @@
+import logging
+from cobrakbase.core.kbasegenomesgenome import normalize_role
+logger = logging.getLogger(__name__)
+
 class TemplateCuration:
     
     def __init__(self, template, curation_api, annotation_api):
@@ -58,16 +62,16 @@ class TemplateCuration:
         return accept, remove
     
     def get_function(self, function_id, search_name_to_role_id):
-        n = self.annotation_api.neo4j_graph.nodes[int(function_id)]
-        nfunction = Neo4jAnnotationFunction(n)
+        nfunction = self.annotation_api.get_function_by_uid(int(function_id))
         sn = normalize_role(nfunction.value)
+        #sn = nfunction.search_value
         role_id = function_id
         if sn in search_name_to_role_id:
             role_id = search_name_to_role_id[sn]
         #print(function_id, role_id, nfunction, sn)
         return nfunction, role_id
 
-    def get_roles_to_add(self, test_accept):
+    def get_roles_to_add(self, test_accept, search_name_to_role_id):
         accept_role_uids = set()
         for rxn_id in test_accept:
             for role_uid in test_accept[rxn_id]:
@@ -75,13 +79,13 @@ class TemplateCuration:
                 
         roles_to_add = set()
         for role_uid in accept_role_uids:
-            nfunction, role_id = self.get_function(role_uid)
+            nfunction, role_id = self.get_function(role_uid, search_name_to_role_id)
             if not type(role_id) == set:
                 roles_to_add.add(nfunction.value)
             elif len(role_id) == 1:
                 roles_to_add.add(nfunction.value)
             else:
-                print(role_id, list(map(lambda x : template.get_role(x)['source'], role_id)))
+                print(role_id, list(map(lambda x : self.template.get_role(x)['source'], role_id)))
                 
         sn_to_roles = {}
         for role_name in roles_to_add:
@@ -94,13 +98,15 @@ class TemplateCuration:
     
     def get_role_change(self, rxn_id, test_accept, test_remove):
         rxn_role_change = {}
-        for function_id in test_accept[rxn_id]:
-            rxn_role_change[function_id] = True
-        for function_id in test_remove[rxn_id]:
-            if not function_id in rxn_role_change:
-                rxn_role_change[function_id] = False
-            else:
-                print('!')
+        if rxn_id in test_accept:
+            for function_id in test_accept[rxn_id]:
+                rxn_role_change[function_id] = True
+        if rxn_id in test_remove:
+            for function_id in test_remove[rxn_id]:
+                if not function_id in rxn_role_change:
+                    rxn_role_change[function_id] = False
+                else:
+                    print('!')
         return rxn_role_change
     
     def add_role(self, trxn, role_ids, auto_complex = False):
@@ -156,11 +162,11 @@ class TemplateCuration:
         #        logger.warning('%s %s %s', rxn_id, role_id, role_id_to_name[role_id])
         for function_id in rxn_role_change:
             nfunction, role_id = self.get_function(function_id, search_name_to_role_id)
-            if type(role_id) == int:
-                logger.warning('%s function not in template', rxn_id, nfunction, role_id)
+            if type(role_id) == int or type(role_id) == str:
+                logger.warning('%s function not in template [%s] %s', trxn.id, nfunction, role_id)
             elif len(nfunction.sub_functions) == 0:
                 if len(role_id) > 1 and rxn_role_change[function_id]:
-                    logger.warning('%s multiple role ids %s %s', rxn_id, nfunction, role_id)
+                    logger.warning('%s multiple role ids %s %s', trxn.id, nfunction, role_id)
                 else:
                     role_id = list(role_id)[0]
                     role = self.template.get_role(role_id)
@@ -169,13 +175,13 @@ class TemplateCuration:
                         templatecomplex_ref = self.add_role(trxn, [role_id], auto_complex)
                         if not templatecomplex_ref == None:
                             trxn.data['templatecomplex_refs'].append(templatecomplex_ref)
-                        logger.debug('%s accept or add role %s, %s', rxn_id, nfunction, templatecomplex_ref)
+                        logger.debug('%s accept or add role %s, %s', trxn.id, nfunction, templatecomplex_ref)
                     else:
                         #print('delete or ignore', role_id, role['name'])
                         templatecomplex_refs = self.remove_role(trxn, role_id)
                         if not templatecomplex_refs == None:
                             trxn.data['templatecomplex_refs'] = templatecomplex_refs
-                        logger.debug('%s delete role %s, removed %d complex(es)', rxn_id, nfunction, len(trxn.data['templatecomplex_refs']) - len(templatecomplex_refs))                
+                        logger.debug('%s delete role %s, removed %d complex(es)', trxn.id, nfunction, len(trxn.data['templatecomplex_refs']) - len(templatecomplex_refs))                
                     #print(('+' if rxn_role_change[function_id] else '-') + function_id, nfunction, role_id, role['source'])
             else:
-                logger.debug('%s ignore multifunction role', rxn_id)
+                logger.debug('%s ignore multifunction role', trxn.id)

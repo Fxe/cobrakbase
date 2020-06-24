@@ -1,3 +1,8 @@
+import logging
+from cobrakbase.core.kbasegenomesgenome import normalize_role
+
+logger = logging.getLogger(__name__)
+
 class TemplateManipulator:
     def __init__(self, template):
         self.template = template
@@ -22,6 +27,39 @@ class TemplateManipulator:
                 search_name_to_role_id[n] = set()
             search_name_to_role_id[n].add(role['id'])
         return search_name_to_role_id
+    
+    def clear_orphan_roles(self):
+        role_to_rxn_ids = self.get_role_to_rxn_ids()
+        used_roles = set(role_to_rxn_ids)
+        search_name_to_role_id = self.get_search_name_to_role_id()
+    
+        to_delete = set()
+        to_update = set()
+        for sn in search_name_to_role_id:
+            role_ids = list(sorted(search_name_to_role_id[sn]))
+            if len(search_name_to_role_id[sn]) > 1:
+                selected = []
+                for role_id in role_ids:
+                    rxn_count = len(role_to_rxn_ids[role_id]) if role_id in role_to_rxn_ids else 0
+                    if rxn_count > 0:
+                        selected.append(role_id)
+                if len(selected) == 0:
+                    selected.append(role_ids[0])
+                if len(selected) == 1:
+                    s = selected[0]
+                    role = self.template.get_role(s)
+                    to_update.add(s)
+                    for role_id in role_ids:
+                        if not role_id == s:
+                            to_delete.add(role_id)
+                            other_role = self.template.get_role(role_id)
+                            role['aliases'].append('alias:' + other_role['name'])
+                else:
+                    logger.warning('unable to select role %s', role_ids)
+
+        self.template.data['roles']= list(filter(lambda x : x['id'] not in to_delete, self.template.data['roles']))
+        
+        return to_update, to_delete
     
     def clean_template(self, source_allow):
         search_name_to_role_id = self.get_search_name_to_role_id()
@@ -69,7 +107,7 @@ class TemplateManipulator:
             if len(templatecomplex_refs) == 0:
                 reactions_to_clear.add(reaction_o['id'])
 
-        template_reactions_filter = list(filter(lambda x : not x['id'] in reactions_to_clear, template.data['reactions']))
+        template_reactions_filter = list(filter(lambda x : not x['id'] in reactions_to_clear, self.template.data['reactions']))
 
         return template_reactions_filter
 

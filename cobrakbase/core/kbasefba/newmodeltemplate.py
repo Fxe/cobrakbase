@@ -119,6 +119,7 @@ class NewModelTemplate(KBaseObjectBase):
                     'templaterole_ref': '~/roles/id/' + role_id,
                     'triggering': 1
                 })
+            
             self.data['complexes'].append(complex_data)
             self.role_set_to_cpx[';'.join(sorted(role_ids))] = complex_id
             
