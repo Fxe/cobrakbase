@@ -1,4 +1,9 @@
+import logging
 import pandas as pd
+from cobrakbase.modelseed.modelseed_compound import ModelSEEDCompound
+from cobrakbase.modelseed.modelseed_reaction import ModelSEEDReaction
+
+logger = logging.getLogger(__name__)
 
 
 def get_low(ids):
@@ -195,10 +200,10 @@ def from_local(path):
     
     compounds = {}
     reactions = {}
-    
-    print('load:', reactions_url)
+
+    logger.info("load: %s", reactions_url)
     seed_reactions = pd.read_csv(reactions_url, sep='\t', low_memory=False)
-    print('load:', compounds_url)
+    logger.info("load: %s", compounds_url)
     seed_compounds = pd.read_csv(compounds_url, sep='\t', low_memory=False) #Columns (10,14,15) have mixed types.
     
     for row_id, d in seed_reactions.iterrows():
@@ -208,16 +213,16 @@ def from_local(path):
     for row_id, d in seed_compounds.iterrows():
         seed_compound = build_compound(d)
         compounds[seed_compound['id']] = seed_compound
-        
-    print('load:', compounds_structures_url)
+
+    logger.info("load: %s", compounds_structures_url)
     df_structures = pd.read_csv(compounds_structures_url, sep='\t')
     compound_structures = get_structures(df_structures)
 
-    print('load:', compounds_aliases_url)
+    logger.info("load: %s", compounds_aliases_url)
     df_compound_aliases = pd.read_csv(compounds_aliases_url, sep='\t')
-    print('load:', reactions_aliases_url)
+    logger.info("load: %s", reactions_aliases_url)
     df_reaction_aliases = pd.read_csv(reactions_aliases_url, sep='\t')
-    print('load:', reactions_ec_url)
+    logger.info("load: %s", reactions_ec_url)
     df_reaction_ecs = pd.read_csv(reactions_ec_url, sep='\t')
     
     compound_aliases = get_aliases_from_df(df_compound_aliases)
