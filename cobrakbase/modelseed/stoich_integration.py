@@ -1,12 +1,15 @@
 import logging
 logger = logging.getLogger(__name__)
 import copy
+import math
 import networkx as nx
 from itertools import permutations
+
 
 def get_permutations(n):
     perm = permutations(range(n), n) 
     return list(perm)
+
 
 class StoichiometryHashLibrary:
     
@@ -38,7 +41,8 @@ class StoichiometryHashLibrary:
                             match[rxn_id_match] = set()
                         match[rxn_id_match].add((hash_type, hash_type_lib, hash_val))
         return match
-    
+
+
 class CStoichiometryHashLibrary(StoichiometryHashLibrary):
     
     def match(self, cstoichiometry):
@@ -67,6 +71,7 @@ class CStoichiometryHashLibrary(StoichiometryHashLibrary):
                             match[rxn_id_match].add((hash_type, hash_type_lib, hash_val, replace_str))
                 
         return match
+
 
 def multi_hasher(s, ex1 = []):
     s_copy = copy.deepcopy(s)
@@ -98,6 +103,7 @@ def multi_hasher(s, ex1 = []):
     }
     
     return hashes    
+
 
 def single_hasher(s, ex1 = []):
     s_copy = copy.deepcopy(s)
@@ -131,6 +137,7 @@ def single_hasher(s, ex1 = []):
         'no_h_rev' : h_rev
     }
     return hashes
+
 
 def single_hasher2(s, ex1 = []):
     s_copy = copy.deepcopy(s)
@@ -182,8 +189,10 @@ def filter_hash(ccs):
             clusters.append(ids)
     return clusters
 
+
 def to_universal(s):
     return replace_keys(s, uid_alias_map)
+
 
 def replace_keys(s, replace_map):
     s_ = {}
@@ -195,6 +204,7 @@ def replace_keys(s, replace_map):
             s_[i] = s[i]
     return s_
 
+
 def replace_pkeys(s, replace_map):
     s_ = {}
     for p in s:
@@ -205,6 +215,7 @@ def replace_pkeys(s, replace_map):
             #print('not found', i)
             s_[p] = s[p]
     return s_
+
 
 def hash_it(rxns, hasher, stoich_f = lambda x : x):
     rxn_to_hash = {}
@@ -221,6 +232,7 @@ def hash_it(rxns, hasher, stoich_f = lambda x : x):
                 all_hashes[h][hash_val] = set()
             all_hashes[h][hash_val].add(rxn_id)
     return rxn_to_hash, all_hashes
+
 
 def hasher(s, ex1 = []):
     s_copy = copy.deepcopy(s)
@@ -256,6 +268,7 @@ def hasher(s, ex1 = []):
     }
     return hashes
 
+
 def cluster_reactions(rxns, hasher = hasher, stoich_f = lambda x : x):
 
     rxn_to_hash, all_hashes = hash_it(rxns, hasher, stoich_f)
@@ -276,6 +289,7 @@ def cluster_reactions(rxns, hasher = hasher, stoich_f = lambda x : x):
     
     return ccs
 
+
 class ExternalReference:
     
     def __init__(self, id, namespace):
@@ -293,7 +307,8 @@ class ExternalReference:
     
     def __hash__(self):
         return hash(self.id) * 7 + hash(self.namespace)
-    
+
+
 class MapValidator:
     
     def __init__(self):

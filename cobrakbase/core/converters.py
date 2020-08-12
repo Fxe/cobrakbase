@@ -209,7 +209,7 @@ class KBaseFBAModelToCobraBuilder():
             return drain_reaction
         
     def build(self, model_id = None):
-        if model_id == None:
+        if model_id is None:
             model_id = self.fbamodel.id
             
         self.metabolites = {}
@@ -223,7 +223,7 @@ class KBaseFBAModelToCobraBuilder():
         for modelcompound in self.fbamodel.metabolites:
             cobra_metabolite = self.convert_modelcompound(modelcompound)
             
-            if not cobra_metabolite.id in self.metabolites:
+            if cobra_metabolite.id not in self.metabolites:
                 self.metabolites[cobra_metabolite.id] = cobra_metabolite
                 self.metabolites_remap[modelcompound.id] = cobra_metabolite.id
             else:

@@ -9,7 +9,6 @@ from cobrakbase.core.utils import get_str, get_int, get_id_from_ref
 logger = logging.getLogger(__name__)
 
 
-    
 class KBaseFBASolution(KBaseObjectBase):
     
     def get_reaction_variable_by_id(self, rxn_id):
@@ -295,20 +294,22 @@ class KBaseFBAModelReaction:
         return '{}: {}'.format(self.id, eq)
 
 
-    
 class KBaseFBAModel(KBaseObjectBase):
     
     def __init__(self, json=None):
         super().__init__(json=json)
+        self.metabolites = DictList()
+        model_compounds = []
+        ids = set()
+        for o in self.data['modelcompounds']:
+            if o['id'] not in ids:
+                ids.add(o['id'])
+                model_compounds.append(o)
+        self.data['modelcompounds'] = model_compounds
         self.update_indexes()
-        
-    #@property
-    #def metabolites(self):
-    #    return [KBaseFBAModelMetabolite(i) for i in self.get_metabolites()]
     
     def update_indexes(self):
-        self.metabolites = DictList()
-        if not self.data == None:
+        if self.data is not None:
             self.metabolites += [KBaseFBAModelMetabolite(i) for i in self.get_metabolites()]
     
     def get_compartments(self):

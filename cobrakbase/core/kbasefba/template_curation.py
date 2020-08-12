@@ -156,32 +156,33 @@ class TemplateCuration:
         return templatecomplex_refs
     
     def update_roles(self, trxn, rxn_role_change, search_name_to_role_id, auto_complex = False):
-        #trxn_roles = trxn.get_complex_roles()
-        #for cpd_id in trxn_roles:
-        #    for role_id in trxn_roles[cpd_id]:
-        #        logger.warning('%s %s %s', rxn_id, role_id, role_id_to_name[role_id])
+        # trxn_roles = trxn.get_complex_roles()
+        # for cpd_id in trxn_roles:
+        #     for role_id in trxn_roles[cpd_id]:
+        #         logger.warning('%s %s %s', rxn_id, role_id, role_id_to_name[role_id])
         for function_id in rxn_role_change:
             nfunction, role_id = self.get_function(function_id, search_name_to_role_id)
             if type(role_id) == int or type(role_id) == str:
-                logger.warning('%s function not in template [%s] %s', trxn.id, nfunction, role_id)
+                logger.debug('%s function not in template [%s] %s', trxn.id, nfunction, role_id)
             elif len(nfunction.sub_functions) == 0:
                 if len(role_id) > 1 and rxn_role_change[function_id]:
                     logger.warning('%s multiple role ids %s %s', trxn.id, nfunction, role_id)
                 else:
                     role_id = list(role_id)[0]
-                    role = self.template.get_role(role_id)
+                    # role = self.template.get_role(role_id)
                     if rxn_role_change[function_id]:
-                        #print('accept or add')
+                        # print('accept or add')
                         templatecomplex_ref = self.add_role(trxn, [role_id], auto_complex)
-                        if not templatecomplex_ref == None:
+                        if templatecomplex_ref is not None:
+                            logger.debug("%s add templatecomplex_ref: [%s]", trxn.id, templatecomplex_ref)
                             trxn.data['templatecomplex_refs'].append(templatecomplex_ref)
                         logger.debug('%s accept or add role %s, %s', trxn.id, nfunction, templatecomplex_ref)
                     else:
-                        #print('delete or ignore', role_id, role['name'])
+                        # print('delete or ignore', role_id, role['name'])
                         templatecomplex_refs = self.remove_role(trxn, role_id)
-                        if not templatecomplex_refs == None:
+                        if templatecomplex_refs is not None:
                             trxn.data['templatecomplex_refs'] = templatecomplex_refs
                         logger.debug('%s delete role %s, removed %d complex(es)', trxn.id, nfunction, len(trxn.data['templatecomplex_refs']) - len(templatecomplex_refs))                
-                    #print(('+' if rxn_role_change[function_id] else '-') + function_id, nfunction, role_id, role['source'])
+                    # print(('+' if rxn_role_change[function_id] else '-') + function_id, nfunction, role_id, role['source'])
             else:
                 logger.debug('%s ignore multifunction role', trxn.id)

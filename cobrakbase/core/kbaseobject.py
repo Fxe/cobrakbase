@@ -1,13 +1,19 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
+
 class KBaseObjectBase:
     
     def __init__(self, json=None, api=None):
-        if not json == None:
+        if json is not None:
             self.data = json
         else:
             self.data = {}
         self.api = api
-        self.otype = None
-        self.otype_version = None
+        self.object_type = None
+        self.object_version = None
+        self.ws = None
         
     @property
     def id(self):
@@ -15,6 +21,10 @@ class KBaseObjectBase:
             return self.data['id']
         logger.warning('missing id')
         return None
+    
+    @property
+    def workspace(self):
+        return self.ws
     
     @property
     def name(self):

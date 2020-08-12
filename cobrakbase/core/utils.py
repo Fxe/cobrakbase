@@ -1,7 +1,70 @@
 import logging
 import math
+from itertools import permutations
 
 logger = logging.getLogger(__name__)
+
+
+def get_cmp_token(cmps):
+    if len(cmps) == 1:
+        return list(cmps)[0]
+    if len(cmps) == 2:
+        if 'b' in cmps and 'e' in cmps:
+            return 'b'
+        if 'e' in cmps and 'c' in cmps:
+            return 'c'
+        if 'c' in cmps:
+            return list(filter(lambda x : not x == 'c', cmps))[0]
+    #print('!@??!', cmps)
+    return None
+
+
+def get_compartment_config_single(model_cstoichiometry, rxn_cstoichiometry):
+    result = None
+
+    cmps = list(set(map(lambda x: x[1], model_cstoichiometry)))
+    cmps_replace = list(set(map(lambda x: x[1], rxn_cstoichiometry)))
+    for perm in list(permutations(cmps)):
+        cmp_config = {}
+        for i in range(len(cmps)):
+            cmp_config[cmps_replace[i]] = perm[i]
+        test = dict(map(lambda x: ((x[0][0], cmp_config[x[0][1]]), x[1]), rxn_cstoichiometry.items()))
+        match = test == model_cstoichiometry
+        logger.debug('%s => %s', cmp_config, match)
+        if match:
+            result = cmp_config
+    return result
+
+
+def get_compartment_config_matches(model_cstoichiometry, rxn_cstoichiometry):
+    result = set()
+
+    cmps = list(set(map(lambda x: x[1], model_cstoichiometry)))
+    cmps_replace = list(set(map(lambda x: x[1], rxn_cstoichiometry)))
+    if not len(cmps) == len(cmps_replace):
+        logger.warning('compartments size do not match')
+        return None
+    for perm in list(permutations(cmps)):
+        cmp_config = {}
+        for i in range(len(cmps)):
+            cmp_config[cmps_replace[i]] = perm[i]
+        test = dict(map(lambda x: ((x[0][0], cmp_config[x[0][1]]), x[1]), rxn_cstoichiometry.items()))
+        match = test == model_cstoichiometry
+
+        logger.debug("M  %s", model_cstoichiometry)
+        logger.debug("T  %s", test)
+
+        logger.debug('%s => %s', cmp_config, match)
+        if match:
+            result.add(tuple(sorted(cmp_config.items())))
+        # Test reverse stoichiometry
+        test = dict(map(lambda x: (x[0], -1 * x[1]), test.items()))
+        logger.debug("T' %s", test)
+        match = test == model_cstoichiometry
+        if match:
+            result.add(tuple(sorted(cmp_config.items())))
+    return result
+
 
 def multiply(s, v):
     s_ = {}
@@ -9,18 +72,10 @@ def multiply(s, v):
         s_[i] = v * s[i]
     return s_
 
-def to_faa(kgenome):
-    faa_features = []
-    
-    for feature in kgenome['features']:
-        faa_features.append('>' + feature['id'] + '\n' + feature['protein_translation'])
-        #print(feature)
-        #break
-    
-    return '\n'.join(faa_features)
 
 def get_lower(s):
     return sorted(list(s))[0]
+
 
 def get_locked(compartment_config):
     #print('get_locked', compartment_config)
@@ -29,6 +84,7 @@ def get_locked(compartment_config):
         if len(compartment_config[socket]) == 1:
             locked[socket] = compartment_config[socket].pop()
     return locked
+
 
 def get_compartment_config(model_reaction, seed_reaction, locked = {}, depth = 0):
     model_reaction_reagents = model_reaction['modelReactionReagents']
@@ -100,7 +156,6 @@ def get_compartment_config(model_reaction, seed_reaction, locked = {}, depth = 0
     return None
 
 
-
 def get_reaction_compartment2(compartment_config):
     cmps = set(compartment_config.values())
     if not cmps == None:
@@ -114,6 +169,7 @@ def get_reaction_compartment2(compartment_config):
         return None
     return "z0"
 
+
 def get_bounds(r):
     maxrevflux = r['maxrevflux']
     maxforflux = r['maxforflux']
@@ -126,6 +182,7 @@ def get_bounds(r):
         direction = '0'
         
     return maxrevflux, maxforflux, direction
+
 
 def seed_coefficients_to_string(coeff_list, op = '<=>'):
     lhs = []
@@ -141,6 +198,7 @@ def seed_coefficients_to_string(coeff_list, op = '<=>'):
         else:
             logger.warning("zero value found: %s", o)
     return "{} {} {}".format(' + '.join(lhs), op, ' + '.join(rhs))
+
 
 def print_stoich(stoich, eq="<=>"):
     l = {}
@@ -166,6 +224,7 @@ def print_stoich(stoich, eq="<=>"):
     #print(l_text, r_text)
     return ' + '.join(l_text) + " " + eq + " " + ' + '.join(r_text)
 
+
 def get_str(k, def_value, d):
     if k in d:
         if d[k] == None:
@@ -173,12 +232,14 @@ def get_str(k, def_value, d):
         return str(d[k])
     return def_value
 
+
 def get_int(k, def_value, d):
     if k in d:
         if d[k] == None:
             return def_value
         return int(d[k])
     return def_value
+
 
 def get_id_from_ref(str, stok='/'):
     return str.split(stok)[-1]

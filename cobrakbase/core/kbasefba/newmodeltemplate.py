@@ -15,7 +15,7 @@ class NewTemplateReaction(KBaseObjectBase):
         super().__init__(data)
         self.template = template
     
-    def remove_role():
+    def remove_role(self):
         pass
     
     def get_roles(self):
@@ -99,10 +99,10 @@ class NewModelTemplate(KBaseObjectBase):
         self.search_name_to_role_id[sn] = role_id
         return role_id
     
-    def add_complex_from_role_names(self, role_names, source = 'ModelSEED'):
-        role_ids = set(map(lambda o : self.add_role(o), role_names))
+    def add_complex_from_role_names(self, role_names, source='ModelSEED'):
+        role_ids = set(map(lambda o: self.add_role(o), role_names))
         complex_id = self.get_complex_from_role(role_ids)
-        if complex_id == None:
+        if complex_id is None:
             self.complex_last_id += 1
             complex_id = self.complex_suf + str(self.complex_last_id).zfill(5)
             complex_data = {
@@ -119,7 +119,8 @@ class NewModelTemplate(KBaseObjectBase):
                     'templaterole_ref': '~/roles/id/' + role_id,
                     'triggering': 1
                 })
-            
+
+            # print(complex_data)
             self.data['complexes'].append(complex_data)
             self.role_set_to_cpx[';'.join(sorted(role_ids))] = complex_id
             
