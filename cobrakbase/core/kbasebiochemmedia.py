@@ -1,8 +1,8 @@
-from cobrakbase.core.kbaseobject import KBaseObjectBase
+from cobrakbase.core.kbaseobject import KBaseObject
 from cobrakbase.core.utils import get_id_from_ref
 
 
-class KBaseBiochemMedia(KBaseObjectBase):
+class KBaseBiochemMedia(KBaseObject):
 
     def get_media_constraints(self, cmp='e0'):
         """

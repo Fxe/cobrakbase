@@ -1,59 +1,20 @@
-from cobrakbase.core.kbaseobject import KBaseObjectBase
+from cobrakbase.core.kbaseobject import KBaseObject, KBaseObjectBase
 from cobrakbase.core.utils import get_id_from_ref
 from cobrakbase.core.kbasegenomesgenome import normalize_role
+from cobrakbase.core.kbasefba.new_template_reaction import NewTemplateReaction
+
 
 class TemplateRole(KBaseObjectBase):
     
-    def __init__(self, data, template = None):
+    def __init__(self, data, template=None):
         super().__init__(data)
         self.template = template
-    
 
-class NewTemplateReaction(KBaseObjectBase):
-    
-    def __init__(self, data, template = None):
-        super().__init__(data)
-        self.template = template
-    
-    def remove_role(self):
-        pass
-    
-    def get_roles(self):
-        res = set()
-        for complexes in self.data['templatecomplex_refs']:
-            complex_id = complexes.split('/')[-1]
-            cpx = self.template.get_complex(complex_id)
 
-            for complexrole in cpx['complexroles']:
-                role_id = complexrole['templaterole_ref'].split('/')[-1]
-                res.add(role_id)
-                
-        return res
+class NewModelTemplate(KBaseObject):
     
-    def get_complexes(self):
-        res = set()
-        for complexes in self.data['templatecomplex_refs']:
-            complex_id = complexes.split('/')[-1]
-            res.add(complex_id)
-            
-        return res
-    
-    def get_complex_roles(self):
-        res = {}
-        for complexes in self.data['templatecomplex_refs']:
-            complex_id = complexes.split('/')[-1]
-            res[complex_id] = set()
-            cpx = self.template.get_complex(complex_id)
-
-            for complexrole in cpx['complexroles']:
-                role_id = complexrole['templaterole_ref'].split('/')[-1]
-                res[complex_id].add(role_id)
-        return res
-
-class NewModelTemplate(KBaseObjectBase):
-    
-    def __init__(self, data, role_suf = 'ftr', complex_suf = 'cpx'):
-        super().__init__(data)
+    def __init__(self, data=None, info=None, args=None, role_suf='ftr', complex_suf='cpx'):
+        super().__init__(data, info, args)
         self.role_suf = role_suf
         self.complex_suf = complex_suf
         self.role_last_id = self.get_last_id_value(self.data['roles'], role_suf)
@@ -159,5 +120,3 @@ class NewModelTemplate(KBaseObjectBase):
         if len(res) == 0:
             return None
         return res[0]
-    
-    

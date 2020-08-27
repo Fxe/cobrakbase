@@ -2,7 +2,7 @@ import logging
 
 from cobra.core.dictlist import DictList
 
-from cobrakbase.core.kbaseobject import KBaseObjectBase
+from cobrakbase.core.kbaseobject import KBaseObjectBase, KBaseObject
 from cobrakbase.core.utils import seed_coefficients_to_string
 from cobrakbase.core.utils import get_str, get_int, get_id_from_ref
 
@@ -294,10 +294,10 @@ class KBaseFBAModelReaction:
         return '{}: {}'.format(self.id, eq)
 
 
-class KBaseFBAModel(KBaseObjectBase):
+class KBaseFBAModel(KBaseObject):
     
-    def __init__(self, json=None):
-        super().__init__(json=json)
+    def __init__(self, data=None, info=None, args=None):
+        super().__init__(data, info, args)
         self.metabolites = DictList()
         model_compounds = []
         ids = set()

@@ -1,10 +1,12 @@
 import logging
+from cobrakbase.core.kbaseobject import AttrDict
 from cobrakbase.core.kbasegenomesgenome import normalize_role
 
 logger = logging.getLogger(__name__)
 
 
 class TemplateManipulator:
+
     def __init__(self, template, modelseed_database):
         self.template = template
         self.modelseed_database = modelseed_database
@@ -53,7 +55,7 @@ class TemplateManipulator:
                 'name': cpd.data['name']
             }
             self.template_compounds[cpd.id] = template_compound
-            self.template.data['compounds'].append(template_compound)
+            self.template.data['compounds'].append(AttrDict(template_compound))
         template_compound = self.template_compounds[cpd_id]
 
         ccpd_id = "{}_{}".format(cpd_id, cmp_id)
@@ -66,7 +68,7 @@ class TemplateManipulator:
                 'templatecompound_ref': '~/compounds/id/' + cpd_id
             }
             self.template_compcompounds[ccpd_id] = template_compcompound
-            self.template.data['compcompounds'].append(template_compcompound)
+            self.template.data['compcompounds'].append(AttrDict(template_compcompound))
         else:
             template_compcompound = self.template_compcompounds[ccpd_id]
         return template_compcompound
@@ -210,7 +212,7 @@ class TemplateManipulator:
         return to_update, to_delete
 
     def clean_template(self, source_allow):
-        search_name_to_role_id = self.get_search_name_to_role_id()
+        # search_name_to_role_id = self.get_search_name_to_role_id()
 
         # clear roles
         role_source = {}
@@ -354,32 +356,6 @@ def remove_role(trxn, role_id):
         trxn.data['templatecomplex_refs']))
 
     return templatecomplex_refs
-
-
-def add_role(trxn, role_ids):
-    complex_roles = trxn.get_complex_roles()
-    role_match = {}
-    for o in role_ids:
-        role_match[o] = False
-    for complex_id in complex_roles:
-        for o in role_match:
-            if o in complex_roles[complex_id]:
-                role_match[o] = True
-    all_roles_present = True
-    for o in role_match:
-        all_roles_present &= role_match[o]
-    if all_roles_present:
-        logger.debug('ignore %s all present in atleast 1 complex', role_ids)
-        return None
-    complex_id = template.get_complex_from_role(role_ids)
-    if complex_id == None:
-        logger.warning('unable to find complex for %s', role_ids)
-        return None
-    complex_ref = '~/complexes/id/' + complex_id
-    if complex_ref in trxn.data['templatecomplex_refs']:
-        logger.debug('already contains complex %s, role %s', role_ids, complex_ref)
-        return None
-    return complex_ref
 
 
 def get_role_change(rxn_id, test_accept, test_remove):

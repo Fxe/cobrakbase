@@ -1,58 +1,17 @@
 import sys
+from pathlib import Path
 from cobrakbase.Workspace.WorkspaceClient import Workspace as WorkspaceClient
+from cobrakbase.kbase_object_info import KBaseObjectInfo
+from cobrakbase.core.kbase_object_factory import KBaseObjectFactory
 
 KBASE_WS_URL = "https://kbase.us/services/ws/"
 DEV_KBASE_WS_URL = "https://appdev.kbase.us/services/ws/"
 
-class KBaseReference():
-    
-    def __init__(self, tuple):
-        self.tuple = tuple
-    
-    @property
-    def uid(self):
-        return self.tuple[0]
-    
-    @property
-    def id(self):
-        return self.tuple[1]
-    
-    @property
-    def type(self):
-        return self.tuple[2]
-    
-    @property
-    def created_at(self):
-        return self.tuple[3]
-    
-    @property
-    def version(self):
-        return self.tuple[4]
-    
-    @property
-    def user(self):
-        return self.tuple[5]
-    
-    @property
-    def workspace_uid(self):
-        return self.tuple[6]
-    
-    @property
-    def workspace_id(self):
-        return self.tuple[7]
-    
-    @property
-    def reference(self):
-        return "{}/{}/{}".format(self.workspace_uid, self.uid, self.version)
-        
-    def __str__(self):
-        return self.reference
-    
-    
 
 def _get_object_wsc(wclient, oid, ws):
     res = wclient.get_objects2({"objects" : [{"name" : oid, "workspace" : ws}]})
     return res["data"][0]["data"]
+
 
 def _get_ws_client(token, dev=False):
     url = KBASE_WS_URL
@@ -63,7 +22,13 @@ def _get_ws_client(token, dev=False):
 
 class KBaseAPI:
 
-    def __init__(self, token, dev=False, config=None):
+    def __init__(self, token=None, dev=False, config=None):
+        if token is None and Path(str(Path.home()) + '/.kbase/token').exists():
+            with open(str(Path.home()) + '/.kbase/token', 'r') as fh:
+                token = fh.read().strip()
+        if token is None:
+            raise Exception("missing token value or ~/.kbase/token file")
+
         if config is None:
             self.ws_client = _get_ws_client(token, dev)
         else:
@@ -71,6 +36,24 @@ class KBaseAPI:
 
     def get_object(self, object_id, ws):
         return _get_object_wsc(self.ws_client, object_id, ws)
+
+    def get_from_ws(self, id_or_ref, workspace=None):
+        objspec = {}
+        if workspace is None:
+            objspec["ref"] = id_or_ref
+        else:
+            if isinstance(workspace, int):
+                objspec['wsid'] = workspace
+            else:
+                objspec['workspace'] = workspace
+            if isinstance(workspace, int):
+                objspec['objid'] = id_or_ref
+            else:
+                objspec['name'] = id_or_ref
+
+        output = self.ws_client.get_objects2({"objects": [objspec]})
+        factory = KBaseObjectFactory()
+        return factory.create(output, None)
 
     def get_object_by_ref(self, object_ref):
         object_info = self.get_object_info_from_ref(object_ref)
@@ -123,4 +106,4 @@ class KBaseAPI:
                 'objects': [{'ref' : ref}]
             }
         )
-        return KBaseReference(ref_data['infos'][0])
+        return KBaseObjectInfo(ref_data['infos'][0])
