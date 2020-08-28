@@ -26,9 +26,10 @@ class KBaseObject:
         if data is None:
             data = {}
         self.__dict__ = data
-        self.data_keys = {}  # keep track of original data keys for deserialization
+        data_keys = {}  # keep track of original data keys for deserialization
         for key in data:
-            self.data_keys[key] = type(data[key])
+            data_keys[key] = type(data[key])
+        self.data_keys = data_keys
 
         self.info = info
         if self.info is None:
@@ -50,7 +51,7 @@ class KBaseObject:
     def _to_json(self):
         data = {}
         for key in self.data_keys:
-            if type(data[key]) is DictList:
+            if self.data_keys[key] is list:
                 data[key] = list(self.data[key])
             else:
                 data[key] = self.data[key]
