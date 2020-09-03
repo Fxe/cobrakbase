@@ -103,7 +103,7 @@ class KBaseAPI:
     def get_object_info_from_ref(self, ref):
         ref_data = self.ws_client.get_object_info3(
             {
-                'objects': [{'ref' : ref}]
+                'objects': [{'ref': ref}]
             }
         )
         return KBaseObjectInfo(ref_data['infos'][0])

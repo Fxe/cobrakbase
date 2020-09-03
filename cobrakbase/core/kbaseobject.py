@@ -34,6 +34,8 @@ class KBaseObject:
         self.info = info
         if self.info is None:
             self.info = KBaseObjectInfo()
+        elif type(self.info) is not KBaseObjectInfo:
+            raise ObjectError("Wrong info type: {}, expected: {}".format(type(info), KBaseObjectInfo))
         if kbase_type is not None:
             self.info.type = kbase_type
         if self.info.type is None:

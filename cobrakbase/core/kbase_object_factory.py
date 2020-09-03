@@ -1,8 +1,14 @@
 from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbaseobject import KBaseObject
-from cobrakbase.core import KBaseFBAModel, KBaseBiochemMedia, KBaseGenome
+from cobrakbase.core.kbasebiochem import Media
+from cobrakbase.core.kbasefba.fbamodel_builder import FBAModelBuilder
+from cobrakbase.core import KBaseFBAModel, KBaseGenome
 from cobrakbase.core.kbasegenome.pangenome import KBasePangenome
 from cobrakbase.core.kbasefba.newmodeltemplate import NewModelTemplate
+
+
+def _build_fbamodel(x, y, z):
+    return FBAModelBuilder.from_kbase_json(x, y, z).build()
 
 
 class KBaseObjectFactory:
@@ -11,11 +17,12 @@ class KBaseObjectFactory:
     and sticks sub objects into dictlists
     """
     def __init__(self):
+
         self.object_mapper = {
-            'KBaseFBA.FBAModel': KBaseFBAModel,
+            'KBaseFBA.FBAModel': _build_fbamodel,
             'KBaseFBA.NewModelTemplate': NewModelTemplate,
             # add FBA
-            'KBaseBiochem.Media': KBaseBiochemMedia,
+            'KBaseBiochem.Media': Media,
             'KBaseGenomes.Genome': KBaseGenome,
             'KBaseGenomes.Pangenome': KBasePangenome
         }

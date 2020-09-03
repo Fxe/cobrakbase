@@ -1,4 +1,5 @@
 import cobrakbase.core.kbasefba
+import cobrakbase.core.kbasebiochem
 import cobrakbase.core.kbasegenome
 from cobrakbase.core.model import KBaseFBAModel
 from cobrakbase.core.kbasebiochemmedia import KBaseBiochemMedia
