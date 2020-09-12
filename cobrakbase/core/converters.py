@@ -1,4 +1,5 @@
 import logging
+import re
 from cobra.core import Gene, Metabolite, Model, Reaction
 from cobra.util.solver import linear_reaction_coefficients
 
@@ -38,12 +39,22 @@ def build_rxn_id(str):
 
 class KBaseFBAModelToCobraBuilder():
     
-    def __init__(self, fbamodel, media_const = {}, auto_sink = ["cpd02701_c0", "cpd11416_c0", "cpd15302_c0", "cpd11416_c0"]):
+    def __init__(self, fbamodel, media_const = {}, auto_sink = ["cpd02701_c", "cpd11416_c0", "cpd15302_c"]):
         self.fbamodel = fbamodel
         self.media_const = media_const
         
         self.SBO_ANNOTATION = "sbo"
-        self.auto_sink = auto_sink
+        
+        self.auto_sink = []
+        full_id = re.compile('\d+$')
+        for id in auto_sink:
+            if full_id.search(id):
+                self.auto_sink.append(id)
+            else:
+                for i in range(0,100):
+                    newid = id + str(i)
+                    self.auto_sink.append(newid)
+        
         self.auto_exchange = "e0"
         
         self.metabolites = {}
