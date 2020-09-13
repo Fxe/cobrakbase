@@ -15,14 +15,14 @@ class KBaseFBABuilder:
         self._fva_data = {}
     
     @staticmethod
-    def from_cobra(object_id, model, solution, media, ws):
+    def from_cobra(object_id, model, solution, media, ws, target_reaction):
         flux_dist = dict(solution.fluxes)
         b = KBaseFBABuilder(flux_dist)
         b.id = object_id
         b.model = model
         b.media = media
         b.ws = ws
-        b.objective_value = solution.objective_value
+        b.objective_value = solution.fluxes[target_reaction]
         return b
     
     def with_cobra_fva_solution(self, cobra_fva_result):
