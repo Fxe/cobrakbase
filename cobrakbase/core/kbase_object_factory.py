@@ -1,3 +1,4 @@
+import json
 from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbaseobject import KBaseObject
 from cobrakbase.core import KBaseFBAModel, KBaseBiochemMedia, KBaseGenome
@@ -19,7 +20,16 @@ class KBaseObjectFactory:
             'KBaseGenomes.Genome': KBaseGenome,
             'KBaseGenomes.Pangenome': KBasePangenome
         }
-
+    
+    def build_object_from_file(self, filename, object_type):
+        with open(filename) as json_file:
+            data = json.load(json_file)
+            
+        if object_type in self.object_mapper:
+            return self.object_mapper[object_type](data, None, None)
+        
+        return KBaseObject(data, None, None, object_type)
+    
     def build_object_from_ws(self, ws_output, object_type):
         if ws_output is None:
             return KBaseObject(None, None, None, object_type)
