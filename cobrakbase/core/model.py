@@ -297,7 +297,7 @@ class KBaseFBAModelReaction:
 class KBaseFBAModel(KBaseObject):
     
     def __init__(self, data=None, info=None, args=None):
-        super().__init__(data, info, args)
+        super().__init__(data, info, args, 'KBaseFBA.FBAModel')
         self.metabolites = DictList()
         model_compounds = []
         ids = set()
