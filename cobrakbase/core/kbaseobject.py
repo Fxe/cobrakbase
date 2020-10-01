@@ -54,7 +54,7 @@ class KBaseObject:
         data = {}
         for key in self.data_keys:
             if self.data_keys[key] is list:
-                data[key] = list(self.data[key])
+                data[key] = list(map(lambda x: x.get_data() if 'get_data' in dir(x) else x, self.data[key]))
             else:
                 data[key] = self.data[key]
         return data

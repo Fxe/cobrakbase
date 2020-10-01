@@ -19,6 +19,7 @@ class FBAModelBuilder:
         self.data = data
         self.info = info
         self.args = args
+        self.metabolites_remap = {}
         self.metabolites = {}
         self.reactions = {}
         self.genes = {}
@@ -73,6 +74,8 @@ class FBAModelBuilder:
         #        #print(id)
 
         met = ModelCompound(data)
+        self.metabolites_remap[data['id']] = met.id
+
 
         # simple chemical - Simple, non-repetitive chemical entity.
         met.annotation[self.SBO_ANNOTATION] = "SBO:0000247"
@@ -115,8 +118,9 @@ class FBAModelBuilder:
             coefficient = biomasscompound['coefficient']
             metabolite_id = biomasscompound['modelcompound_ref'].split('/')[-1]
 
-            if metabolite_id in self.metabolites:
-                object_stoichiometry[self.metabolites[metabolite_id]] = coefficient
+            if metabolite_id in self.metabolites_remap:
+                mapped_id = self.metabolites_remap[metabolite_id]
+                object_stoichiometry[self.metabolites[mapped_id]] = coefficient
             else:
                 logger.warning('[%s] undeclared biomass species: %s', biomass['id'], metabolite_id)
 
@@ -141,8 +145,9 @@ class FBAModelBuilder:
         object_stoichiometry = {}
         for o in model_reaction['modelReactionReagents']:
             compound_id = o['modelcompound_ref'].split('/')[-1]
-            if compound_id in self.metabolites:
-                object_stoichiometry[self.metabolites[compound_id]] = o['coefficient']
+            if compound_id in self.metabolites_remap:
+                mapped_id = self.metabolites_remap[compound_id]
+                object_stoichiometry[self.metabolites[mapped_id]] = o['coefficient']
             else:
                 logger.warning('[%s] undeclared species: %s', model_reaction['id'], compound_id)
         return object_stoichiometry
@@ -197,26 +202,35 @@ class FBAModelBuilder:
             self.biomass_reactions.add(reaction.id)
 
         for cpd_id in self.exchange_compounds:
-            lower_bound = self.COBRA_DEFAULT_LB if len(self.media_const) == 0 else self.COBRA_0_BOUND
-            upper_bound = self.COBRA_DEFAULT_UB
-            if cpd_id in self.media_const:
-                lower_bound, upper_bound = self.media_const[cpd_id]
-            drain_reaction = self.build_drain_from_metabolite_id(cpd_id, lower_bound, upper_bound)
-            self.reactions[drain_reaction.id] = drain_reaction
-            # self.add_reaction(drain_reaction)
-            logger.debug('created exchange for [%s]: %s', cpd_id, drain_reaction)
+            if cpd_id in self.metabolites:
+                lower_bound = self.COBRA_DEFAULT_LB if len(self.media_const) == 0 else self.COBRA_0_BOUND
+                upper_bound = self.COBRA_DEFAULT_UB
+                if cpd_id in self.media_const:
+                    lower_bound, upper_bound = self.media_const[cpd_id]
+                drain_reaction = self.build_drain_from_metabolite_id(cpd_id, lower_bound, upper_bound)
+                self.reactions[drain_reaction.id] = drain_reaction
+                # self.add_reaction(drain_reaction)
+                logger.debug('created exchange for [%s]: %s', cpd_id, drain_reaction)
+            else:
+                logger.warning('unable to add exchange for [%s]: not found', cpd_id)
         for cpd_id in self.demand_compounds:
-            drain_reaction = self.build_drain_from_metabolite_id(cpd_id, self.COBRA_0_BOUND, self.COBRA_DEFAULT_UB,
-                                                                 "DM_", "Demand for ")
-            self.reactions[drain_reaction.id] = drain_reaction
-            # self.add_reaction(drain_reaction)
-            logger.debug('created demand for [%s]: %s', cpd_id, drain_reaction)
+            if cpd_id in self.metabolites:
+                drain_reaction = self.build_drain_from_metabolite_id(cpd_id, self.COBRA_0_BOUND, self.COBRA_DEFAULT_UB,
+                                                                     "DM_", "Demand for ")
+                self.reactions[drain_reaction.id] = drain_reaction
+                # self.add_reaction(drain_reaction)
+                logger.debug('created demand for [%s]: %s', cpd_id, drain_reaction)
+            else:
+                logger.warning('unable to add demand for [%s]: not found', cpd_id)
         for cpd_id in self.sink_compounds:
-            drain_reaction = self.build_drain_from_metabolite_id(cpd_id, self.COBRA_0_BOUND, self.COBRA_DEFAULT_UB,
-                                                                 "SK_", "Sink for ")
-            self.reactions[drain_reaction.id] = drain_reaction
+            if cpd_id in self.metabolites:
+                drain_reaction = self.build_drain_from_metabolite_id(cpd_id, self.COBRA_0_BOUND, self.COBRA_DEFAULT_UB,
+                                                                    "SK_", "Sink for ")
+                self.reactions[drain_reaction.id] = drain_reaction
             # self.add_reaction(drain_reaction)
-            logger.debug('created sink for [%s]: %s', cpd_id, drain_reaction)
+                logger.debug('created sink for [%s]: %s', cpd_id, drain_reaction)
+            else:
+                logger.warning('unable to add sink for [%s]: not found', cpd_id)
 
         model.add_metabolites(self.metabolites.values())
         model.add_reactions(self.reactions.values())

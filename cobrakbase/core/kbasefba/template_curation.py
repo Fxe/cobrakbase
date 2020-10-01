@@ -30,6 +30,16 @@ class TemplateCuration:
                     function_user_data[target][user_id] = (action, t)
         return functions, function_user_data
 
+    def get_disabled_reactions(self, template_id):
+        res = set()
+        for doc in self.curation_api['templates_reactions'].find():
+            rxn_id, rxn_template_id = doc['_id'].split('@')
+            if rxn_template_id == template_id:
+                attr = doc['attributes']
+                if 'active' in attr and not doc['attributes']['active']:
+                    res.add(rxn_id)
+        return res
+
     def get_reaction_annotation(self):
         a = {}
         for doc in self.curation_api['templates_reactions'].find():

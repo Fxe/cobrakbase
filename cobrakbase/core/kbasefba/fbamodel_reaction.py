@@ -1,4 +1,5 @@
 import math
+import copy
 import logging
 from cobra.core import Reaction
 
@@ -68,16 +69,27 @@ def _build_rxn_id(s):
     return str_fix
 
 
+COBRA_DATA = ['id', 'name',
+              'direction', 'maxrevflux', 'maxforflux',
+              'modelReactionReagents']
+
+
 class ModelReaction(Reaction):
 
     def __init__(self, data):
+        data_copy = copy.deepcopy(data)
         lower_bound, upper_bound = _get_reaction_constraints(data)
         rxn_id = _build_rxn_id(data['id'])
         super().__init__(rxn_id,
                          data['name'],
                          "",
                          lower_bound, upper_bound)
+
         self.gene_reaction_rule = _get_gpr_string(_get_gpr(data))
+
+        for key in data_copy:
+            if key not in COBRA_DATA:
+                self.__dict__[key] = data_copy[key]
 
     @property
     def compartment(self):

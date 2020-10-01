@@ -14,8 +14,8 @@ def get_cmp_token(cmps):
         if 'e' in cmps and 'c' in cmps:
             return 'c'
         if 'c' in cmps:
-            return list(filter(lambda x : not x == 'c', cmps))[0]
-    #print('!@??!', cmps)
+            return list(filter(lambda x: not x == 'c', cmps))[0]
+
     return None
 
 

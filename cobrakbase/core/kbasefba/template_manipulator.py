@@ -1,6 +1,7 @@
 import logging
 from cobrakbase.core.kbaseobject import AttrDict
 from cobrakbase.core.kbasegenomesgenome import normalize_role
+from cobrakbase.core.utils import get_cmp_token
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +25,26 @@ class TemplateManipulator:
         for o in self.template.data['compartments']:
             self.template_compartments[o['id']] = o
 
+    def clear_reaction_complexes(self):
+        for template_rxn in self.template.reactions:
+            template_rxn.templatecomplex_refs.clear()
+
+    def clear_reactions(self):
+        self.template.reactions.clear()
+        self.template.reactions._dict.clear()
+
+    def clear_roles(self):
+        self.clear_complexes()
+        self.template.roles.clear()
+        self.template.roles._dict.clear()
+        self.template.role_last_id = 0
+
+    def clear_complexes(self):
+        self.clear_reaction_complexes()
+        self.template.complexes.clear()
+        self.template.complexes._dict.clear()
+        self.template.complex_last_id = 0
+
     def add_compartment(self, cmp_id, name, ph=7, index='0'):
         res = list(filter(lambda x: x['id'] == cmp_id, self.template.data['compartments']))
         if len(res) > 0:
@@ -40,18 +61,20 @@ class TemplateManipulator:
     def add_compcompound(self, cpd_id, cmp_id):
         template_compound = None
         template_compcompound = None
-        if not cpd_id in self.template_compounds:
+        if cpd_id not in self.template_compounds:
             cpd = self.modelseed_database.get_seed_compound(cpd_id)
+            mass = cpd.data['mass']
+            formula = cpd.data['formula']
             template_compound = {
                 'abbreviation': cpd.data['abbreviation'],
                 'aliases': [],
                 'defaultCharge': cpd.data['charge'],
                 'deltaG': cpd.data['deltag'],
                 'deltaGErr': cpd.data['deltagerr'],
-                'formula': str(cpd.data['formula']),  # TODO: could be nan should set to ""
+                'formula': str(formula) if formula is not None else "",
                 'id': cpd_id,
                 'isCofactor': cpd.data['is_cofactor'],
-                'mass': float(cpd.data['mass']),
+                'mass': float(mass) if mass is not None and not mass == 'None' else 0.0,
                 'name': cpd.data['name']
             }
             self.template_compounds[cpd.id] = template_compound
@@ -59,7 +82,7 @@ class TemplateManipulator:
         template_compound = self.template_compounds[cpd_id]
 
         ccpd_id = "{}_{}".format(cpd_id, cmp_id)
-        if not ccpd_id in self.template_compcompounds:
+        if ccpd_id not in self.template_compcompounds:
             template_compcompound = {
                 'charge': template_compound['defaultCharge'],
                 'id': ccpd_id,
@@ -90,19 +113,20 @@ class TemplateManipulator:
 
         return template_reaction_reagents
 
-    def add_reaction(self, rxn_id, compartment_config,
-                     direction=None,
-                     base_cost=1000,
-                     forward_penalty=-1000,
-                     reverse_penalty=-1000,
-                     reaction_type='conditional'):
+    def build_template_reaction_from_modelseed(self, rxn_id, compartment_config,
+                                               direction=None,
+                                               base_cost=1000,
+                                               forward_penalty=-1000,
+                                               reverse_penalty=-1000,
+                                               reaction_type='conditional'):
         rxn = self.modelseed_database.get_seed_reaction(rxn_id)
-        if direction == None:
+        if direction is None:
             direction = rxn.data['direction']
-        cmp = 'c'  # calculate compartment
-        cmp_data = self.add_compartment(cmp, cmp)
-        # print(cmp_data['id'], cmp_data['name'])
+        cmp = get_cmp_token(compartment_config.values())  # calculate compartment
+        self.add_compartment(cmp, cmp)
+
         template_reaction_reagents = self.configure_stoichiometry(rxn.cstoichiometry, compartment_config)
+        name = rxn.data['name']
         template_reaction = {
             'GapfillDirection': '>',
             'base_cost': base_cost,
@@ -112,7 +136,7 @@ class TemplateManipulator:
             'id': "{}_{}".format(rxn.id, cmp),
             'maxforflux': 100,
             'maxrevflux': -100,
-            'name': rxn.data['name'],
+            'name': rxn.id if type(name) == float else name,
             'reaction_ref': '~/reactions/id/' + rxn.id,
             'templateReactionReagents': template_reaction_reagents,
             'templatecompartment_ref': '~/compartments/id/' + cmp,
@@ -122,20 +146,22 @@ class TemplateManipulator:
         return template_reaction
 
     def get_role_to_rxn_ids(self):
+        """
+        Index of role ID mapped to reactions (Set)
+        """
         role_to_rxn_ids = {}
-        for o in self.template.data['reactions']:
-            trxn = self.template.get_reaction(o['id'])
-            for role_id in trxn.get_roles():
-                if not role_id in role_to_rxn_ids:
+        for template_reaction in self.template.reactions:
+            for role_id in template_reaction.get_roles():
+                if role_id not in role_to_rxn_ids:
                     role_to_rxn_ids[role_id] = set()
-                role_to_rxn_ids[role_id].add(trxn.id)
+                role_to_rxn_ids[role_id].add(template_reaction.id)
 
         return role_to_rxn_ids
 
     def get_search_name_to_role_id(self):
         # get duplicates
         search_name_to_role_id = {}
-        for role in self.template.data['roles']:
+        for role in self.template.roles:
             n = normalize_role(role['name'])
             if not n in search_name_to_role_id:
                 search_name_to_role_id[n] = set()
@@ -153,6 +179,9 @@ class TemplateManipulator:
         return role_to_complexes
 
     def delete_roles(self, role_ids, clear_orphan=True):
+        """
+        Delete roles from template and clear complex if orphan (Optional)
+        """
         role_to_complexes = self.get_role_to_complexes()
         roles_to_delete = set()
         complexes_to_delete = set()
@@ -170,17 +199,24 @@ class TemplateManipulator:
                     # if clear orphan delete cpx
                     if clear_orphan and len(complexroles) == 0:
                         complexes_to_delete.add(cpx_id)
-        self.template.data['roles'] = list(
-            filter(lambda x: x['id'] not in roles_to_delete, self.template.data['roles']))
-        self.template.data['complexes'] = list(
-            filter(lambda x: x['id'] not in complexes_to_delete, self.template.data['complexes']))
+
+        for role_id in roles_to_delete:
+            self.template.roles.remove(role_id)
+        for complex_id in complexes_to_delete:
+            self.template.complexes.remove(complex_id)
+        #self.template.data['roles'] = list(
+        #    filter(lambda x: x['id'] not in roles_to_delete, self.template.data['roles']))
+        #self.template.data['complexes'] = list(
+        #    filter(lambda x: x['id'] not in complexes_to_delete, self.template.data['complexes']))
 
     def clear_orphan_roles(self):
         """
-        
+        Clean roles with conflicting search name and delete from template
+        Resolves by selecting the role that is used in a reaction
+          outputs warning if unable to select
+          (e.g., two or more roles conflict but both used in reactions).
         """
         role_to_rxn_ids = self.get_role_to_rxn_ids()
-        used_roles = set(role_to_rxn_ids)
         search_name_to_role_id = self.get_search_name_to_role_id()
 
         to_delete = set()
@@ -211,23 +247,27 @@ class TemplateManipulator:
 
         return to_update, to_delete
 
-    def clean_template(self, source_allow):
+    def clean_template(self, white_list=None):
+        """
+        Remove roles and complexes from reactions not in the whitelist
+        """
+        if white_list is None:
+            white_list = ['ModelSEED']
         # search_name_to_role_id = self.get_search_name_to_role_id()
 
         # clear roles
-        role_source = {}
-        roles_to_clear = set()
-        seed_roles = set()
-        for o in self.template.data['roles']:
+        role_source = {}  # mapping role ID to source
+        roles_to_clear = set()  # clear these roles
+        seed_roles = set()  # roles allowed in template
+        for o in self.template.roles:
             role_source[o['id']] = o['source']
-            if not o['source'] == source_allow:
+            if o['source'] not in white_list:
                 roles_to_clear.add(o['id'])
             else:
                 seed_roles.add(o['id'])
 
         complexes_to_clear = set()
-        for complex_o in self.template.data['complexes']:
-            # complex_o
+        for complex_o in self.template.complexes:
             complex_source_from_role = set()
             for complex_role in complex_o['complexroles']:
                 role_id = complex_role['templaterole_ref'].split('/')[-1]
@@ -242,20 +282,24 @@ class TemplateManipulator:
                     complex_o['source'] = ss
             else:
                 print(complex_o)
-            if not complex_o['source'] == source_allow:
+            if complex_o['source'] not in white_list:
                 complexes_to_clear.add(complex_o['id'])
 
-        reactions_to_clear = set()
-        for reaction_o in self.template.data['reactions']:
-            templatecomplex_refs = reaction_o['templatecomplex_refs']
+        reactions_to_clear = set() # reactions without complexes
+        for template_rxn in self.template.reactions:
+            # filter the complex references not in complexes_to_clear
+            templatecomplex_refs = template_rxn['templatecomplex_refs']
             templatecomplex_refs_filter = list(filter(
-                lambda x: not x.split('/')[-1] in complexes_to_clear,
+                lambda x: x.split('/')[-1] not in complexes_to_clear,
                 templatecomplex_refs))
             if not len(templatecomplex_refs_filter) == len(templatecomplex_refs):
-                logger.debug('[%s] removing complexes', reaction_o['id'])
-                reaction_o['templatecomplex_refs'] = templatecomplex_refs_filter
-            if len(templatecomplex_refs) == 0:
-                reactions_to_clear.add(reaction_o['id'])
+                logger.debug('[%s] removing complexes', template_rxn.id)
+                template_rxn.templatecomplex_refs.clear()
+                template_rxn.templatecomplex_refs.extend(templatecomplex_refs_filter)
+
+            # collect empty reactions
+            if len(template_rxn.templatecomplex_refs) == 0:
+                reactions_to_clear.add(template_rxn.id)
 
         template_reactions_filter = list(
             filter(lambda x: not x['id'] in reactions_to_clear, self.template.data['reactions']))

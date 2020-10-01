@@ -1,7 +1,7 @@
-from cobrakbase.core.kbaseobject import KBaseObject, KBaseObjectBase
+from cobrakbase.core.kbaseobject import KBaseObject, KBaseObjectBase, AttrDict
 from cobrakbase.core.utils import get_id_from_ref
 from cobrakbase.core.kbasegenomesgenome import normalize_role
-from cobrakbase.core.kbasefba.new_template_reaction import NewTemplateReaction
+from cobrakbase.core.kbasefba.new_template_reaction import NewModelTemplateReaction
 
 
 class TemplateRole(KBaseObjectBase):
@@ -44,24 +44,24 @@ class NewModelTemplate(KBaseObject):
             return self.role_set_to_cpx[cpx_role_str]
         return None
         
-    def add_role(self, name, source = 'ModelSEED'):
+    def add_role(self, name, source='ModelSEED'):
         sn = normalize_role(name)
         if sn in self.search_name_to_role_id:
             return self.search_name_to_role_id[sn]
         self.role_last_id += 1
         role_id = self.role_suf + str(self.role_last_id).zfill(5)
-        self.data['roles'].append({
+        self.roles += [AttrDict({
             'aliases': [],
             'features': [],
             'id': role_id,
             'name': name,
             'source': source
-        })
+        })]
         self.search_name_to_role_id[sn] = role_id
         return role_id
     
     def add_complex_from_role_names(self, role_names, source='ModelSEED'):
-        role_ids = set(map(lambda o: self.add_role(o), role_names))
+        role_ids = set(map(lambda o: self.add_role(o, source), role_names))
         complex_id = self.get_complex_from_role(role_ids)
         if complex_id is None:
             self.complex_last_id += 1
@@ -82,7 +82,7 @@ class NewModelTemplate(KBaseObject):
                 })
 
             # print(complex_data)
-            self.data['complexes'].append(complex_data)
+            self.complexes += [AttrDict(complex_data)]
             self.role_set_to_cpx[';'.join(sorted(role_ids))] = complex_id
             
         return complex_id
@@ -102,21 +102,17 @@ class NewModelTemplate(KBaseObject):
                     if int(number_part) > last_id:
                         last_id = int(number_part)
         return last_id
-    
+
     def get_complex(self, id):
-        res = list(filter(lambda x : x['id'] == id, self.data['complexes']))
-        if len(res) == 0:
-            return None
-        return res[0]
-    
+        return self.complexes.get_by_id(id)
+
     def get_reaction(self, id):
-        res = list(filter(lambda x : x['id'] == id, self.data['reactions']))
-        if len(res) == 0:
-            return None
-        return NewTemplateReaction(res[0], self)
-    
+        return self.reactions.get_by_id(id)
+
     def get_role(self, id):
-        res = list(filter(lambda x : x['id'] == id, self.data['roles']))
-        if len(res) == 0:
-            return None
-        return res[0]
+        return self.roles.get_by_id(id)
+
+    def _to_object(self, key, data):
+        if key == 'reactions':
+            return NewModelTemplateReaction(data, self)
+        return super()._to_object(key, data)
