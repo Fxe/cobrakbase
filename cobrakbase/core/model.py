@@ -661,7 +661,9 @@ def build_rxn_id(str):
     return str
 
 def get_id_from_ref(str):
-    return str.split('/')[-1]
+    id = str.split('/')[-1]
+    id = id.replace("|","")
+    return id
 
 def get_genes(gpr):
     genes = set()
