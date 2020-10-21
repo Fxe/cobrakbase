@@ -1,4 +1,45 @@
 
+def validate_enum(o, k, values):
+    if k in o:
+        if o[k] in values:
+            pass
+        else:
+            print('!!')
+    else:
+        print('!')
+def validate_type(o, k, t):
+    if k in o:
+        if type(o[k]) is t:
+            pass
+        else:
+            print('!!!', k, type(o[k]))
+    else:
+        print('!')
+def validate_types(o, k, tt):
+    if k in o:
+        if type(o[k]) in tt:
+            pass
+        else:
+            print('!!!', k, type(o[k]))
+    else:
+        print('!')
+def validate_template_reaction(o):
+    validate_enum(o, 'GapfillDirection', ['>', '<', '='])
+    validate_enum(o, 'direction', ['>', '<', '='])
+    validate_types(o, 'base_cost', [int, float])
+    validate_types(o, 'forward_penalty', [int, float])
+    validate_types(o, 'reverse_penalty', [int, float])
+    validate_types(o, 'maxforflux', [int, float])
+    validate_types(o, 'maxrevflux', [int, float])
+    validate_type(o, 'id', str)
+    validate_type(o, 'name', str)
+    validate_type(o, 'reaction_ref', str)
+    validate_type(o, 'type', str)
+    validate_type(o, 'templatecompartment_ref', str)
+    validate_type(o, 'templatecomplex_refs', list)
+    validate_type(o, 'templateReactionReagents', list)
+#for r in template_broken['reactions']:
+#    validate_template_reaction(r)
 
 class NewModelTemplateValidator():
     def __init__(self, template):

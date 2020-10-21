@@ -1,7 +1,7 @@
-from cobrakbase.core.kbaseobject import KBaseObjectBase
-from cobrakbase.core.utils import get_id_from_ref
+from cobrakbase.core.kbaseobject import KBaseObject
 
-class ChemicalAbundanceMatrix(KBaseObjectBase):
+
+class ChemicalAbundanceMatrix(KBaseObject):
     
     def get_chemical_abundance_data(self, dataset, mapping, attr = 'seed_id'):
         col_index = None

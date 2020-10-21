@@ -53,13 +53,14 @@ class TemplateCuration:
             }
         return a
 
-    def get_curation_data(self, template_set_id):
+    def get_curation_data(self, template_set_id, accept_scores=None):
         a = self.get_reaction_annotation()
-        accept_scores = {
-            # 'opt_score3', # *
-            # 'opt_score2', # **
-            'opt_score1'  # ***
-        }
+        if accept_scores is None:
+            accept_scores = {
+                # 'opt_score3', # *
+                # 'opt_score2', # **
+                'opt_score1'  # ***
+            }
         remove = {}
         accept = {}
         for rxn_id in a[template_set_id]:
@@ -157,16 +158,20 @@ class TemplateCuration:
 
     def remove_role(self, trxn, role_id):
         complex_roles = trxn.get_complex_roles()
-        delete_set = set()
+
+        delete_set = set()  # Collect complexes to remove
         for complex_id in complex_roles:
             if role_id in complex_roles[complex_id]:
                 delete_set.add('~/complexes/id/' + complex_id)
 
-        templatecomplex_refs = list(filter(
-            lambda x: not x in delete_set,
-            trxn.data['templatecomplex_refs']))
+        # build new complex set
+        complex_refs = list(filter(lambda x: x not in delete_set, trxn.templatecomplex_refs))
 
-        return templatecomplex_refs
+        # clear and assingn new complex set
+        trxn.templatecomplex_refs.clear()
+        trxn.templatecomplex_refs += complex_refs
+
+        return trxn.templatecomplex_refs
 
     def update_roles(self, trxn, rxn_role_change, search_name_to_role_id, auto_complex=False):
         # trxn_roles = trxn.get_complex_roles()
@@ -193,8 +198,8 @@ class TemplateCuration:
                     else:
                         # print('delete or ignore', role_id, role['name'])
                         templatecomplex_refs = self.remove_role(trxn, role_id)
-                        if templatecomplex_refs is not None:
-                            trxn.data['templatecomplex_refs'] = templatecomplex_refs
+                        #if templatecomplex_refs is not None:
+                        #    trxn.data['templatecomplex_refs'] = templatecomplex_refs
                         logger.debug('%s delete role %s, removed %d complex(es)', trxn.id, nfunction,
                                      len(trxn.data['templatecomplex_refs']) - len(templatecomplex_refs))
                         # print(('+' if rxn_role_change[function_id] else '-') + function_id, nfunction, role_id, role['source'])

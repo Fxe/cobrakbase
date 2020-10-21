@@ -120,6 +120,8 @@ class TemplateManipulator:
                                                reverse_penalty=-1000,
                                                reaction_type='conditional'):
         rxn = self.modelseed_database.get_seed_reaction(rxn_id)
+        if rxn is None:
+            return None
         if direction is None:
             direction = rxn.data['direction']
         cmp = get_cmp_token(compartment_config.values())  # calculate compartment
@@ -136,7 +138,7 @@ class TemplateManipulator:
             'id': "{}_{}".format(rxn.id, cmp),
             'maxforflux': 100,
             'maxrevflux': -100,
-            'name': rxn.id if type(name) == float else name,
+            'name': rxn.id if type(name) == float or len(name.strip()) == 0 else name,
             'reaction_ref': '~/reactions/id/' + rxn.id,
             'templateReactionReagents': template_reaction_reagents,
             'templatecompartment_ref': '~/compartments/id/' + cmp,

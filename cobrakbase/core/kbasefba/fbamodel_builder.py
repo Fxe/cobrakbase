@@ -2,6 +2,7 @@ import logging
 import copy
 from cobra.core import Reaction, Gene
 from cobra.util.solver import linear_reaction_coefficients
+from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbasefba import ModelCompound, ModelReaction, Biomass, FBAModel
 
 logger = logging.getLogger(__name__)
@@ -15,7 +16,7 @@ def _build_gene_id(s):
 
 class FBAModelBuilder:
 
-    def __init__(self, data, info, args=None, auto_exchange='e0'):
+    def __init__(self, data, info=None, args=None, auto_exchange='e0'):
         self.data = data
         self.info = info
         self.args = args
@@ -39,6 +40,9 @@ class FBAModelBuilder:
         self.COBRA_DEFAULT_UB = 1000
 
         self.media_const = {}
+
+        if self.info is None:
+            self.info = KBaseObjectInfo(object_type="KBaseFBA.FBAModel")
 
     @staticmethod
     def from_kbase_json(data, info, args=None, auto_exchange='e0'):

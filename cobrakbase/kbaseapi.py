@@ -1,9 +1,13 @@
 import sys
 import time
+import logging
 from pathlib import Path
 from cobrakbase.Workspace.WorkspaceClient import Workspace as WorkspaceClient
 from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbase_object_factory import KBaseObjectFactory
+from cobrakbase.Workspace.baseclient import ServerError
+
+logger = logging.getLogger(__name__)
 
 KBASE_WS_URL = "https://kbase.us/services/ws/"
 DEV_KBASE_WS_URL = "https://appdev.kbase.us/services/ws/"
@@ -67,20 +71,32 @@ class KBaseAPI:
         while tries < 3:
             try:
                 return self.ws_client.get_objects2(args)
-            except:
-                print("Workspace get_objects2 call failed. Trying again!")
+            except ServerError as e:
+                if e.code == -32400:
+                    logger.error(e.message)
+                    return None
+                if e.code == -32500:
+                    logger.warning(e.message)
+                    return None
+                logger.warning("Workspace get_objects2 call failed [%s:%s - %s]. Trying again!",
+                               e.name, e.code, e.message)
                 tries += 1
-                time.sleep(10)
-        print("get_objects2 failed after multiple tries:", sys.exc_info()[0])
+                time.sleep(500)  # Give half second
+        logger.warning("get_objects2 failed after multiple tries: %s", sys.exc_info()[0])
         raise
 
     def get_object(self, object_id, ws):
-        return self.get_objects2({"objects": [self.process_workspace_identifiers(object_id, ws)]})["data"][0]["data"]
+        res = self.get_objects2({"objects": [self.process_workspace_identifiers(object_id, ws)]})
+        if res is None:
+            return None
+        return res["data"][0]["data"]
 
     def get_from_ws(self, id_or_ref, workspace=None):
-        output = self.get_objects2({"objects": [self.process_workspace_identifiers(id_or_ref, workspace)]})
+        res = self.get_objects2({"objects": [self.process_workspace_identifiers(id_or_ref, workspace)]})
+        if res is None:
+            return None
         factory = KBaseObjectFactory()
-        return factory.create(output, None)
+        return factory.create(res, None)
 
     def save_object(self, object_id, ws, object_type, data):
         from cobrakbase import __version__
