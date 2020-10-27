@@ -340,7 +340,30 @@ class KBaseFBAModel(KBaseObject):
     def get_metabolite_degree(self, cpd_id):
         return len(self.find_reaction_by_compound_id(cpd_id))
     
-
+    def build_peakstring(self,link,additional_peak_hash = {}):
+        peakstring_hash = dict()
+        for met in self.modelcompounds:
+            if hasattr(met,'dblinks'):
+                if link in met.dblinks:
+                    array = met.dblinks[link]
+                    for form in array:
+                        if form not in peakstring_hash:
+                            peakstring_hash[form] = list()
+                        peakstring_hash[form].append(met.id)
+        for peak in additional_peak_hash:
+            if peak not in peakstring_hash:
+                peakstring_hash[peak] = list()
+            for cpd in additional_peak_hash[peak]:
+                if cpd not in peakstring_hash[peak]:
+                    peakstring_hash[peak].append(cpd)
+        print(len(peakstring_hash))
+        peakstring = ""
+        for form in peakstring_hash:
+            peakstring += form+":1"
+            for cpd in peakstring_hash[form]:
+                peakstring += ":"+cpd
+            peakstring += ";"
+        return peakstring
     
     @property
     def reactions(self):
