@@ -55,7 +55,7 @@ class KBaseAPI:
                 objspec['wsid'] = workspace
             else:
                 objspec['workspace'] = workspace
-            if isinstance(workspace, int):
+            if isinstance(id_or_ref, int):
                 objspec['objid'] = id_or_ref
             else:
                 objspec['name'] = id_or_ref
