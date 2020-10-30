@@ -5,12 +5,11 @@ from cobrakbase.core.kbasebiochem import Media
 from cobrakbase.core.kbasefba.fbamodel_builder import FBAModelBuilder
 from cobrakbase.core import KBaseFBAModel, KBaseGenome
 from cobrakbase.core.kbasegenome.pangenome import KBasePangenome
+from cobrakbase.core.kbasematrices.chemicalabundancematrix import ChemicalAbundanceMatrix
 from cobrakbase.core.kbasefba.newmodeltemplate import NewModelTemplate
-
 
 def _build_fbamodel(x, y, z):
     return FBAModelBuilder.from_kbase_json(x, y, z).build()
-
 
 class KBaseObjectFactory:
     """
@@ -25,7 +24,8 @@ class KBaseObjectFactory:
             # add FBA
             'KBaseBiochem.Media': Media,
             'KBaseGenomes.Genome': KBaseGenome,
-            'KBaseGenomes.Pangenome': KBasePangenome
+            'KBaseGenomes.Pangenome': KBasePangenome,
+            'KBaseMatrices.ChemicalAbundanceMatrix': ChemicalAbundanceMatrix
         }
     
     def build_object_from_file(self, filename, object_type):
