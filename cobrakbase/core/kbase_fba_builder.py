@@ -62,21 +62,7 @@ class KBaseFBABuilder:
     def build(self):
         # Saving final solution as an FBA object in KBase
         fbaobj = {
-            "FBABiomassVariables": [
-                {
-                    "biomass_ref": "~/fbamodel/biomasses/id/bio1",
-                    "class": "unknown",
-                    "lowerBound": self.model.reactions.bio1_biomass.lower_bound,
-                    "upperBound": self.model.reactions.bio1_biomass.upper_bound,
-                    "max": self.model.reactions.bio1_biomass.upper_bound,
-                    "min": self.model.reactions.bio1_biomass.lower_bound,
-                    "other_max": [],
-                    "other_min": [],
-                    "other_values": [],
-                    "value": self.flux_dist['bio1_biomass'],
-                    "variableType": "biomassflux"
-                }
-            ],
+            "FBABiomassVariables": [],
             "FBACompoundBounds": [],
             "FBACompoundVariables": [],
             "FBAConstraints": [],
@@ -146,53 +132,46 @@ class KBaseFBABuilder:
         
         for varname, value in self.flux_dist.items():
             rxn = self.model.reactions.get_by_id(varname)
-
+            variable_min = rxn.lower_bound
+            variable_max = rxn.upper_bound
+            variable_class = 'unknown'
+            if varname in self._fva_data:
+                variable_min, variable_max = self._fva_data[varname]
+                variable_class = self.get_variable_class(variable_min, variable_max)
+            variable_data = {
+                "class": variable_class,
+                "lowerBound": rxn.lower_bound,
+                "max": variable_max,
+                "min": variable_min,
+                "upperBound": rxn.upper_bound, 
+                "other_max": [],
+                "other_min": [],
+                "other_values": [],
+                "value": value, # in kbase we assume positive uptake negative excretion
+                "variableType": "flux"
+            }
+            variable_key = "FBAReactionVariables"
             if varname.startswith("EX_"):
-                variable_min = rxn.lower_bound
-                variable_max = rxn.upper_bound
-                variable_class = 'unknown'
-                if varname in self._fva_data:
-                    variable_min, variable_max = self._fva_data[varname]
-                    variable_class = self.get_variable_class(variable_min, variable_max)
-                fbaobj["FBACompoundVariables"].append({
-                    "class": variable_class,
-                    "lowerBound": -1 * rxn.upper_bound,
-                    "max": -1 * variable_min,
-                    "min": -1 * variable_max,
-                    "upperBound": -1 * rxn.lower_bound,
-                    "modelcompound_ref": "~/fbamodel/modelcompounds/id/"+varname[3:],
-                    "other_max": [],
-                    "other_min": [],
-                    "other_values": [],
-                    "value": -1*value, # in kbase we assume positive uptake negative excretion
-                    "variableType": "drainflux"
-                })
+                lower = variable_data["lowerBound"]
+                variable_data["lowerBound"] = -1*variable_data["upperBound"]
+                variable_data["upperBound"] = -1*lower
+                lower = variable_data["min"]
+                variable_data["min"] = -1*variable_data["max"]
+                variable_data["max"] = -1*lower
+                variable_data["value"] = -1*variable_data["value"]
+                variable_data["variableType"] = "drainflux"
+                variable_data["modelcompound_ref"] = "~/fbamodel/modelcompounds/id/"+varname[3:],
+                variable_key = "FBACompoundVariables"
             elif varname.endswith("_biomass") or varname.startswith("DM_"):
-                logger.debug("SKIP %s", varname)
+                variable_data["variableType"] = "biomassflux"
+                variable_data["biomass_ref"] = "~/fbamodel/biomasses/id/"+varname[0:-8],                
+                variable_key = "FBABiomassVariables"
             else:
-                variable_min = rxn.lower_bound
-                variable_max = rxn.upper_bound
-                variable_class = 'unknown'
-                if varname in self._fva_data:
-                    variable_min, variable_max = self._fva_data[varname]
-                    variable_class = self.get_variable_class(variable_min, variable_max)
-
-                fbaobj["FBAReactionVariables"].append({
-                    "biomass_dependencies": [],
-                    "class": variable_class,
-                    "coupled_reactions": [],
-                    "exp_state": 'unknown',  # usage ?
-                    "expression": 0,
-                    "min": variable_min,
-                    "max": variable_max,
-                    "lowerBound": rxn.lower_bound,
-                    "upperBound": rxn.upper_bound,
-                    "modelreaction_ref": "~/fbamodel/modelreactions/id/"+varname,
-                    "other_max": [],
-                    "other_min": [],
-                    "other_values": [],
-                    "scaled_exp": 0,  # what is this ?
-                    "value": value,
-                    "variableType": "flux"  # what is this ?
-                })
+                variable_data["modelreaction_ref"] = "~/fbamodel/modelreactions/id/"+varname
+                variable_data["exp_state"] = 'unknown'
+                variable_data["biomass_dependencies"] = []
+                variable_data["coupled_reactions"] = []
+                variable_data["expression"] = 0
+                variable_data["scaled_exp"] = 0
+            fbaobj[variable_key].append(variable_data)
         return fbaobj

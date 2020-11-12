@@ -20,6 +20,11 @@ class KBaseObject:
     Base object to use for all KBase objects pulled from workspace
     """
     def __init__(self, data=None, info=None, args=None, kbase_type=None):
+        #If an object has a key "data", we need to replace it befor setting attributes to the data
+        if "data" in data:
+            data["_data"] = data["data"]
+            del(data["data"])
+        
         # Turning all fields in the dictionary into attributes
         if args is None:
             args = {}
