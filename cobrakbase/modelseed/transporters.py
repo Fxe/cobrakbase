@@ -1,6 +1,7 @@
 from cobrakbase.core.kbasegenomesgenome import normalize_role
 import pandas as pd
 
+
 def is_transport_pts(rxn):
     pep = False
     pyr = False
@@ -44,6 +45,7 @@ def is_transport_pts(rxn):
         return True, inside, outside, t, transport_compound
     else:
         return (False, None, None, None, None)
+
 
 def is_transport_abc(rxn):
     atp = False
@@ -99,7 +101,7 @@ def is_transport_abc(rxn):
         return (False, None, None, None, None)
 
 
-class TransportersPipeline():
+class TransportersPipeline:
 
     def __init__(self, modelseed_database, annotation_api):
         self.db = modelseed_database
