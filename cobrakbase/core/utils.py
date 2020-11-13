@@ -6,6 +6,8 @@ logger = logging.getLogger(__name__)
 
 
 def get_cmp_token(cmps):
+    if 'k' in cmps:
+        return 'k'
     if len(cmps) == 1:
         return list(cmps)[0]
     if len(cmps) == 2:

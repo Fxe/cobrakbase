@@ -98,12 +98,14 @@ class TemplateManipulator:
 
     def configure_stoichiometry(self, cstoichiometry, compartment_config):
         template_reaction_reagents = []
+        stoich_cmps = set()
         for t in cstoichiometry:
             cpd_id = t[0]
             cmp_token = t[1]
 
             if not cmp_token in compartment_config:
                 raise Exception('missing compartment_config for ' + cmp_token)
+            stoich_cmps.add(compartment_config[cmp_token])
             ccpd_id = "{}_{}".format(cpd_id, compartment_config[cmp_token])
             self.add_compcompound(cpd_id, compartment_config[cmp_token])
             templatecompcompound_ref = "~/compcompounds/id/" + ccpd_id
@@ -111,7 +113,7 @@ class TemplateManipulator:
                 'coefficient': cstoichiometry[t],
                 'templatecompcompound_ref': templatecompcompound_ref})
 
-        return template_reaction_reagents
+        return template_reaction_reagents, stoich_cmps
 
     def build_template_reaction_from_modelseed(self, rxn_id, compartment_config,
                                                direction=None,
@@ -124,10 +126,11 @@ class TemplateManipulator:
             return None
         if direction is None:
             direction = rxn.data['direction']
-        cmp = get_cmp_token(compartment_config.values())  # calculate compartment
+
+        template_reaction_reagents, stoich_cmps = self.configure_stoichiometry(rxn.cstoichiometry, compartment_config)
+        cmp = get_cmp_token(stoich_cmps)  # calculate compartment
         self.add_compartment(cmp, cmp)
 
-        template_reaction_reagents = self.configure_stoichiometry(rxn.cstoichiometry, compartment_config)
         name = rxn.data['name']
         template_reaction = {
             'GapfillDirection': '>',
