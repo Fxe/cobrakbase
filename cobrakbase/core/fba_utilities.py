@@ -55,6 +55,8 @@ class KBaseFBAUtilities():
         self.reversibility_binary = dict()
         self.reversibility_binary_constraints = dict()
         self.binary_flux_variables = dict()
+        self.total_flux_variables = dict()
+        self.total_flux_constraints = dict()
         self.binary_flux_constraints = dict()
         self.simple_thermo_constraints = dict()
         self.metabolomics_peak_variables = dict()
@@ -193,12 +195,14 @@ class KBaseFBAUtilities():
                 reaction.update_variable_bounds()
     
     def add_total_flux_constraints(self,reaction_filter = None):    
-        for reaction in model.reactions:
+        for reaction in self.cobramodel.reactions:
             if reaction_filter == None or reaction.id in reaction_filter:
                 self.total_flux_variables[reaction.id] = self.cobramodel.problem.Variable(reaction.id+"_tot", lb=0,ub=self.COBRA_DEFAULT_UB)
-                self.total_flux_constraints[reaction.id]["ff"] = self.cobramodel.problem.Constraint(
+                self.cobramodel.add_cons_vars(self.total_flux_variables[reaction.id])
+                self.total_flux_constraints[reaction.id] = self.cobramodel.problem.Constraint(
                     reaction.forward_variable + reaction.reverse_variable - self.total_flux_variables[reaction.id],lb=0,ub=0,name=reaction.id+"_tot"
                 )
+                self.cobramodel.add_cons_vars(self.total_flux_constraints[reaction.id])
     
     def add_reversibility_binary_constraints(self,reaction_filter = None):
         #Adding thermodynamic constraints
