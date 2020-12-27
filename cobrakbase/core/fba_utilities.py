@@ -222,7 +222,7 @@ class KBaseFBAUtilities():
     
     def set_objective_from_target_reaction(self,target_reaction,maximize = 1):
         if target_reaction[0:3] == "bio":
-            target_reaction = self.cobramodel.reactions.get_by_id(target_reaction+"_biomass")
+            target_reaction = self.cobramodel.reactions.get_by_id(target_reaction)
         else:
             target_reaction = self.cobramodel.reactions.get_by_id(target_reaction)
         sense = "max"
@@ -390,11 +390,11 @@ class KBaseFBAUtilities():
         return cobra_reaction
 
     def build_model_extended_for_gapfilling(self,extend_with_template = 1,source_models = [], input_templates = [],model_penalty = 1,reaction_scores = {}):
-        model_id = self.fbamodel.id+".gf"
+        model_id = self.fbamodel["id"]+".gf"
         
         #Determine all indecies that should be gapfilled
         indexlist = [0]*1000
-        compounds = self.fbamodel.get_metabolites()
+        compounds = self.fbamodel["modelcompounds"]
         for compound in compounds:
             compartment = compound['modelcompartment_ref'].split("/").pop()
             basecomp = compartment[0:1]
@@ -473,11 +473,13 @@ class KBaseFBAUtilities():
             new_penalties[cobra_reaction.id] = dict();
             if cobra_reaction.id not in self.cobramodel.reactions and cobra_reaction.id not in new_reactions:
                 new_reactions[cobra_reaction.id] = cobra_reaction
+                new_penalties[cobra_reaction.id]["added"] = 1
                 if cobra_reaction.lower_bound < 0:
                     new_penalties[cobra_reaction.id]["reverse"] = model_penalty
                 if cobra_reaction.upper_bound > 0:
                     new_penalties[cobra_reaction.id]["forward"] = model_penalty
             elif cobra_reaction.reversibility:
+                new_penalties[cobra_reaction.id]["reversed"] = 1
                 if self.cobramodel.reactions.get_by_id(cobra_reaction.id).lower_bound == 0:
                     self.cobramodel.reactions.get_by_id(cobra_reaction.id).lower_bound = cobra_reaction.lower_bound
                     new_penalties[cobra_reaction.id]["reverse"] = model_penalty
@@ -520,10 +522,10 @@ class KBaseFBAUtilities():
         template = None
         if index in input_templates:
             template = input_templates[index]
-        elif index in self.fbamodel.data['template_refs']:
-            template = self.kbapi.get_from_ws(self.fbamodel.data['template_refs'][index])
+        elif index in self.fbamodel['template_refs']:
+            template = self.kbapi.get_from_ws(self.fbamodel['template_refs'][index])
         else:
-            template = self.kbapi.get_from_ws(self.fbamodel.data['template_ref'])
+            template = self.kbapi.get_from_ws(self.fbamodel['template_ref'])
 
         if template.info.type != "KBaseFBA.NewModelTemplate":
             raise ObjectError(template.info.type+" loaded when KBaseFBA.NewModelTemplate expected")
@@ -549,7 +551,7 @@ class KBaseFBAUtilities():
         
         for template_reaction in template.reactions:
             if template_reaction.id.split("_")[0] in self.blacklist:
-                next            
+                continue            
             cobra_reaction = self.convert_template_reaction(template_reaction,index,template,1)
             new_penalties[cobra_reaction.id] = dict();
             if cobra_reaction.id not in self.cobramodel.reactions and cobra_reaction.id not in new_reactions:
@@ -559,8 +561,10 @@ class KBaseFBAUtilities():
                     new_penalties[cobra_reaction.id]["reverse"] = template_reaction.base_cost + template_reaction.reverse_penalty
                 if cobra_reaction.upper_bound > 0:
                     new_penalties[cobra_reaction.id]["forward"] = template_reaction.base_cost + template_reaction.forward_penalty
+                new_penalties[cobra_reaction.id]["added"] = 1
             elif template_reaction.GapfillDirection == "=":
                 #Adjusting directionality as needed for existing reactions
+                new_penalties[cobra_reaction.id]["reversed"] = 1
                 if self.cobramodel.reactions.get_by_id(cobra_reaction.id).lower_bound == 0:
                     self.cobramodel.reactions.get_by_id(cobra_reaction.id).lower_bound = template_reaction.maxrevflux
                     self.cobramodel.reactions.get_by_id(cobra_reaction.id).update_variable_bounds()
@@ -663,64 +667,75 @@ class KBaseFBAUtilities():
         if rxnobj.id not in self.binary_flux_variables:
             self.binary_flux_variables[rxnobj.id] = dict()
             self.binary_flux_constraints[rxnobj.id] = dict()
-        if forward == 1 and rxnobj.upper_bound > 0 and "f" not in self.binary_flux_variables[rxnobj.id]:
-            self.binary_flux_variables[rxnobj.id]["f"] = self.cobramodel.problem.Variable(rxnobj.id+"_fb", lb=0,ub=1,type="binary")
-            self.cobramodel.add_cons_vars(self.binary_flux_variables[rxnobj.id]["f"])
-            self.binary_flux_constraints[rxnobj.id]["f"] = self.cobramodel.problem.Constraint(
-                1000*self.binary_flux_variables[rxnobj.id]["f"] - rxnobj.forward_variable,lb=0,ub=None,name=rxnobj.id+"_fb"
+        if forward == 1 and rxnobj.upper_bound > 0 and "forward" not in self.binary_flux_variables[rxnobj.id]:
+            self.binary_flux_variables[rxnobj.id]["forward"] = self.cobramodel.problem.Variable(rxnobj.id+"_fb", lb=0,ub=1,type="binary")
+            self.cobramodel.add_cons_vars(self.binary_flux_variables[rxnobj.id]["forward"])
+            self.binary_flux_constraints[rxnobj.id]["forward"] = self.cobramodel.problem.Constraint(
+                1000*self.binary_flux_variables[rxnobj.id]["forward"] - rxnobj.forward_variable,lb=0,ub=None,name=rxnobj.id+"_fb"
             )
-            self.cobramodel.add_cons_vars(self.binary_flux_constraints[rxnobj.id]["f"])
-        if reverse == 1 and rxnobj.lower_bound < 0 and "b" not in self.binary_flux_variables[rxnobj.id]:
-            self.binary_flux_variables[rxnobj.id]["b"] = self.cobramodel.problem.Variable(rxnobj.id+"_bb", lb=0,ub=1,type="binary")
-            self.cobramodel.add_cons_vars(self.binary_flux_variables[rxnobj.id]["b"])
-            self.binary_flux_constraints[rxnobj.id]["b"] = self.cobramodel.problem.Constraint(
-                1000*self.binary_flux_variables[rxnobj.id]["b"] - rxnobj.forward_variable,lb=0,ub=None,name=rxnobj.id+"_bb"
+            self.cobramodel.add_cons_vars(self.binary_flux_constraints[rxnobj.id]["forward"])
+        if reverse == 1 and rxnobj.lower_bound < 0 and "reverse" not in self.binary_flux_variables[rxnobj.id]:
+            self.binary_flux_variables[rxnobj.id]["reverse"] = self.cobramodel.problem.Variable(rxnobj.id+"_bb", lb=0,ub=1,type="binary")
+            self.cobramodel.add_cons_vars(self.binary_flux_variables[rxnobj.id]["reverse"])
+            self.binary_flux_constraints[rxnobj.id]["reverse"] = self.cobramodel.problem.Constraint(
+                1000*self.binary_flux_variables[rxnobj.id]["reverse"] - rxnobj.forward_variable,lb=0,ub=None,name=rxnobj.id+"_bb"
             )
-            self.cobramodel.add_cons_vars(self.binary_flux_constraints[rxnobj.id]["b"])
+            self.cobramodel.add_cons_vars(self.binary_flux_constraints[rxnobj.id]["reverse"])
     
     def binary_check_gapfilling_solution(self,gapfilling_penalties,add_solution_exclusion_constraint):
-        min_reaction_objective = self.cobramodel.problem.Objective(Zero,direction="min")
         objcoef = {}
+        flux_values = self.compute_flux_values_from_variables()
         for rxnobj in self.cobramodel.reactions:
             if rxnobj.id in gapfilling_penalties:
-                if "reverse" in gapfilling_penalties[rxnobj.id] and rxnobj.reverse_variable.primal > 0:
-                    create_binary_variables(rxnobj,0,1)
-                    objcoef[self.binary_flux_variables[rxnobj.id]["b"]] = 1
-                if "forward" in gapfilling_penalties[rxnobj.id] and rxnobj.forward_variable.primal > 0:
-                    create_binary_variables(rxnobj,1,0)
-                    objcoef[self.binary_flux_variables[rxnobj.id]["f"]] = 1
+                if "reverse" in gapfilling_penalties[rxnobj.id] and flux_values[rxnobj.id]["reverse"] > Zero:
+                    self.create_binary_variables(rxnobj,0,1)
+                    objcoef[self.binary_flux_variables[rxnobj.id]["reverse"]] = 1
+                if "forward" in gapfilling_penalties[rxnobj.id] and flux_values[rxnobj.id]["forward"] > Zero:
+                    self.create_binary_variables(rxnobj,1,0)
+                    objcoef[self.binary_flux_variables[rxnobj.id]["forward"]] = 1
         with self.cobramodel:
-            #Setting all reactions not in the solution to zero
+            #Setting all gapfilled reactions not in the solution to zero
+            min_reaction_objective = self.cobramodel.problem.Objective(Zero,direction="min")
             for rxnobj in self.cobramodel.reactions:
-                if rxnobj.reverse_variable.primal == 0:
-                    rxnobj.reverse_variable.upper_bound = 0
-                if rxnobj.forward_variable.primal == 0:
-                    rxnobj.forward_variable.upper_bound = 0
+                if rxnobj.id in gapfilling_penalties:
+                    if "reverse" in gapfilling_penalties[rxnobj.id] and flux_values[rxnobj.id]["reverse"] <= Zero:
+                        rxnobj.lower_bound = 0
+                    if "forward" in gapfilling_penalties[rxnobj.id] and flux_values[rxnobj.id]["forward"] <= Zero:
+                        rxnobj.upper_bound = 0
+                    rxnobj.update_variable_bounds()
             #Setting the objective to be minimization of sum of binary variables
             self.cobramodel.objective = min_reaction_objective
             min_reaction_objective.set_linear_coefficients(objcoef)
-            solution = self.cobramode.optimize()
+            with open('GapfillBinary.lp', 'w') as out:
+                out.write(str(self.cobramodel.solver))
+            self.cobramodel.optimize()
+            flux_values = self.compute_flux_values_from_variables()
         if add_solution_exclusion_constraint == 1:
-            self.add_binary_solution_exclusion_constraint()
-        return solution
+            self.add_binary_solution_exclusion_constraint(flux_values)
+        return flux_values
     
-    def add_binary_solution_exclusion_constraint(self):
+    #Adds a constraint that eliminates a gapfilled solution from feasibility so a new solution can be obtained
+    def add_binary_solution_exclusion_constraint(self,flux_values):
         count = len(self.solution_exclusion_constraints)
         solution_coef = {}
         solution_size = 0
         for reaction in self.binary_flux_variables:
             for direction in self.binary_flux_variables[reaction]:
-                if self.binary_flux_variables[reaction][direction].primal > 0.5:
+                if flux_values[reaction][direction] > Zero:
                     solution_size += 1
                     solution_coef[self.binary_flux_variables[reaction][direction]] = 1
-        new_exclusion_constraint = self.cobramodel.problem.Constraint(
-            Zero,lb=None,ub=(solution_size-1),name="exclusion."+str(count+1)
-        )
-        self.cobramodel.add_cons_vars(new_exclusion_constraint)
-        new_exclusion_constraint.set_linear_coefficients(solution_coef)
-        self.solution_exclusion_constraints.append(new_exclusion_constraint);
-        return new_exclusion_constraint
+        if len(solution_coef) > 0:
+            new_exclusion_constraint = self.cobramodel.problem.Constraint(
+                Zero,lb=None,ub=(solution_size-1),name="exclusion."+str(count+1)
+            )
+            self.cobramodel.add_cons_vars(new_exclusion_constraint)
+            self.cobramodel.solver.update()
+            new_exclusion_constraint.set_linear_coefficients(solution_coef)
+            self.solution_exclusion_constraints.append(new_exclusion_constraint);
+            return new_exclusion_constraint
+        return None
     
+    #Takes gapfilled penalties and creates and objective function minimizing gapfilled reactions
     def create_minimal_reaction_objective(self,penalty_hash,default_penalty = 0):
         reaction_objective = self.cobramodel.problem.Objective(
             Zero,
@@ -743,7 +758,8 @@ class KBaseFBAUtilities():
                 
         self.cobramodel.objective = reaction_objective
         reaction_objective.set_linear_coefficients(obj_coef)
-        
+    
+    #Required this function to add gapfilled compounds to a KBase model for saving gapfilled model    
     def convert_cobra_compound_to_kbcompound(self,cpd,kbmodel,add_to_model = 1):
         refid = "cpd00000"
         if re.search('cpd\d+_[a-z]+',cpd.id):
@@ -767,6 +783,7 @@ class KBaseFBAUtilities():
             kbmodel.modelcompounds.append(cpd_data)
         return cpd_data
 
+    #Required this function to add gapfilled reactions to a KBase model for saving gapfilled model    
     def convert_cobra_reaction_to_kbreaction(self,rxn,kbmodel,direction = "=",add_to_model = 1):
         rxnref = "~/template/reactions/id/rxn00000_c"
         if re.search('rxn\d+_[a-z]+',rxn.id):
@@ -803,7 +820,46 @@ class KBaseFBAUtilities():
             kbmodel.modelreactions.append(rxn_data)
         return rxn_data
     
-    def add_gapfilling_solution_to_model(self,newmodel,penalties,media_ref):
+    def convert_objective_to_constraint(self,lower_bound,upper_bound):
+        old_obj_variable = self.cobramodel.problem.Variable(
+            name="old_objective_variable",
+            lb=lower_bound,ub=upper_bound
+        )
+        old_obj_constraint = self.cobramodel.problem.Constraint(
+            self.cobramodel.solver.objective.expression - old_obj_variable,
+            lb=0,
+            ub=0,
+            name="old_objective_constraint",
+        )
+        self.cobramodel.add_cons_vars([old_obj_variable, old_obj_constraint])
+    
+    def compute_flux_values_from_variables(self):
+        flux_values = {}
+        for rxnobj in self.cobramodel.reactions:
+            flux_values[rxnobj.id] = {}
+            flux_values[rxnobj.id]["reverse"] = rxnobj.reverse_variable.primal
+            flux_values[rxnobj.id]["forward"] = rxnobj.forward_variable.primal
+        return flux_values
+            
+    def compute_gapfilled_solution(self,penalties,flux_values = None):
+        if flux_values == None:
+            flux_values = self.compute_flux_values_from_variables()
+        output = {"reversed" : {},"new" : {}}
+        for reaction in self.cobramodel.reactions:
+            if reaction.id in penalties:
+                if flux_values[reaction.id]["forward"] > Zero and "forward" in penalties[reaction.id]:
+                    if "added" in penalties[reaction.id]:
+                        output["new"][reaction.id] = ">"
+                    else:
+                        output["reversed"][reaction.id] = ">"
+                elif flux_values[reaction.id]["reverse"] > Zero and "reverse" in penalties[reaction.id]:
+                    if "added" in penalties[reaction.id]:
+                        output["new"][reaction.id] = "<"
+                    else:
+                        output["reversed"][reaction.id] = "<"
+        return output
+        
+    def add_gapfilling_solution_to_kbase_model(self,newmodel,penalties,media_ref):
         gfid = None
         if gfid == None:
             largest_index = 0
