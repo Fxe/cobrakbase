@@ -91,3 +91,58 @@ class KBaseGenome(KBaseObjectBase):
             faa_features.append('>' + feature['id'] + '\n' + feature['protein_translation'])
 
         return '\n'.join(faa_features)
+    
+    def ontology_terms_to_reactions(self,reaction_ontology_hash,selected_events = {},select_all = 1):
+        #If the genome has no ontology then we just exit
+        if "ontology_events" not in self.data:
+            return {} 
+        #Creating events array - note I don't care if scores are normalized because reactions scores will be normalized
+        event_array = []
+        for event in self.data['ontology_events']:
+            if "description" in event and event["description"] in selected_events:
+                event_array.append(selected_events[event["description"]])
+            elif event["id"]+"-"+event["method"]+"-"+event["timestamp"] in selected_events:
+                event_array.append(selected_events[event["id"]+"-"+event["method"]+"-"+event["timestamp"]])
+            elif select_all == 1:
+                event_array.append(1)
+            else:
+                event_array.append(0)
+        #Cycling through features and computing reaction-gene scores
+        reaction_scores = {}
+        count = 0
+        average = 0
+        stddev = 0
+        for feature in self.data['features']:
+            #Gene reaction scores are stored here then consolidated in the reaction_scores datastructure
+            gene_reaction_scores = {}
+            if "ontology_terms" in feature:
+                for ontology in feature["ontology_terms"]:
+                    for term in feature["ontology_terms"][ontology]:
+                        if term in reaction_ontology_hash:
+                            for reaction in reaction_ontology_hash[term]:
+                                #Initializing reaction score
+                                if reaction not in gene_reaction_scores:
+                                    gene_reaction_scores[reaction] = 0
+                                for event in feature["ontology_terms"][type][term]:
+                                    if event_array[event] != 0:
+                                        gene_reaction_scores[reaction] += event_array[event]
+            #Consolidating gene-level scores into reaction_scores datastructure
+            for reaction in gene_reaction_scores:
+                if reaction not in reaction_scores:
+                    reaction_scores[reaction] = {}
+                reaction_scores[reaction][feature['id']] = gene_reaction_scores[reaction]
+                average += gene_reaction_scores[reaction]
+                count += 1
+        average = average/count
+        #Computing stddev of scores
+        for reaction in reaction_scores:
+            for gene in reaction_scores[reaction]:
+                stddev += (reaction_scores[reaction][gene]-average)**2
+        stddev = (stddev/count)**0.5
+        #Normalizing scores        
+        for reaction in reaction_scores:
+            for gene in reaction_scores[reaction]:
+                reaction_scores[reaction][gene] = reaction_scores[reaction][gene]/stddev
+                if reaction_scores[reaction][gene] > 1:
+                    reaction_scores[reaction][gene] = 1
+        return reaction_scores
