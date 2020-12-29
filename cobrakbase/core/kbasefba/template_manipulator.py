@@ -311,6 +311,44 @@ class TemplateManipulator:
 
         return template_reactions_filter
 
+    def upgrade_obsolete(self):
+        def get_non_obsolete(db):
+            for i in rxn.data['linked_reaction'].split(';'):
+                other_rxn = db.get_seed_reaction(i)
+                if not other_rxn.is_obsolete:
+                    return other_rxn
+
+        if self.modelseed_database is None:
+            logger.warning("missing modelseed database")
+            return None
+        all_template_rxn_ids = set(map(lambda x: x.id, self.template.reactions))
+        to_delete = set()
+        for trxn in self.template.reactions:
+            seed_rxn_id = trxn.reaction_ref.split('/')[-1]
+            rxn = self.modelseed_database.get_seed_reaction(seed_rxn_id)
+            if rxn is not None:
+                if rxn.is_obsolete:
+                    correct_version = get_non_obsolete(self.modelseed_database)
+                    ref = trxn.reaction_ref.split('/')[:-1]
+                    ref.append(correct_version.id)
+                    ref = '/'.join(ref)
+                    id_update = trxn.id.split('_')
+                    id_update[0] = correct_version.id
+                    id_update = '_'.join(id_update)
+
+                    # non obsolete version alredy exists then it is duplicate: action delete
+                    if id_update in all_template_rxn_ids:
+                        to_delete.add(trxn.id)
+                    else:
+                        logger.warning('%s %s', rxn, correct_version)
+                        trxn.id = id_update
+                        trxn.reaction_ref = ref
+                        all_template_rxn_ids.add(trxn.id)
+            else:
+                logger.warning('reaction not found in database: %s', trxn.id)
+        for trxn_id in to_delete:
+            trxn = self.template.get_reaction(trxn_id)
+            trxn.templatecomplex_refs.clear()
 
 def add_role_rxn(trxn, functions):
     for function_id in functions:
