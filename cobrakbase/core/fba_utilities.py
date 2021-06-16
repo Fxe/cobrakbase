@@ -43,10 +43,13 @@ class FeasibilityError(Exception):
 
 #New class to store functions to building and tracking new constraints and variables related to our own custom FBA formulations
 class KBaseFBAUtilities():
-    def __init__(self,cobramodel,fbamodel,kbapi,media = None,
-                 default_uptake = 100,default_excretion = 100,blacklist = [],auto_sink = ["cpd02701_c", "cpd11416_c0", "cpd15302_c"]):
+
+    def __init__(self, cobramodel, fbamodel, kbapi, media=None,
+                 default_uptake=100, default_excretion=100, blacklist=[],
+                 auto_sink=["cpd02701_c", "cpd11416_c0", "cpd15302_c"], template=None):
         self.cobramodel = cobramodel
         self.fbamodel = fbamodel
+        self.gapfill_template = template
         self.SBO_ANNOTATION = "sbo"
         self.metabolites_remap = {}
         self.solution_exclusion_constraints = []
@@ -520,7 +523,9 @@ class KBaseFBAUtilities():
         new_penalties = dict()
 
         template = None
-        if index in input_templates:
+        if self.gapfill_template:
+            template = self.gapfill_template
+        elif index in input_templates:
             template = input_templates[index]
         elif index in self.fbamodel['template_refs']:
             template = self.kbapi.get_from_ws(self.fbamodel['template_refs'][index])

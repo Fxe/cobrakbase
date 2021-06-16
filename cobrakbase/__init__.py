@@ -6,6 +6,7 @@ from cobrakbase.core.utils import get_str, get_int, get_id_from_ref
 from cobrakbase.core.converters import KBaseFBAModelToCobraBuilder
 from cobrakbase.kbaseapi import KBaseAPI
 from cobrakbase.Workspace.WorkspaceClient import Workspace as WorkspaceClient
+from cobrakbase import flux_analysis
 from cobra.core import Gene, Metabolite, Model, Reaction
 from cobra.util.solver import linear_reaction_coefficients
 import cobrakbase.core.model

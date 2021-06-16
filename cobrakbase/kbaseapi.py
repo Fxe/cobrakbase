@@ -1,11 +1,13 @@
 import sys
 import time
 import logging
+import cobra
 from pathlib import Path
 from cobrakbase.Workspace.WorkspaceClient import Workspace as WorkspaceClient
 from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbase_object_factory import KBaseObjectFactory
 from cobrakbase.Workspace.baseclient import ServerError
+from cobrakbase.core.kbaseobject import KBaseObject
 
 logger = logging.getLogger(__name__)
 
@@ -99,8 +101,18 @@ class KBaseAPI:
         return factory.create(res, None)
 
     def save_object(self, object_id, ws, object_type, data):
+        to_save = data
+        if isinstance(data, KBaseObject):
+            to_save = data.get_data()
+        # TODO temporary hack implement proper object serializer mapping later
+        if type(data) == cobra.core.model.Model:
+            from cobrakbase.core.kbasefba.fbamodel_from_cobra import CobraModelConverter
+            json, fbamodel = CobraModelConverter(data, None, None).build()
+            json['id'] = object_id # rename object id to the saved object_id
+            # TODO use fbamodel in the future after fixing FBAModel serializer
+            to_save = json
         from cobrakbase import __version__
-        ps = [
+        provenance = [
             {
                 'description': 'COBRA KBase API',
                 'input_ws_objects': [],
@@ -121,10 +133,10 @@ class KBaseAPI:
         params = {
             'workspace': ws,
             'objects': [{
-                'data': data,
+                'data': to_save,
                 'name': object_id,
                 'type': object_type,
-                'provenance': ps
+                'provenance': provenance
             }]
         }
         return self.ws_client.save_objects(params)

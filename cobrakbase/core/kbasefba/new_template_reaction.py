@@ -1,5 +1,6 @@
 import copy
 from cobrakbase.core.kbaseobject import AttrDict
+from cobrakbase.modelseed.modelseed_reaction import to_str2
 
 
 class NewModelTemplateReaction(AttrDict):
@@ -8,6 +9,19 @@ class NewModelTemplateReaction(AttrDict):
         super().__init__(data)
         self.data = data
         self.template = template
+
+    @property
+    def cstoichiometry(self):
+        res = {}
+        for o in self.templateReactionReagents:
+            cpd_id = o['templatecompcompound_ref'].split('/')[-1]
+            cmp = '?'
+            if self.template:
+                if cpd_id in self.template.compcompounds:
+                    compcompound = self.template.compcompounds.get_by_id(cpd_id)
+                    cmp = compcompound['templatecompartment_ref'].split('/')[-1]
+            res[(cpd_id, cmp)] = o['coefficient']
+        return res
 
     def remove_role(self):
         pass
@@ -54,3 +68,22 @@ class NewModelTemplateReaction(AttrDict):
             if k not in ['data', 'template']:
                 d[k] = copy.deepcopy(self[k])
         return d
+
+    def build_reaction_string(self, use_metabolite_names=False, use_compartment_names=None):
+        cpd_name_replace = {}
+        if use_metabolite_names:
+            if self.template:
+                for cpd_id in set(map(lambda x: x[0], self.cstoichiometry)):
+                    name = cpd_id
+                    if cpd_id in self.template.compcompounds:
+                        ccpd = self.template.compcompounds.get_by_id(cpd_id)
+                        cpd = self.template.compounds.get_by_id(ccpd['templatecompound_ref'].split('/')[-1])
+                        name = cpd.name
+                    cpd_name_replace[cpd_id] = name
+            else:
+                return self.data['definition']
+        return to_str2(self, use_compartment_names, cpd_name_replace)
+
+    def __str__(self):
+        return "{id}: {stoichiometry}".format(
+            id=self.id, stoichiometry=self.build_reaction_string())

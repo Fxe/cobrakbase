@@ -15,7 +15,10 @@ def build_cpd_id(s):
 
 class ModelCompound(Metabolite):
 
-    def __init__(self, data):
+    def __init__(self, data, metabolite_id=None, formula=None, name=None, charge=None, compartment=None):
+        """
+        KBase FBAModel Metabolite is a subclass of cobra.core.Metabolite
+        """
         data_copy = copy.deepcopy(data)
         cpd_id = build_cpd_id(data['id'])
         compartment = data_copy['modelcompartment_ref'].split('/')[-1]
@@ -28,6 +31,13 @@ class ModelCompound(Metabolite):
         for key in data_copy:
             if key not in COBRA_DATA:
                 self.__dict__[key] = data_copy[key]
+
+    @staticmethod
+    def from_json(data):
+        data_copy = copy.deepcopy(data)
+        cpd_id = build_cpd_id(data['id'])
+        compartment = data_copy['modelcompartment_ref'].split('/')[-1]
+        return ModelCompound({}, cpd_id, data_copy['formula'], data_copy['name'], data_copy['charge'], compartment)
 
     @property
     def compound_id(self):

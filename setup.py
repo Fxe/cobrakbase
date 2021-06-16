@@ -9,6 +9,7 @@ setup(name='cobrakbase',
       license='MIT',
       packages=find_packages(),
       install_requires=[
+          ""
           "networkx >= 2.4",
           "cobra >= 0.17.1"
       ],

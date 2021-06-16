@@ -40,6 +40,15 @@ class TemplateCuration:
                     res.add(rxn_id)
         return res
 
+    def get_reaction_attributes(self, template_id):
+        res = {}
+        for doc in self.curation_api['templates_reactions'].find():
+            rxn_id, rxn_template_id = doc['_id'].split('@')
+            if rxn_template_id == template_id:
+                attr = doc['attributes']
+                res[rxn_id] = attr
+        return res
+
     def get_reaction_annotation(self):
         a = {}
         for doc in self.curation_api['templates_reactions'].find():

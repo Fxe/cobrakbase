@@ -101,7 +101,6 @@ class KBaseObjectBase:
         self.ws = None
         self.info = info
 
-
     @property
     def id(self):
         if 'id' in self.data:

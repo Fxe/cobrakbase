@@ -1,21 +1,31 @@
 import re
-from cobrakbase.core.kbaseobject import KBaseObjectBase
+from cobrakbase.core.kbaseobject import KBaseObjectBase, KBaseObject, AttrDict
+from cobra.core.dictlist import DictList
+from modelseedpy.core.msgenome import MSGenome
 from cobrakbase.core.utils import get_id_from_ref
 from cobrakbase.core.kbasegenomes_feature import KBaseGenomeFeature
-
 
 def normalize_role(s):
     #print(s)
     s = s.strip().lower()
-    s = re.sub('[\W_]+', '', s) 
+    s = re.sub('[\W_]+', '', s)
     return s
 
 
-class KBaseGenome(KBaseObjectBase):
-    
-    @property
-    def features(self):
-        return list(map(lambda x: KBaseGenomeFeature(x), self.data['features']))
+class KBaseGenome(KBaseObject):
+
+    def __init__(self, data=None, info=None, args=None, kbase_type=None):
+        KBaseObject.__init__(self, data, info, args, kbase_type)
+
+    def _to_object(self, key, data):
+        if key == 'features':
+            return KBaseGenomeFeature(data)
+        else:
+            return AttrDict(data)
+
+#    @property
+#    def features(self):
+#        return list(map(lambda x: KBaseGenomeFeature(x), self.data['features']))
     
     def read_genome_aliases(self):
         gene_aliases = {}

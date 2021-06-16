@@ -40,4 +40,3 @@ class FBAModel(KBaseObject, Model):
                     exchange_reaction.lower_bound, exchange_reaction.upper_bound = in_model[compound_id]
         else:
             Model.medium.fset(self, medium)
-

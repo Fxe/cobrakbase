@@ -76,7 +76,10 @@ COBRA_DATA = ['id', 'name',
 
 class ModelReaction(Reaction):
 
-    def __init__(self, data):
+    def __init__(self, data, reaction_id=None,
+                 name='', subsystem='', lower_bound=0.0, upper_bound=None, model=None):
+        if model:
+            self.model = model
         data_copy = copy.deepcopy(data)
         lower_bound, upper_bound = _get_reaction_constraints(data)
         rxn_id = _build_rxn_id(data['id'])
@@ -91,8 +94,16 @@ class ModelReaction(Reaction):
             if key not in COBRA_DATA:
                 self.__dict__[key] = data_copy[key]
 
+    @staticmethod
+    def from_json(data):
+        data_copy = copy.deepcopy(data)
+        lower_bound, upper_bound = _get_reaction_constraints(data)
+        rxn_id = _build_rxn_id(data['id'])
+        return ModelReaction({}, rxn_id, data_copy['name'], "", lower_bound, upper_bound)
+
     @property
     def compartment(self):
+        # FIXME: fix this
         return 'c0'
     
     def _get_rev_and_max_min_flux(self):
@@ -103,6 +114,14 @@ class ModelReaction(Reaction):
 
     def _to_json(self):
         rev, max_flux, min_flux = self._get_rev_and_max_min_flux()
+        model_reaction_reagents = []
+        model_reaction_proteins = []
+        s = self.metabolites
+        for m in s:
+            model_reaction_reagents.append({
+                'modelcompound_ref': '~/modelcompounds/id/' + m.id,
+                'coefficient': s[m]
+            })
         return {
             'id': self.id,
             'name': self.name,
@@ -113,12 +132,12 @@ class ModelReaction(Reaction):
             'dblinks': {},
             'edits': {},
             'gapfill_data': {},
-            'modelReactionProteins': [],
-            'modelReactionReagents': [],
-            'modelcompartment_ref': '~/modelcompartments/id/c0',
+            'modelReactionProteins': model_reaction_proteins,
+            'modelReactionReagents': model_reaction_reagents,
+            'modelcompartment_ref': '~/modelcompartments/id/' + self.compartment,
             'numerical_attributes': {},
             'probability': 0,
             'protons': 0,
-            'reaction_ref': '~/template/reactions/id/rxn02201_c',
+            'reaction_ref': '~/template/reactions/id/' + self.id[:-1],
             'string_attributes': {}
         }
