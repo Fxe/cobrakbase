@@ -1,7 +1,7 @@
 import logging
 from cobrakbase.core.kbasefba.fbamodel_builder import FBAModelBuilder
 from cobrakbase.core.kbasefba.fbamodel_metabolite import ModelCompound
-from cobrakbase.core.kbasefba.fbamodel_reaction import ModelReaction
+from cobrakbase.core.kbasefba.fbamodel_reaction import ModelReaction, get_for_rev_flux_from_bounds
 from modelseedpy.core.msmodel import get_direction_from_constraints
 
 logger = logging.getLogger(__name__)
@@ -81,6 +81,7 @@ class CobraModelConverter:
             if direction == '?':
                 logger.warning('invalid bounds assume reversible %s %s', r.lower_bound, r.upper_bound)
                 direction = '='
+            max_rev_flux, max_for_flux = get_for_rev_flux_from_bounds(r.lower_bound, r.upper_bound)
             proteins = []
             model_reaction_data = {
                 'id': r.id,
@@ -90,9 +91,9 @@ class CobraModelConverter:
                 'coverage': 3,
                 'dblinks': {},
                 'edits': {}, 'gapfill_data': {},
-                'gene_count': 3,
-                'maxforflux': 1000000,
-                'maxrevflux': 1000000,
+                'gene_count': 0,
+                'maxrevflux': max_rev_flux,
+                'maxforflux': max_for_flux,
                 'modelReactionProteins': proteins,
                 'modelReactionReagents': [],
                 'modelcompartment_ref': '~/modelcompartments/id/c0',

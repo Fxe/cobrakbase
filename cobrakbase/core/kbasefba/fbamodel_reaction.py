@@ -2,8 +2,21 @@ import math
 import copy
 import logging
 from cobra.core import Reaction
+from modelseedpy.core.msmodel import get_direction_from_constraints
 
 logger = logging.getLogger(__name__)
+
+
+def get_for_rev_flux_from_bounds(lb, ub):
+    rev_flux = 0
+    for_flux = 0
+    if lb > ub:
+        return 0, 0
+    if lb < 0:
+        rev_flux = math.fabs(lb)
+    if ub > 0:
+        for_flux = ub
+    return rev_flux, for_flux
 
 
 def _get_gpr(data):
@@ -103,25 +116,39 @@ class ModelReaction(Reaction):
 
     @property
     def compartment(self):
-        # FIXME: fix this
+        """
+        single compartment return its element
+        two compartments if e and c return c else return other than c
+        (example e/c returns c, m/c returns m, p/c return c)
+        """
+        # FIXME: fix this, temporary hack this will break if not 0 index
+        compartments = self.compartments
+        if len(compartments) == 1:
+            return list(compartments)[0]
+
+        if 'e0' in compartments and 'c0' in compartments:
+            return 'c0'
+        elif len(compartments) == 2 and 'c0' in compartments:
+            return list(compartments - {'c0'})[0]
+
         return 'c0'
     
     def _get_rev_and_max_min_flux(self):
-        rev = '='
-        min_flux = math.fabs(self.lower_bound)
-        max_flux = self.upper_bound
+        rev = get_direction_from_constraints(self.lower_bound, self.upper_bound)
+        min_flux, max_flux = get_for_rev_flux_from_bounds(self.lower_bound, self.upper_bound)
         return rev, max_flux, min_flux
 
     def _to_json(self):
         rev, max_flux, min_flux = self._get_rev_and_max_min_flux()
         model_reaction_reagents = []
-        model_reaction_proteins = []
         s = self.metabolites
         for m in s:
             model_reaction_reagents.append({
                 'modelcompound_ref': '~/modelcompounds/id/' + m.id,
                 'coefficient': s[m]
             })
+
+        model_reaction_proteins = []
         return {
             'id': self.id,
             'name': self.name,
