@@ -15,7 +15,7 @@ def normalize_role(s):
 class KBaseGenome(KBaseObject):
 
     def __init__(self, data=None, info=None, args=None, kbase_type=None):
-        KBaseObject.__init__(self, data, info, args, kbase_type)
+        KBaseObject.__init__(self, data, info, args, kbase_type, ['ontology_events'])
 
     def _to_object(self, key, data):
         if key == 'features':

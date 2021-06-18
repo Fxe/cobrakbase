@@ -26,7 +26,10 @@ class CobraModelConverter:
     def reaction_is_drain(reaction):
         """
         assume reactions of size 1 as drain reactions
+        if annotated with sbo SBO:0000176 overrides drain check
         """
+        if 'sbo' in reaction.annotation and reaction.annotation['sbo'] == "SBO:0000176":
+            return False
         return len(reaction.metabolites) == 1
 
     def get_template_ref(self):

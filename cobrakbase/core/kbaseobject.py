@@ -19,21 +19,32 @@ class KBaseObject:
     """
     Base object to use for all KBase objects pulled from workspace
     """
-    def __init__(self, data=None, info=None, args=None, kbase_type=None):
+    def __init__(self, data=None, info=None, args=None, kbase_type=None, exclude_dict=None):
+        """
+
+        :param data:
+        :param info:
+        :param args:
+        :param kbase_type:
+        :param exclude_dict:
+        """
         #If an object has a key "data", we need to replace it befor setting attributes to the data
         if "data" in data:
             data["_data"] = data["data"]
             del(data["data"])
-        
+        data_keys = {}  # keep track of original data keys for deserialization
+        for key in data:
+            data_keys[key] = type(data[key])
+
         # Turning all fields in the dictionary into attributes
         if args is None:
             args = {}
         if data is None:
             data = {}
         self.__dict__ = data
-        data_keys = {}  # keep track of original data keys for deserialization
-        for key in data:
-            data_keys[key] = type(data[key])
+        self.exclude_dict = set()
+        if exclude_dict:
+            self.exclude_dict |= set(exclude_dict)
         self.data_keys = data_keys
 
         self.info = info
@@ -71,10 +82,11 @@ class KBaseObject:
         # Should find better solution for this ...
         # Converting every list of hashes containing objects with id fields into DictList
         for field in data.keys():
-            if isinstance(data[field], list) and len(data[field]) > 0:
+            if isinstance(data[field], list) and len(data[field]) > 0 and field not in self.exclude_dict:
+                logger.debug("object field: %s", field)
                 if field == "mediacompounds":
                     for item in data[field]:
-                        if not "id" in item:
+                        if "id" not in item:
                             item["id"] = item["compound_ref"].split("/").pop()
                             if item["id"] == "cpd00000":
                                 item["id"] = item["name"]

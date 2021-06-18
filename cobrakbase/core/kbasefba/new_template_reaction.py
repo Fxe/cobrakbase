@@ -23,28 +23,37 @@ class NewModelTemplateReaction(AttrDict):
             res[(cpd_id, cmp)] = o['coefficient']
         return res
 
-    def remove_role(self):
+    def remove_role(self, role_id):
+        pass
+
+    def remove_complex(self, complex_id):
         pass
 
     def get_roles(self):
-        res = set()
+        """
+
+        :return:
+        """
         for complexes in self.data['templatecomplex_refs']:
             complex_id = complexes.split('/')[-1]
             cpx = self.template.get_complex(complex_id)
 
             for complexrole in cpx['complexroles']:
                 role_id = complexrole['templaterole_ref'].split('/')[-1]
-                res.add(role_id)
+                yield role_id
 
-        return res
+    @property
+    def complexes(self):
+        """
 
-    def get_complexes(self):
-        res = set()
+        :return:
+        """
         for complexes in self.data['templatecomplex_refs']:
             complex_id = complexes.split('/')[-1]
-            res.add(complex_id)
+            yield complex_id
 
-        return res
+    def get_complexes(self):
+        return self.complexes
 
     def get_complex_roles(self):
         res = {}

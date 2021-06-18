@@ -3,7 +3,7 @@ from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbaseobject import KBaseObject
 from cobrakbase.core.kbasebiochem import Media
 from cobrakbase.core.kbasefba.fbamodel_builder import FBAModelBuilder
-from cobrakbase.core import KBaseFBAModel, KBaseGenome
+from cobrakbase.core import KBaseGenome
 from cobrakbase.core.kbasegenome.pangenome import KBasePangenome
 from cobrakbase.core.kbasematrices.chemicalabundancematrix import ChemicalAbundanceMatrix
 from cobrakbase.core.kbasefba.newmodeltemplate import NewModelTemplate

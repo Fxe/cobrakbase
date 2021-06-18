@@ -32,6 +32,7 @@ def _get_ws_client(token, dev=False):
 class KBaseAPI:
 
     def __init__(self, token=None, dev=False, config=None):
+        self.max_retry = 3
         if token is None and Path(str(Path.home()) + '/.kbase/token').exists():
             with open(str(Path.home()) + '/.kbase/token', 'r') as fh:
                 token = fh.read().strip()
@@ -70,7 +71,7 @@ class KBaseAPI:
         code because workspace periodically times out
         """
         tries = 0
-        while tries < 3:
+        while tries < self.max_retry:
             try:
                 return self.ws_client.get_objects2(args)
             except ServerError as e:
