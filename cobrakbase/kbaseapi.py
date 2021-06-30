@@ -2,16 +2,23 @@ import sys
 import time
 import logging
 import cobra
+import os
+import requests
+import json
 from pathlib import Path
 from cobrakbase.Workspace.WorkspaceClient import Workspace as WorkspaceClient
+from cobrakbase.AbstractHandleClient import AbstractHandle as HandleService
 from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbase_object_factory import KBaseObjectFactory
 from cobrakbase.Workspace.baseclient import ServerError
 from cobrakbase.core.kbaseobject import KBaseObject
+from cobrakbase.exceptions import ShockException
 
 logger = logging.getLogger(__name__)
 
 KBASE_WS_URL = "https://kbase.us/services/ws/"
+KBASE_HANDLE_URL = "https://kbase.us/services/handle_service"
+KBASE_SHOCK_URL = "https://kbase.us/services/shock-api"
 DEV_KBASE_WS_URL = "https://appdev.kbase.us/services/ws/"
 
 
@@ -33,6 +40,7 @@ class KBaseAPI:
 
     def __init__(self, token=None, dev=False, config=None):
         self.max_retry = 3
+        self.token = token
         if token is None and Path(str(Path.home()) + '/.kbase/token').exists():
             with open(str(Path.home()) + '/.kbase/token', 'r') as fh:
                 token = fh.read().strip()
@@ -41,6 +49,7 @@ class KBaseAPI:
 
         if config is None:
             self.ws_client = _get_ws_client(token, dev)
+            self.hs = HandleService(KBASE_HANDLE_URL, token=token)
         else:
             self.ws_client = WorkspaceClient(config['workspace-url'], token=token)
 
@@ -63,6 +72,71 @@ class KBaseAPI:
             else:
                 objspec['name'] = id_or_ref
         return objspec
+
+    @staticmethod
+    def check_response(r):
+        if not r.ok:
+            errtxt = ('Error downloading file from shock ' +
+                      'node {}: ').format(file_id)
+            try:
+                err = json.loads(response.content)['error'][0]
+            except Exception as e:
+                # this means shock is down or not responding.
+                logger.error("Couldn't parse response error content from Shock: %s", r.content)
+                r.raise_for_status()
+            raise ShockException(errtxt + str(err))
+        pass
+
+    def download_file_from_kbase(self, token, file_id, file_path, is_handle_ref=1):
+        """
+        FIXME: THIS SEEMS TO DOWNLOAD THE FILE TWICE !
+        :param token:
+        :param file_id:
+        :param file_path:
+        :param is_handle_ref:
+        :return:
+        """
+        headers = {'Authorization': 'OAuth ' + token}
+
+        if is_handle_ref == 1:
+            handles = self.hs.hids_to_handles([file_id])
+            file_id = handles[0]['id']
+
+        if not os.path.exists(file_path):
+            try:
+                os.makedirs(file_path)
+            except OSError as exc:
+                print(exc)
+                raise
+        elif not os.path.isdir(file_path):
+            raise ShockException("file_path: %s must be directory", file_path)
+
+        node_url = KBASE_SHOCK_URL + '/node/' + file_id
+        r = requests.get(node_url, headers=headers, allow_redirects=True)
+
+        if not r.ok:
+            errtxt = 'Error downloading file from shock node {}: '.format(file_id)
+            raise ShockException(errtxt)
+
+        resp_obj = r.json()
+        size = resp_obj['data']['file']['size']
+        if not size:
+            raise ShockException('Node {} has no file'.format(file_id))
+
+        node_file_name = resp_obj['data']['file']['name']
+        attributes = resp_obj['data']['attributes']
+        if os.path.isdir(file_path):
+            file_path = os.path.join(file_path, node_file_name)
+        with open(file_path, 'wb') as fh:
+            with requests.get(node_url + '?download_raw', stream=True, headers=headers, allow_redirects=True) as r:
+                if not r.ok:
+                    errtxt = 'Error downloading file from shock node {}: '.format(file_id)
+                    raise ShockException(errtxt)
+                for chunk in r.iter_content(1024):
+                    if not chunk:
+                        break
+                    fh.write(chunk)
+        return file_path
 
     # TODO - really we should explicitly catch time out errors and retry only after those and fail for all others
     def get_objects2(self, args):
@@ -101,9 +175,16 @@ class KBaseAPI:
         factory = KBaseObjectFactory()
         return factory.create(res, None)
 
-    def save_object(self, object_id, ws, object_type, data):
+    def save_object(self, object_id, ws, object_type, data, meta=None):
+        if not meta:
+            if 'get_metadata' in dir(data):
+                meta = data.get_metadata()
+            else:
+                meta = {}
         to_save = data
         if isinstance(data, KBaseObject):
+            to_save = data.get_data()
+        elif 'get_data' in dir(data):
             to_save = data.get_data()
         # TODO temporary hack implement proper object serializer mapping later
         if type(data) == cobra.core.model.Model:
@@ -132,14 +213,18 @@ class KBaseAPI:
             }
         ]
         params = {
-            'workspace': ws,
             'objects': [{
                 'data': to_save,
                 'name': object_id,
                 'type': object_type,
+                'meta': meta,
                 'provenance': provenance
             }]
         }
+        if isinstance(ws, int):
+            params["id"] = ws
+        else:
+            params["workspace"] = ws
         return self.ws_client.save_objects(params)
 
     def save_model(self, object_id, ws, data):

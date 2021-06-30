@@ -8,8 +8,15 @@ logger = logging.getLogger(__name__)
 
 class NewModelTemplateBuilder:
 
-    def __init__(self):
+    def __init__(self, template_id, name, domain, biochemistry,
+                 biomasses, compartments, compounds, comp_compounds, reactions, roles, complexes,
+                 pathways, subsystems, template_type):
         self.compartments = []
+
+    @staticmethod
+    def from_dict(d):
+
+        pass
 
     @staticmethod
     def from_template(template):
@@ -23,7 +30,7 @@ class NewModelTemplateBuilder:
         pass
 
     def with_role(self, template_rxn, role_ids, auto_complex=False):
-        #  TODO: copy from template curation
+        # TODO: copy from template curation
         complex_roles = template_rxn.get_complex_roles()
         role_match = {}
         for o in role_ids:

@@ -7,9 +7,13 @@ from cobrakbase.core import KBaseGenome
 from cobrakbase.core.kbasegenome.pangenome import KBasePangenome
 from cobrakbase.core.kbasematrices.chemicalabundancematrix import ChemicalAbundanceMatrix
 from cobrakbase.core.kbasefba.newmodeltemplate import NewModelTemplate
+from cobrakbase.core.kbaseclassifier.genomeclassifiertrainingset import GenomeClassifierTrainingSet
+from cobrakbase.core.kbaseclassifier.genomeclassifier import GenomeClassifier
 
-def _build_fbamodel(x, y, z):
+
+def _build_model(x, y, z):
     return FBAModelBuilder.from_kbase_json(x, y, z).build()
+
 
 class KBaseObjectFactory:
     """
@@ -19,13 +23,15 @@ class KBaseObjectFactory:
     def __init__(self):
 
         self.object_mapper = {
-            'KBaseFBA.FBAModel': _build_fbamodel,
+            'KBaseFBA.FBAModel': _build_model,
             'KBaseFBA.NewModelTemplate': NewModelTemplate,
             # add FBA
             'KBaseBiochem.Media': Media,
             'KBaseGenomes.Genome': KBaseGenome,
             'KBaseGenomes.Pangenome': KBasePangenome,
-            'KBaseMatrices.ChemicalAbundanceMatrix': ChemicalAbundanceMatrix
+            'KBaseMatrices.ChemicalAbundanceMatrix': ChemicalAbundanceMatrix,
+            'KBaseClassifier.GenomeClassifierTrainingSet': GenomeClassifierTrainingSet,
+            'KBaseClassifier.GenomeClassifier': GenomeClassifier
         }
     
     def build_object_from_file(self, filename, object_type):

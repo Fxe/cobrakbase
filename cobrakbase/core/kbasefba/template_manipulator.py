@@ -1,29 +1,69 @@
 import logging
+from modelseedpy.core.msgenome import normalize_role
 from cobrakbase.core.kbaseobject import AttrDict
-from cobrakbase.core.kbasegenomesgenome import normalize_role
 from cobrakbase.core.utils import get_cmp_token
+from cobrakbase.core.kbasefba.newmodeltemplate_complex import NewModelTemplateRole, NewModelTemplateComplex
 
 logger = logging.getLogger(__name__)
 
 
 class TemplateManipulator:
 
-    def __init__(self, template, modelseed_database):
+    def __init__(self, template, modelseed_database, role_suf='ftr', complex_suf='cpx'):
+        self.role_suf = role_suf
+        self.complex_suf = complex_suf
         self.template = template
         self.modelseed_database = modelseed_database
-        self.template_compounds = {}
-        self.template_compcompounds = {}
-        self.template_reactions = {}
-        self.template_compartments = {}
+        #self.template_compounds = {}
+        #self.template_compcompounds = {}
+        #self.template_reactions = {}
+        #self.template_compartments = {}
+        self.role_last_id = self.template.get_last_id_value(self.template.roles, role_suf)
+        self.complex_last_id = self.template.get_last_id_value(self.template.complexes, complex_suf)
+        self.role_set_to_cpx = {}
+        self.search_name_to_role_id = {}
+        for cpx in self.template.complexes:
+            role_ids = set(x.id for x in cpx.roles)
+            self.role_set_to_cpx[';'.join(sorted(role_ids))] = cpx.id
+        for role in self.template.roles:
+            self.search_name_to_role_id[normalize_role(role.name)] = role
 
-        for o in self.template.data['compcompounds']:
-            self.template_compcompounds[o['id']] = o
-        for o in self.template.data['compounds']:
-            self.template_compounds[o['id']] = o
-        for o in self.template.data['reactions']:
-            self.template_reactions[o['id']] = o
-        for o in self.template.data['compartments']:
-            self.template_compartments[o['id']] = o
+    def add_role(self, name, source='ModelSEED'):
+        sn = normalize_role(name)
+        if sn in self.search_name_to_role_id:
+            return self.search_name_to_role_id[sn]
+        self.role_last_id += 1
+        role_id = self.role_suf + str(self.role_last_id).zfill(5)
+        role = NewModelTemplateRole(role_id, name, source=source)
+        self.template.add_roles([role])
+        self.search_name_to_role_id[sn] = role_id
+        return role_id
+
+    def get_complex_from_role(self, roles):
+        cpx_role_str = ';'.join(sorted(roles))
+        if cpx_role_str in self.role_set_to_cpx:
+            return self.role_set_to_cpx[cpx_role_str]
+        return None
+
+    def add_complex_from_role_names(self, role_names, source='ModelSEED'):
+        role_ids = set(map(lambda o: self.add_role(o, source), role_names))
+        complex_id = self.get_complex_from_role(role_ids)
+        if complex_id is None:
+            self.complex_last_id += 1
+            complex_id = self.complex_suf + str(self.complex_last_id).zfill(5)
+            cpx = NewModelTemplateComplex(complex_id, complex_id, source, 'null', 0)
+            for role_id in role_ids:
+                role = self.template.roles.get_by_id(role_id)
+                cpx.add_role(role, triggering=True, optional=False)
+            self.template.add_complexes([cpx])
+            self.role_set_to_cpx[';'.join(sorted(role_ids))] = complex_id
+
+        return complex_id
+
+    def add_solo_role_with_complex(self, name):
+        role_id = self.add_role(name)
+        complex_id = self.add_complex_from_role_names([name])
+        return role_id, complex_id
 
     def clear_reaction_complexes(self):
         for template_rxn in self.template.reactions:
@@ -156,21 +196,24 @@ class TemplateManipulator:
         """
         role_to_rxn_ids = {}
         for template_reaction in self.template.reactions:
-            for role_id in template_reaction.get_roles():
-                if role_id not in role_to_rxn_ids:
-                    role_to_rxn_ids[role_id] = set()
-                role_to_rxn_ids[role_id].add(template_reaction.id)
+            for role in template_reaction.roles:
+                if role.id not in role_to_rxn_ids:
+                    role_to_rxn_ids[role.id] = set()
+                role_to_rxn_ids[role.id].add(template_reaction.id)
 
         return role_to_rxn_ids
 
     def get_search_name_to_role_id(self):
-        # get duplicates
+        """
+        Maps search name to role id for duplicate role detection
+        :return:
+        """
         search_name_to_role_id = {}
         for role in self.template.roles:
-            n = normalize_role(role['name'])
-            if not n in search_name_to_role_id:
+            n = normalize_role(role.name)
+            if n not in search_name_to_role_id:
                 search_name_to_role_id[n] = set()
-            search_name_to_role_id[n].add(role['id'])
+            search_name_to_role_id[n].add(role.id)
         return search_name_to_role_id
 
     def get_role_to_complexes(self):
@@ -260,54 +303,29 @@ class TemplateManipulator:
             white_list = ['ModelSEED']
         # search_name_to_role_id = self.get_search_name_to_role_id()
 
-        # clear roles
-        role_source = {}  # mapping role ID to source
-        roles_to_clear = set()  # clear these roles
-        seed_roles = set()  # roles allowed in template
-        for o in self.template.roles:
-            role_source[o['id']] = o['source']
-            if o['source'] not in white_list:
-                roles_to_clear.add(o['id'])
-            else:
-                seed_roles.add(o['id'])
-
         complexes_to_clear = set()
-        for complex_o in self.template.complexes:
-            complex_source_from_role = set()
-            for complex_role in complex_o['complexroles']:
-                role_id = complex_role['templaterole_ref'].split('/')[-1]
-                complex_source_from_role.add(role_source[role_id])
+        for cpx in self.template.complexes:
+            complex_source_from_role = set(r.source for r in cpx.roles)
             if len(complex_source_from_role) == 0:
-                # print(complex_o)
                 pass
             elif len(complex_source_from_role) == 1:
-                if not list(complex_source_from_role)[0] == complex_o['source']:
-                    ss = list(complex_source_from_role)[0]
-                    logger.debug('%s %s', ss, complex_o['source'])
-                    complex_o['source'] = ss
+                if not list(complex_source_from_role)[0] == cpx.source:
+                    logger.debug('%s %s', complex_source_from_role, cpx.source)
+                    cpx.source = complex_source_from_role.pop()
             else:
-                print(complex_o)
-            if complex_o['source'] not in white_list:
-                complexes_to_clear.add(complex_o['id'])
+                print(cpx)
+            if cpx.source not in white_list:
+                complexes_to_clear.add(cpx.id)
 
-        reactions_to_clear = set() # reactions without complexes
-        for template_rxn in self.template.reactions:
-            # filter the complex references not in complexes_to_clear
-            templatecomplex_refs = template_rxn['templatecomplex_refs']
-            templatecomplex_refs_filter = list(filter(
-                lambda x: x.split('/')[-1] not in complexes_to_clear,
-                templatecomplex_refs))
-            if not len(templatecomplex_refs_filter) == len(templatecomplex_refs):
-                logger.debug('[%s] removing complexes', template_rxn.id)
-                template_rxn.templatecomplex_refs.clear()
-                template_rxn.templatecomplex_refs.extend(templatecomplex_refs_filter)
-
-            # collect empty reactions
-            if len(template_rxn.templatecomplex_refs) == 0:
-                reactions_to_clear.add(template_rxn.id)
+        reactions_to_clear = set()
+        for reaction in self.template.reactions:
+            cpxs = set(c.id for c in reaction.complexes)
+            if len(cpxs & complexes_to_clear) > 0:
+                for cpx in {self.template.complexes.get_by_id(i) for i in cpxs & complexes_to_clear}:
+                    reaction.complexes.remove(cpx)
 
         template_reactions_filter = list(
-            filter(lambda x: not x['id'] in reactions_to_clear, self.template.data['reactions']))
+            filter(lambda x: x.id not in reactions_to_clear, self.template.reactions))
 
         return template_reactions_filter
 
@@ -319,7 +337,10 @@ class TemplateManipulator:
                 return other_rxn
 
     def upgrade_obsolete(self):
+        """
 
+        :return:
+        """
 
         if self.modelseed_database is None:
             logger.warning("missing modelseed database")

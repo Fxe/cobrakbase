@@ -1,0 +1,193 @@
+{
+  "__VERSION__": 1,
+  "id": "CoreModelTemplateExample",
+  "name": "CoreModelTemplateExample",
+  "domain": "Bacteria",
+  "biochemistry_ref": "1/2/3",
+  "biomasses": [],
+  "compartments": [
+    {
+      "aliases": [],
+      "hierarchy": 3,
+      "id": "c",
+      "index": "0",
+      "name": "Cytosol",
+      "pH": 7
+    },
+    {
+      "aliases": [],
+      "hierarchy": 0,
+      "id": "e",
+      "index": "1",
+      "name": "Extracellular",
+      "pH": 7
+    }
+  ],
+  "compcompounds": [
+    {"charge": -1, "id": "cpd00020_c", "maxuptake": 0, "templatecompartment_ref": "~/compartments/id/c", "templatecompound_ref": "~/compounds/id/cpd00020"},
+    {"charge": -3, "id": "cpd00061_c", "maxuptake": 0, "templatecompartment_ref": "~/compartments/id/c", "templatecompound_ref": "~/compounds/id/cpd00061"},
+    {"charge": -4, "id": "cpd00010_c", "maxuptake": 0, "templatecompartment_ref": "~/compartments/id/c", "templatecompound_ref": "~/compounds/id/cpd00010"},
+    {"charge": -4, "id": "cpd00022_c", "maxuptake": 0, "templatecompartment_ref": "~/compartments/id/c", "templatecompound_ref": "~/compounds/id/cpd00022"},
+    {"charge": 1, "id": "cpd00067_c", "maxuptake": 0, "templatecompartment_ref": "~/compartments/id/c", "templatecompound_ref": "~/compounds/id/cpd00067"},
+    {"charge": -2, "id": "cpd00008_c", "maxuptake": 0, "templatecompartment_ref": "~/compartments/id/c", "templatecompound_ref": "~/compounds/id/cpd00008"},
+    {"charge": -1, "id": "cpd00003_c", "maxuptake": 0, "templatecompartment_ref": "~/compartments/id/c", "templatecompound_ref": "~/compounds/id/cpd00003"},
+    {"charge": -2, "id": "cpd00004_c", "maxuptake": 0, "templatecompartment_ref": "~/compartments/id/c", "templatecompound_ref": "~/compounds/id/cpd00004"},
+    {"charge": 0, "id": "cpd00011_c", "maxuptake": 0, "templatecompartment_ref": "~/compartments/id/c", "templatecompound_ref": "~/compounds/id/cpd00011"},
+    {"charge": -3, "id": "cpd00002_c", "maxuptake": 0, "templatecompartment_ref": "~/compartments/id/c", "templatecompound_ref": "~/compounds/id/cpd00002"}
+  ],
+  "compounds": [
+    {"abbreviation": "pyr", "aliases": [], "defaultCharge": -1, "deltaG": -112.69, "deltaGErr": 0.300152, "formula": "C3H3O3", "id": "cpd00020", "isCofactor": 0, "mass": 87, "name": "Pyruvate"},
+    {"abbreviation": "pep", "aliases": [], "defaultCharge": -3, "deltaG": -316.08, "deltaGErr": 0.58973, "formula": "C3H2O6P", "id": "cpd00061", "isCofactor": 0, "mass": 166, "name": "Phosphoenolpyruvate"},
+    {"abbreviation": "coa", "aliases": [], "defaultCharge": -4, "deltaG": -751.994, "deltaGErr": 3.45208, "formula": "C21H32N7O16P3S", "id": "cpd00010", "isCofactor": 0, "mass": 764, "name": "CoA"},
+    {"abbreviation": "accoa", "aliases": [], "defaultCharge": -4, "deltaG": -785.83, "deltaGErr": 3.53441, "formula": "C23H34N7O17P3S", "id": "cpd00022", "isCofactor": 0, "mass": 806, "name": "Acetyl-CoA"},
+    {"abbreviation": "h", "aliases": [], "defaultCharge": 1, "deltaG": -9.53, "deltaGErr": 0, "formula": "H", "id": "cpd00067", "isCofactor": 0, "mass": 1, "name": "H+"},
+    {"abbreviation": "adp", "aliases": [], "defaultCharge": -2, "deltaG": -465.85, "deltaGErr": 3.03579, "formula": "C10H13N5O10P2", "id": "cpd00008", "isCofactor": 0, "mass": 425, "name": "ADP"},
+    {"abbreviation": "nad", "aliases": [], "defaultCharge": -1, "deltaG": -529.59, "deltaGErr": 4.35693, "formula": "C21H26N7O14P2", "id": "cpd00003", "isCofactor": 0, "mass": 662, "name": "NAD"},
+    {"abbreviation": "nadh", "aliases": [], "defaultCharge": -2, "deltaG": -524.32, "deltaGErr": 4.26795, "formula": "C21H27N7O14P2", "id": "cpd00004", "isCofactor": 0, "mass": 663, "name": "NADH"},
+    {"abbreviation": "co2", "aliases": [], "defaultCharge": 0, "deltaG": -92.26, "deltaGErr": 0.5, "formula": "CO2", "id": "cpd00011", "isCofactor": 0, "mass": 44, "name": "CO2"},
+    {"abbreviation": "atp", "aliases": [], "defaultCharge": -3, "deltaG": -673.85, "deltaGErr": 3.04314, "formula": "C10H13N5O13P3", "id": "cpd00002", "isCofactor": 0, "mass": 504, "name": "ATP"}
+  ],
+  "pathways": [],
+  "reactions": [
+    {
+      "GapfillDirection": ">",
+      "base_cost": 1,
+      "deltaG": -2,
+      "deltaGErr": 1.61,
+      "direction": ">",
+      "forward_penalty": 0,
+      "id": "rxn00154_c",
+      "maxforflux": 100,
+      "maxrevflux": -100,
+      "name": "pyruvate:NAD+ 2-oxidoreductase (CoA-acetylating)",
+      "reaction_ref": "kbase/default/reactions/id/rxn00154",
+      "reverse_penalty": 0,
+      "status": "OK",
+      "templateReactionReagents": [
+        {
+          "coefficient": -1,
+          "templatecompcompound_ref": "~/compcompounds/id/cpd00003_c"
+        },
+        {
+          "coefficient": -1,
+          "templatecompcompound_ref": "~/compcompounds/id/cpd00010_c"
+        },
+        {
+          "coefficient": -1,
+          "templatecompcompound_ref": "~/compcompounds/id/cpd00020_c"
+        },
+        {
+          "coefficient": 1,
+          "templatecompcompound_ref": "~/compcompounds/id/cpd00004_c"
+        },
+        {
+          "coefficient": 1,
+          "templatecompcompound_ref": "~/compcompounds/id/cpd00011_c"
+        },
+        {
+          "coefficient": 1,
+          "templatecompcompound_ref": "~/compcompounds/id/cpd00022_c"
+        }
+      ],
+      "templatecompartment_ref": "~/compartments/id/c",
+      "templatecomplex_refs": ["~/complexes/id/PDH"],
+      "type": "conditional"
+    },
+    {
+      "GapfillDirection": "<",
+      "base_cost": 11,
+      "deltaG": -4.92,
+      "deltaGErr": 0.65,
+      "direction": "<",
+      "forward_penalty": 0,
+      "id": "rxn00148_c",
+      "maxforflux": 100,
+      "maxrevflux": -100,
+      "name": "ATP:pyruvate 2-O-phosphotransferase",
+      "reaction_ref": "kbase/default/reactions/id/rxn00148",
+      "reverse_penalty": 0,
+      "status": "OK",
+      "templateReactionReagents": [
+        {"coefficient": -1, "templatecompcompound_ref": "~/compcompounds/id/cpd00002_c"},
+        {"coefficient": -1, "templatecompcompound_ref": "~/compcompounds/id/cpd00020_c"},
+        {"coefficient": 1, "templatecompcompound_ref": "~/compcompounds/id/cpd00008_c"},
+        {"coefficient": 1, "templatecompcompound_ref": "~/compcompounds/id/cpd00061_c"},
+        {"coefficient": 1, "templatecompcompound_ref": "~/compcompounds/id/cpd00067_c"}],
+      "templatecompartment_ref": "~/compartments/id/c",
+      "templatecomplex_refs": ["~/complexes/id/PYK"],
+      "type": "conditional"
+    }
+  ],
+  "roles": [
+    {
+      "aliases": [],
+      "features": [],
+      "id": "pykAF",
+      "name": "Pyruvate kinase (EC 2.7.1.40)",
+      "source": "ModelSEEDpy-KBaseTestSuite"
+    },
+        {
+      "aliases": [],
+      "features": [],
+      "id": "aceE",
+      "name": "Pyruvate dehydrogenase E1 component (EC 1.2.4.1)",
+      "source": "ModelSEEDpy-KBaseTestSuite"
+    },
+    {
+      "aliases": [],
+      "features": [],
+      "id": "aceF",
+      "name": "Dihydrolipoamide acetyltransferase component of pyruvate dehydrogenase complex (EC 2.3.1.12)",
+      "source": "ModelSEEDpy-KBaseTestSuite"
+    },
+    {
+      "aliases": [],
+      "features": [],
+      "id": "lpd",
+      "name": "Dihydrolipoamide dehydrogenase of pyruvate dehydrogenase complex (EC 1.8.1.4)",
+      "source": "ModelSEEDpy-KBaseTestSuite"
+    }
+  ],
+  "complexes": [
+    {
+      "complexroles": [
+        {
+          "optional_role": 0,
+          "templaterole_ref": "~/roles/id/pykAF",
+          "triggering": 1
+        }
+      ],
+      "confidence": 0,
+      "id": "PYK",
+      "name": "Pyruvate kinase",
+      "reference": "null",
+      "source": "ModelSEEDpy-KBaseTestSuite"
+    },
+    {
+      "complexroles": [
+        {
+          "optional_role": 0,
+          "templaterole_ref": "~/roles/id/aceE",
+          "triggering": 1
+        },
+        {
+          "optional_role": 0,
+          "templaterole_ref": "~/roles/id/aceF",
+          "triggering": 1
+        },
+        {
+          "optional_role": 0,
+          "templaterole_ref": "~/roles/id/lpd",
+          "triggering": 1
+        }
+      ],
+      "confidence": 0,
+      "id": "PDH",
+      "name": "Pyruvate kinase",
+      "reference": "null",
+      "source": "ModelSEEDpy-KBaseTestSuite"
+    }
+  ],
+  "subsystems": [],
+  "type": "Test"
+}

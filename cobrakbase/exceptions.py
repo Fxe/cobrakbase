@@ -8,3 +8,10 @@ class ObjectError(Exception):
 class FeasibilityError(Exception):
     """Error in FBA formulation"""
     pass
+
+
+class ShockException(Exception):
+    """
+    Error with Shock
+    """
+    pass

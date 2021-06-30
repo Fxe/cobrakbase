@@ -9,3 +9,6 @@ class KBaseType(Enum):
     Media = 'KBaseBiochem.Media'
     Genome = 'KBaseGenomes.Genome'
     ModelComparison = 'KBaseFBA.ModelComparison'
+
+    GenomeClassifierTrainingSet = 'KBaseClassifier.GenomeClassifierTrainingSet'
+    GenomeClassifier = 'KBaseClassifier.GenomeClassifier'
