@@ -60,13 +60,17 @@ def _get_reaction_constraints_from_direction(data):
 
 
 def _get_reaction_constraints(data):
-    #clean this function !
+    # clean this function !
     if 'maxrevflux' in data and 'maxforflux' in data:
         if data['maxrevflux'] == 1000000 and data['maxforflux'] == 1000000 and 'direction' in data:
             return _get_reaction_constraints_from_direction(data)
 
         return -1 * data['maxrevflux'], data['maxforflux']
-    return -1000, 1000
+    elif 'direction' in data:
+        return _get_reaction_constraints_from_direction(data)
+    else:
+        logger.warning('unable to determine reversibility constraint assume reversible')
+        return -1000, 1000
 
 
 def _build_rxn_id(s):
