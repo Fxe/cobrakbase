@@ -89,7 +89,10 @@ class NewModelTemplateReaction(Reaction):
             d['id'], d['reaction_ref'].split('/')[-1], d['name'], '', lower_bound, upper_bound,
             d['type'], d['GapfillDirection'],
             d['base_cost'], d['reverse_penalty'], d['forward_penalty'],
-            d['status'], d['deltaG'], d['deltaGErr'], d['reaction_ref'].split('/')[-1]
+            d['status'] if 'status' in d else None,
+            d['deltaG'] if 'deltaG' in d else None,
+            d['deltaGErr'] if 'deltaGErr' in d else None,
+            d['reaction_ref'].split('/')[-1]
         )
         reaction.add_metabolites(metabolites)
         reaction.add_complexes(complexes)

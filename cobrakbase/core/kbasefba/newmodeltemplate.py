@@ -2,7 +2,7 @@ import logging
 from cobrakbase.core.kbaseobject import KBaseObject, KBaseObjectBase, AttrDict
 from cobrakbase.core.kbasegenomesgenome import normalize_role
 from cobra.core.dictlist import DictList
-from cobra.core import Model
+from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbasefba.newmodeltemplate_complex import NewModelTemplateRole, NewModelTemplateComplex
 from cobrakbase.core.kbasefba.newmodeltemplate_metabolite import NewModelTemplateCompound, NewModelTemplateCompCompound
 from cobrakbase.core.kbasefba.newmodeltemplate_reaction import NewModelTemplateReaction
@@ -19,15 +19,13 @@ class TemplateRole(KBaseObjectBase):
 
 class NewModelTemplate:
     
-    def __init__(self, template_id, name='', domain='', template_type='', version=1, info=None, args=None, role_suf='ftr', complex_suf='cpx'):
+    def __init__(self, template_id, name='', domain='', template_type='', version=1, info=None, args=None):
         self.id = template_id
         self.__VERSION__ = version
         self.name = name
         self.domain = domain
         self.biochemistry_ref = ''
         self.template_type = template_type
-        self.role_suf = role_suf
-        self.complex_suf = complex_suf
         self.compartments = {}
         self.biomasses = DictList()
         self.reactions = DictList()
@@ -37,6 +35,7 @@ class NewModelTemplate:
         self.complexes = DictList()
         self.pathways = DictList()
         self.subsystems = DictList()
+        self.info = info if info else KBaseObjectInfo(object_type='KBaseFBA.NewModelTemplate')
 
     def add_roles(self, roles: list):
         """

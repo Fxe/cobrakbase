@@ -138,11 +138,13 @@ class KBaseAPI:
                     fh.write(chunk)
         return file_path
 
-    # TODO - really we should explicitly catch time out errors and retry only after those and fail for all others
     def get_objects2(self, args):
         """
-        All functions calling get_objects2 should call this function to ensure they get the retry
+            All functions calling get_objects2 should call this function to ensure they get the retry
         code because workspace periodically times out
+
+        :param args:
+        :return:
         """
         tries = 0
         while tries < self.max_retry:
@@ -230,12 +232,28 @@ class KBaseAPI:
     def save_model(self, object_id, ws, data):
         return self.save_object(object_id, ws, 'KBaseFBA.FBAModel', data)
 
-    def list_objects(self, ws):
-        return self.ws_client.list_objects(
-            {
-                'workspaces': [ws]
-            }
-        )
+    def list_objects(self, ws, object_type=None, include_metadata=False):
+        """
+        List objects of a workspace (i.e., narrative) with either numerical id (e.g., 12345)
+        or string id (e.g., user:narrative_1111111111111)
+
+        :param ws:
+        :param object_type:
+        :param include_metadata:
+        :return:
+        """
+        params = {
+            'includeMetadata': 0
+        }
+        if type(ws) == int:
+            params['ids'] = [ws]
+        else:
+            params['workspaces'] = [ws]
+        if object_type:
+            params['type'] = object_type
+        if include_metadata:
+            params['includeMetadata'] = 1
+        return self.ws_client.list_objects(params)
 
     def get_object_info(self, id_or_ref, workspace=None):
         ref_data = self.ws_client.get_object_info3(
@@ -251,10 +269,3 @@ class KBaseAPI:
         @deprecated get_object_info
         """
         return self.get_object_info(ref)
-
-    # TODO: this now seems obfuscated by get_object - can we delete this?
-    def get_object_by_ref(self, object_ref):
-        """
-        @deprecated get_object
-        """
-        return self.get_object(object_ref)

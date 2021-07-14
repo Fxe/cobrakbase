@@ -3,6 +3,7 @@ from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbaseobject import KBaseObject
 from cobrakbase.core.kbasebiochem import Media
 from cobrakbase.core.kbasefba.fbamodel_builder import FBAModelBuilder
+from cobrakbase.core.kbasefba.newmodeltemplate_builder import NewModelTemplateBuilder
 from cobrakbase.core import KBaseGenome
 from cobrakbase.core.kbasegenome.pangenome import KBasePangenome
 from cobrakbase.core.kbasematrices.chemicalabundancematrix import ChemicalAbundanceMatrix
@@ -15,6 +16,10 @@ def _build_model(x, y, z):
     return FBAModelBuilder.from_kbase_json(x, y, z).build()
 
 
+def _build_template(x, y, z):
+    return NewModelTemplateBuilder.from_dict(x, y, z).build()
+
+
 class KBaseObjectFactory:
     """
     New class to build objects from workspace - converts base object fields into attributes
@@ -24,7 +29,7 @@ class KBaseObjectFactory:
 
         self.object_mapper = {
             'KBaseFBA.FBAModel': _build_model,
-            'KBaseFBA.NewModelTemplate': NewModelTemplate,
+            'KBaseFBA.NewModelTemplate': _build_template,
             # add FBA
             'KBaseBiochem.Media': Media,
             'KBaseGenomes.Genome': KBaseGenome,

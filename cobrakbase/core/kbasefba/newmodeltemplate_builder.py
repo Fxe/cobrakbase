@@ -1,6 +1,9 @@
 import logging
 from copy import deepcopy
 from cobrakbase.core.kbasefba.newmodeltemplate import NewModelTemplate
+from cobrakbase.core.kbasefba.newmodeltemplate_complex import NewModelTemplateRole, NewModelTemplateComplex
+from cobrakbase.core.kbasefba.newmodeltemplate_metabolite import NewModelTemplateCompound, NewModelTemplateCompCompound
+from cobrakbase.core.kbasefba.newmodeltemplate_reaction import NewModelTemplateReaction
 from cobrakbase.kbase_object_info import KBaseObjectInfo
 
 logger = logging.getLogger(__name__)
@@ -8,15 +11,38 @@ logger = logging.getLogger(__name__)
 
 class NewModelTemplateBuilder:
 
-    def __init__(self, template_id, name, domain, biochemistry,
-                 biomasses, compartments, compounds, comp_compounds, reactions, roles, complexes,
-                 pathways, subsystems, template_type):
+    def __init__(self, template_id, name='', domain='', template_type='', version=1, info=None,
+                 biochemistry=None, biomasses=None, pathways=None, subsystems=None):
+        self.id = template_id
+        self.version = version
+        self.name = name
+        self.domain = domain
+        self.template_type = template_type
         self.compartments = []
+        self.roles = []
+        self.complexes = []
+        self.compounds = []
+        self.compartment_compounds = []
+        self.reactions = []
+        self.info = info
 
     @staticmethod
-    def from_dict(d):
+    def from_dict(d, info: KBaseObjectInfo, args=None):
+        """
 
-        pass
+        :param d:
+        :param info:
+        :param args:
+        :return:
+        """
+        builder = NewModelTemplateBuilder(d['id'], d['name'], d['domain'], d['type'], d['__VERSION__'], info)
+        builder.compartments = d['compartments']
+        builder.roles = d['roles']
+        builder.complexes = d['complexes']
+        builder.compounds = d['compounds']
+        builder.compartment_compounds = d['compcompounds']
+        builder.reactions = d['reactions']
+        return builder
 
     @staticmethod
     def from_template(template):
@@ -104,6 +130,15 @@ class NewModelTemplateBuilder:
             'type': ''
         }
 
-        template = NewModelTemplate(base, KBaseObjectInfo(object_type='KBaseFBA.NewModelTemplate'))
+        template = NewModelTemplate(self.id, self.name, self.domain, self.template_type, self.version)
+        template.info = self.info if self.info else KBaseObjectInfo(object_type='KBaseFBA.NewModelTemplate')
+        template.add_compounds(list(map(lambda x: NewModelTemplateCompound.from_dict(x), self.compounds)))
+        template.add_comp_compounds(
+            list(map(lambda x: NewModelTemplateCompCompound.from_dict(x), self.compartment_compounds)))
+        template.add_roles(list(map(lambda x: NewModelTemplateRole.from_dict(x), self.roles)))
+        template.add_complexes(
+            list(map(lambda x: NewModelTemplateComplex.from_dict(x, template), self.complexes)))
+        template.add_reactions(
+            list(map(lambda x: NewModelTemplateReaction.from_dict(x, template), self.reactions)))
 
         return template
