@@ -15,9 +15,9 @@ class NewModelTemplateRole:
         """
         self.id = role_id
         self.name = name
-        self.features = features
         self.source = source
-        self.aliases = aliases
+        self.features = [] if features is None else features
+        self.aliases = [] if aliases is None else aliases
         self._complexes = set()
         self._template = None
 

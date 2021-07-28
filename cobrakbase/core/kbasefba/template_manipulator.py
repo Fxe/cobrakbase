@@ -2,7 +2,10 @@ import logging
 from modelseedpy.core.msgenome import normalize_role
 from cobrakbase.core.kbaseobject import AttrDict
 from cobrakbase.core.utils import get_cmp_token
+from cobrakbase.core.kbasefba.newmodeltemplate_metabolite import NewModelTemplateCompCompound
+from cobrakbase.core.kbasefba.newmodeltemplate_metabolite import NewModelTemplateCompound
 from cobrakbase.core.kbasefba.newmodeltemplate_complex import NewModelTemplateRole, NewModelTemplateComplex
+from cobrakbase.core.kbasefba.newmodeltemplate_reaction import NewModelTemplateReaction
 
 logger = logging.getLogger(__name__)
 
@@ -18,8 +21,8 @@ class TemplateManipulator:
         #self.template_compcompounds = {}
         #self.template_reactions = {}
         #self.template_compartments = {}
-        self.role_last_id = self.template.get_last_id_value(self.template.roles, role_suf)
-        self.complex_last_id = self.template.get_last_id_value(self.template.complexes, complex_suf)
+        self.role_last_id = self.get_last_id_value(self.template.roles, role_suf)
+        self.complex_last_id = self.get_last_id_value(self.template.complexes, complex_suf)
         self.role_set_to_cpx = {}
         self.search_name_to_role_id = {}
         for cpx in self.template.complexes:
@@ -27,6 +30,30 @@ class TemplateManipulator:
             self.role_set_to_cpx[';'.join(sorted(role_ids))] = cpx.id
         for role in self.template.roles:
             self.search_name_to_role_id[normalize_role(role.name)] = role
+
+    @staticmethod
+    def remove_role2(t_rxn, role_id):
+        delete_set = set()
+        for cpx in t_rxn.complexes:
+            for role in cpx.roles:
+                if role.id == role_id:
+                    delete_set.add(cpx)
+        for cpx in delete_set:
+            t_rxn.complexes.remove(cpx)
+
+        return t_rxn.complexes
+
+    @staticmethod
+    def get_last_id_value(objects, s):
+        last_id = 0
+        for o in objects:
+            object_id = o.id
+            if object_id.startswith(s):
+                number_part = object_id[len(s):]
+                if len(number_part) == 5:
+                    if int(number_part) > last_id:
+                        last_id = int(number_part)
+        return last_id
 
     def add_role(self, name, source='ModelSEED'):
         sn = normalize_role(name)
@@ -36,8 +63,8 @@ class TemplateManipulator:
         role_id = self.role_suf + str(self.role_last_id).zfill(5)
         role = NewModelTemplateRole(role_id, name, source=source)
         self.template.add_roles([role])
-        self.search_name_to_role_id[sn] = role_id
-        return role_id
+        self.search_name_to_role_id[sn] = role
+        return role
 
     def get_complex_from_role(self, roles):
         cpx_role_str = ';'.join(sorted(roles))
@@ -46,7 +73,8 @@ class TemplateManipulator:
         return None
 
     def add_complex_from_role_names(self, role_names, source='ModelSEED'):
-        role_ids = set(map(lambda o: self.add_role(o, source), role_names))
+        roles = set(map(lambda o: self.add_role(o, source), role_names))
+        role_ids = set((map(lambda x: x.id, roles)))
         complex_id = self.get_complex_from_role(role_ids)
         if complex_id is None:
             self.complex_last_id += 1
@@ -190,16 +218,92 @@ class TemplateManipulator:
         }
         return template_reaction
 
+    def add_compcompound2(self, cpd_id, cmp_id):
+        template_compound = None
+        template_compcompound = None
+
+        if cpd_id not in self.template.compounds:
+            cpd = self.modelseed_database.get_seed_compound(cpd_id)
+            mass = float(cpd.data['mass']) if cpd.data['mass'] is not None and not cpd.data['mass'] == 'None' else 0.0
+            formula = str(cpd.data['formula']) if cpd.data['formula'] is not None else ""
+            template_compound = NewModelTemplateCompound(cpd_id, formula, cpd.data['name'], cpd.data['charge'], mass,
+                                                         cpd.data['deltag'],
+                                                         cpd.data['deltagerr'],
+                                                         cpd.data['is_cofactor'],
+                                                         cpd.data['abbreviation'],
+                                                         [])
+            self.template.add_compounds([template_compound])
+        template_compound = self.template.compounds.get_by_id(cpd_id)
+        ccpd_id = "{}_{}".format(cpd_id, cmp_id)
+        if ccpd_id not in self.template.compcompounds:
+            template_compcompound = NewModelTemplateCompCompound(ccpd_id, template_compound.default_charge, cmp_id,
+                                                                 cpd_id, 0, self.template)
+            self.template.add_comp_compounds([template_compcompound])
+        else:
+            template_compcompound = self.template.compcompounds.get_by_id(ccpd_id)
+        return template_compcompound
+
+    def configure_stoichiometry2(self, cstoichiometry, compartment_config):
+        # print('configure_stoichiometry2', cstoichiometry, compartment_config)
+        metabolites = {}
+        stoich_cmps = set()
+        for (cpd_id, cmp_token), value in cstoichiometry.items():
+            if not cmp_token in compartment_config:
+                raise Exception('missing compartment_config for ' + cmp_token)
+            stoich_cmps.add(compartment_config[cmp_token])
+            # print(cpd_id, cmp_token, compartment_config[cmp_token])
+            ccpd_id = "{}_{}".format(cpd_id, compartment_config[cmp_token])
+            self.add_compcompound2(cpd_id, compartment_config[cmp_token])
+            metabolites[self.template.compcompounds.get_by_id(ccpd_id)] = value
+
+        return metabolites, stoich_cmps
+
+    def add_compartment2(self, cmp_id, name, ph=7, index='0'):
+        res = list(filter(lambda x: x['id'] == cmp_id, self.template.compartments))
+        if len(res) > 0:
+            return res[0]
+        return {
+            'id': cmp_id,
+            'name': name,
+            'aliases': [],
+            'hierarchy': 3,
+            'index': index,
+            'pH': ph
+        }
+
+    def build_template_reaction_from_modelseed2(self, rxn_id, compartment_config,
+                                                direction=None,
+                                                base_cost=1000,
+                                                forward_penalty=1000,
+                                                reverse_penalty=1000,
+                                                reaction_type='conditional'):
+        rxn = self.modelseed_database.get_seed_reaction(rxn_id)
+        if rxn is None:
+            return None
+        if direction is None:
+            direction = rxn.data['direction']
+
+        metabolites, stoich_cmps = self.configure_stoichiometry2(rxn.cstoichiometry, compartment_config)
+        cmp = get_cmp_token(stoich_cmps)  # calculate compartment
+        self.add_compartment2(cmp, cmp)
+        name = rxn.id if type(rxn.data['name']) == float or len(rxn.data['name'].strip()) == 0 else rxn.data['name']
+        template_reaction = NewModelTemplateReaction(f"{rxn.id}_{cmp}", rxn_id, name, '', 0, 1000,
+                                                     reaction_type, '=', base_cost, reverse_penalty, forward_penalty,
+                                                     'OK')
+        template_reaction.add_metabolites(metabolites)
+        return template_reaction
+
     def get_role_to_rxn_ids(self):
         """
         Index of role ID mapped to reactions (Set)
         """
         role_to_rxn_ids = {}
         for template_reaction in self.template.reactions:
-            for role in template_reaction.roles:
-                if role.id not in role_to_rxn_ids:
-                    role_to_rxn_ids[role.id] = set()
-                role_to_rxn_ids[role.id].add(template_reaction.id)
+            for cpx in template_reaction.complexes:
+                for role in cpx.roles:
+                    if role.id not in role_to_rxn_ids:
+                        role_to_rxn_ids[role.id] = set()
+                    role_to_rxn_ids[role.id].add(template_reaction.id)
 
         return role_to_rxn_ids
 
@@ -218,12 +322,11 @@ class TemplateManipulator:
 
     def get_role_to_complexes(self):
         role_to_complexes = {}
-        for o in self.template.data['complexes']:
-            for complexrole in o['complexroles']:
-                role_id = complexrole['templaterole_ref'].split('/')[-1]
-                if not role_id in role_to_complexes:
-                    role_to_complexes[role_id] = set()
-                role_to_complexes[role_id].add(o['id'])
+        for cpx in self.template.complexes:
+            for role in cpx.roles:
+                if role.id not in role_to_complexes:
+                    role_to_complexes[role.id] = set()
+                role_to_complexes[role.id].add(cpx.id)
         return role_to_complexes
 
     def delete_roles(self, role_ids, clear_orphan=True):
@@ -237,25 +340,19 @@ class TemplateManipulator:
             roles_to_delete.add(role_id)
             if role_id in role_to_complexes:
                 for cpx_id in role_to_complexes[role_id]:
-                    cpx = self.template.get_complex(cpx_id)
+                    cpx = self.template.complexes.get_by_id(cpx_id)
                     # delete role_id from cpx
-                    complexroles = []
-                    for complexrole in cpx['complexroles']:
-                        if not complexrole['templaterole_ref'].split('/')[-1] == role_id:
-                            complexroles.append(complexrole)
-                    cpx['complexroles'] = complexroles
-                    # if clear orphan delete cpx
-                    if clear_orphan and len(complexroles) == 0:
+                    to_delete = set(role.id for role in cpx.roles if role.id in role_ids)
+                    for i in to_delete:
+                        role = self.template.roles.get_by_id(i)
+                        del cpx.roles[role]
+                    if clear_orphan and len(cpx.roles) == 0:
                         complexes_to_delete.add(cpx_id)
 
         for role_id in roles_to_delete:
             self.template.roles.remove(role_id)
         for complex_id in complexes_to_delete:
             self.template.complexes.remove(complex_id)
-        #self.template.data['roles'] = list(
-        #    filter(lambda x: x['id'] not in roles_to_delete, self.template.data['roles']))
-        #self.template.data['complexes'] = list(
-        #    filter(lambda x: x['id'] not in complexes_to_delete, self.template.data['complexes']))
 
     def clear_orphan_roles(self):
         """
@@ -287,7 +384,7 @@ class TemplateManipulator:
                         if not role_id == s:
                             to_delete.add(role_id)
                             other_role = self.template.get_role(role_id)
-                            role['aliases'].append('alias:' + other_role['name'])
+                            role.aliases.append('alias:' + other_role.name)
                 else:
                     logger.warning('unable to select role %s', role_ids)
 
@@ -335,6 +432,39 @@ class TemplateManipulator:
             other_rxn = db.get_seed_reaction(i)
             if not other_rxn.is_obsolete:
                 return other_rxn
+
+    def upgrade_obsolete2(self):
+        to_delete = {}
+        for t_rxn in self.template.reactions:
+            rxn = self.modelseed_database.get_seed_reaction(t_rxn.reference_id)
+            if rxn is not None:
+                if rxn.is_obsolete:
+                    correct_version = self.get_non_obsolete(rxn, self.modelseed_database)
+                    if correct_version.is_obsolete:
+                        logger.warning('[BAD   ] %s[%s] %s -> %s', t_rxn.id, t_rxn.reference_id, rxn.id,
+                                       correct_version.id)
+                    else:
+                        to_delete[t_rxn.id] = correct_version
+            else:
+                logger.warning('reaction not found in database: %s', t_rxn.id)
+
+        for t_rxn_id in to_delete:
+            if t_rxn_id in self.template.reactions:
+                correct_version = to_delete[t_rxn_id]
+                t_rxn = self.template.reactions.get_by_id(t_rxn_id)
+                logger.debug('[DELETE] %s[%s] -> %s', t_rxn.id, t_rxn.reference_id, correct_version.id)
+                self.template.reactions.remove(t_rxn.id)
+                id_update = t_rxn.id.split('_')
+                id_update[0] = correct_version.id
+                t_rxn.id = '_'.join(id_update)
+                t_rxn.reference_id = correct_version.id
+                if t_rxn.id not in self.template.reactions:  # we only add reaction back if non obsolete is missing
+                    logger.debug('[ADD   ] %s[%s] -> %s', t_rxn.id, t_rxn.reference_id, correct_version.id)
+                    self.template.reactions += [t_rxn]
+                else:
+                    logger.debug('[SKIP  ] %s[%s] -> %s', t_rxn.id, t_rxn.reference_id, correct_version.id)
+
+        return to_delete
 
     def upgrade_obsolete(self):
         """

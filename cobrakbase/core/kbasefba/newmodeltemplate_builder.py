@@ -25,6 +25,7 @@ class NewModelTemplateBuilder:
         self.compartment_compounds = []
         self.reactions = []
         self.info = info
+        self.biochemistry_ref = None
 
     @staticmethod
     def from_dict(d, info: KBaseObjectInfo, args=None):
@@ -42,6 +43,7 @@ class NewModelTemplateBuilder:
         builder.compounds = d['compounds']
         builder.compartment_compounds = d['compcompounds']
         builder.reactions = d['reactions']
+        builder.biochemistry_ref = d['biochemistry_ref']
         return builder
 
     @staticmethod
@@ -131,6 +133,7 @@ class NewModelTemplateBuilder:
         }
 
         template = NewModelTemplate(self.id, self.name, self.domain, self.template_type, self.version)
+        template.biochemistry_ref = self.biochemistry_ref  # FIXME: change to ObjectInfo
         template.info = self.info if self.info else KBaseObjectInfo(object_type='KBaseFBA.NewModelTemplate')
         template.add_compounds(list(map(lambda x: NewModelTemplateCompound.from_dict(x), self.compounds)))
         template.add_comp_compounds(

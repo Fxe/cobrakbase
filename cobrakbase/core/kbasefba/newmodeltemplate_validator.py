@@ -1,4 +1,5 @@
 
+
 def validate_enum(o, k, values):
     if k in o:
         if o[k] in values:
@@ -7,6 +8,8 @@ def validate_enum(o, k, values):
             print('!!')
     else:
         print('!')
+
+
 def validate_type(o, k, t):
     if k in o:
         if type(o[k]) is t:
@@ -15,6 +18,8 @@ def validate_type(o, k, t):
             print('!!!', k, type(o[k]))
     else:
         print('!')
+
+
 def validate_types(o, k, tt):
     if k in o:
         if type(o[k]) in tt:
@@ -23,6 +28,8 @@ def validate_types(o, k, tt):
             print('!!!', k, type(o[k]))
     else:
         print('!')
+
+
 def validate_template_reaction(o):
     validate_enum(o, 'GapfillDirection', ['>', '<', '='])
     validate_enum(o, 'direction', ['>', '<', '='])
@@ -41,7 +48,13 @@ def validate_template_reaction(o):
 #for r in template_broken['reactions']:
 #    validate_template_reaction(r)
 
-class NewModelTemplateValidator():
+
+class NewModelTemplateValidator:
+    """
+    Validate NewModelTemplate should be implemented for the json only
+    NewModelTemplate should not allow undeclared references
+    """
+
     def __init__(self, template):
         self.template = template
         self.compounds = {}
@@ -61,17 +74,16 @@ class NewModelTemplateValidator():
         complex_source = {}
         complex_source_count = {}
         reaction_source_count = {}
-        for role in self.template.data['roles']:
-            role_source[role['id']] = role['source']
-            if role['source'] not in role_source_count:
-                role_source_count[role['source']] = 0
-            role_source_count[role['source']] += 1
-        for cpx in self.template.data['complexes']:
+        for role in self.template.roles:
+            role_source[role.id] = role.source
+            if role.source not in role_source_count:
+                role_source_count[role.source] = 0
+            role_source_count[role.source] += 1
+        for cpx in self.template.complexes:
             cpx_source = set()
-            for complex_role in cpx['complexroles']:
-                role_id = complex_role['templaterole_ref'].split('/')[-1]
-                cpx_source.add(role_source[role_id])
-            complex_source[cpx['id']] = cpx_source
+            for role in cpx.roles:
+                cpx_source.add(role_source[role.id])
+            complex_source[cpx.id] = cpx_source
             cpx_source = ';'.join(sorted(list(cpx_source)))
             if cpx_source not in complex_source_count:
                 complex_source_count[cpx_source] = 0
@@ -96,44 +108,31 @@ class NewModelTemplateValidator():
             print(s, reaction_source_count[s])
 
     def validate_compounds(self):
-        for o in self.template.data['compounds']:
-            for k in o:
-                if type(o) == float and not o[k] == o[k]:
-                    print(k)
+        for o in self.template.compounds:
+            continue
+            #for k in o:
+            #    if type(o) == float and not o[k] == o[k]:
+            #        print(k)
         
     def validate(self):
-        self.compounds = {}
-        self.compcompounds = {}
-        self.reactions = {}
         self.reactions_comp = {}
-        self.roles = {}
-        self.complexes = {}
         
         self.undec_roles = set()
         self.undec_compounds = set()
         self.undec_complexes = set()
-        for o in self.template.data['roles']:
-            self.roles[o['id']] = o
-        for o in self.template.data['complexes']:
-            self.complexes[o['id']] = o
-            for complexrole in o['complexroles']:
-                role_id = complexrole['templaterole_ref'].split('/')[-1]
-                if not role_id in self.roles:
-                    self.undec_roles.add(role_id)
-        for o in self.template.data['compounds']:
-            self.compounds[o['id']] = o
-            
-        for o in self.template.data['compcompounds']:
-            cmp_id = o['templatecompartment_ref'].split('/')[-1]
-            cpd_id = o['templatecompound_ref'].split('/')[-1]
-            self.compcompounds[o['id']] = (cpd_id, cmp_id)
-            if cpd_id not in self.compounds:
-                self.undec_compounds.add(cpd_id)
-                #print('!', o['id'], o['templatecompound_ref'])
+        for cpx in self.template.complexes:
+            for role in cpx.roles:
+                if role.id not in self.template.roles:
+                    self.undec_roles.add(role.id)
+        for o in self.template.compcompounds:
+            if o.compound:
+                self.compcompounds[o.id] = (o.compound.id, o.compartment)
+            else:
+                self.undec_compounds.add(o.id)
                 
-        for o in self.template.data['reactions']:
-            self.reactions[o['id']] = o
-            self.reactions_comp[o['id']] = set()
+        for o in self.template.reactions:
+            self.reactions_comp[o.id] = set()
+            """
             for r in o['templateReactionReagents']:
                 cpd_ref = r['templatecompcompound_ref'].split('/')[-1]
                 if cpd_ref in self.compcompounds:
@@ -141,7 +140,11 @@ class NewModelTemplateValidator():
                     #print(cpd_ref, compcompounds[cpd_ref])
                 else:
                     print('!!', o['id'], r['templatecompcompound_ref'])
-            for templatecomplex_ref in o['templatecomplex_refs']:
+            """
+
+            """
+            for templatecomplex_ref in o.complexes:
                 complex_id = templatecomplex_ref.split('/')[-1]
                 if complex_id not in self.complexes:
                     self.undec_complexes.add(complex_id)
+            """

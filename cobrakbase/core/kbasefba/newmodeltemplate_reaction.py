@@ -37,7 +37,7 @@ class NewModelTemplateReaction(Reaction):
         :param status:
         :param delta_g:
         :param delta_g_err:
-        :param reference_reaction_id:
+        :param reference_reaction_id: DO NOT USE THIS duplicate of reference_id
         :param template:
         """
         super().__init__(rxn_id, name, subsystem, lower_bound, upper_bound)
@@ -50,7 +50,7 @@ class NewModelTemplateReaction(Reaction):
         self.type = reaction_type.value if type(reaction_type) == TemplateReactionType else reaction_type
         self.deltaG = delta_g
         self.deltaGErr = delta_g_err
-        self.reference_reaction_id = reference_reaction_id
+        self.reference_reaction_id = reference_reaction_id  #TODO: to be removed
         self.complexes = DictList()
         self.templateReactionReagents = {}
         self._template = None
