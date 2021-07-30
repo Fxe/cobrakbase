@@ -5,6 +5,7 @@ from cobrakbase.core.kbasefba.newmodeltemplate_complex import NewModelTemplateRo
 from cobrakbase.core.kbasefba.newmodeltemplate_metabolite import NewModelTemplateCompound, NewModelTemplateCompCompound
 from cobrakbase.core.kbasefba.newmodeltemplate_reaction import NewModelTemplateReaction
 from cobrakbase.kbase_object_info import KBaseObjectInfo
+from cobrakbase.core.kbaseobject import AttrDict
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +20,7 @@ class NewModelTemplateBuilder:
         self.domain = domain
         self.template_type = template_type
         self.compartments = []
+        self.biomasses = []
         self.roles = []
         self.complexes = []
         self.compounds = []
@@ -44,6 +46,7 @@ class NewModelTemplateBuilder:
         builder.compartment_compounds = d['compcompounds']
         builder.reactions = d['reactions']
         builder.biochemistry_ref = d['biochemistry_ref']
+        builder.biomasses = d['biomasses']
         return builder
 
     @staticmethod
@@ -143,5 +146,6 @@ class NewModelTemplateBuilder:
             list(map(lambda x: NewModelTemplateComplex.from_dict(x, template), self.complexes)))
         template.add_reactions(
             list(map(lambda x: NewModelTemplateReaction.from_dict(x, template), self.reactions)))
+        template.biomasses += list(map(lambda x: AttrDict(x), self.biomasses))  # TODO: biomass object
 
         return template
