@@ -1,12 +1,14 @@
 import re
 from cobrakbase.core.kbaseobject import KBaseObjectBase, KBaseObject, AttrDict
+from cobrakbase.core.kbase_types import KBaseType
+from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobra.core.dictlist import DictList
 from modelseedpy.core.msgenome import MSGenome
 from cobrakbase.core.utils import get_id_from_ref
 from cobrakbase.core.kbasegenomes_feature import KBaseGenomeFeature
 
+
 def normalize_role(s):
-    #print(s)
     s = s.strip().lower()
     s = re.sub('[\W_]+', '', s)
     return s
@@ -15,6 +17,8 @@ def normalize_role(s):
 class KBaseGenome(KBaseObject):
 
     def __init__(self, data=None, info=None, args=None, kbase_type=None):
+        if info is None:
+            info = KBaseObjectInfo(object_type='KBaseGenomes.Genome')
         KBaseObject.__init__(self, data, info, args, kbase_type, ['ontology_events'])
 
     def _to_object(self, key, data):
@@ -22,6 +26,12 @@ class KBaseGenome(KBaseObject):
             return KBaseGenomeFeature(data)
         else:
             return AttrDict(data)
+
+    @staticmethod
+    def from_dict(data, info=None, args=None, kbase_type=None):
+        if info is None:
+            info = KBaseObjectInfo(object_type=f'{KBaseType.Genome.value}-0')
+        return KBaseGenome(data, info, args, kbase_type)
 
 #    @property
 #    def features(self):

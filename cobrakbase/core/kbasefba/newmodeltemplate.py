@@ -240,6 +240,9 @@ class NewModelTemplate:
                 <td><strong>Number of reactions</strong></td>
                 <td>{num_reactions}</td>
             </tr><tr>
+                <td><strong>Number of biomasses</strong></td>
+                <td>{num_bio}</td>
+            </tr><tr>
                 <td><strong>Number of roles</strong></td>
                 <td>{num_roles}</td>
             </tr><tr>
@@ -252,6 +255,6 @@ class NewModelTemplate:
             num_metabolites=len(self.compounds),
             num_species=len(self.compcompounds),
             num_reactions=len(self.reactions),
+            num_bio=len(self.biomasses),
             num_roles=len(self.roles),
             num_complexes=len(self.complexes))
-
