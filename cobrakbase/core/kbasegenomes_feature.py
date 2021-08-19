@@ -31,20 +31,20 @@ class KBaseGenomeFeature(MSFeature):
     
     @property
     def functions_unsplit(self):
-        functions = set([None])
+        functions = set()
         if 'functions' in self.data:
             if type(self.data['functions']) == str:
-                return set([self.data['functions']])
+                return {self.data['functions']}
             functions = set(self.data['functions'])
         elif 'function' in self.data:
-            functions = set([self.data['function']])
+            functions = {self.data['function']}
         return functions
     
     @staticmethod
     def split_annotation(annotation):
         split = set()
         for s in annotation:
-            if not s == None:
+            if s:
                 for comp in re.split(' / | @ |; ', s):
                     split.add(comp)
             else:
@@ -54,9 +54,9 @@ class KBaseGenomeFeature(MSFeature):
     @staticmethod
     def split_function(function):
         split = set()
-        if not function == None:
+        if function:
             for comp in re.split(' / | @ |; ', function):
                 split.add(comp)
         else:
-            split.add(s)
+            split.add(split)
         return split
