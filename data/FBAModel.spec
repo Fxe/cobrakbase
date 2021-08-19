@@ -522,7 +522,7 @@ module KBaseFBA {
     /* 
     	FBAModel object
     	
-    	@optional other_genomes attributes abstractreactions gapfilledcandidates metagenome_ref genome_ref template_refs ATPSynthaseStoichiometry ATPMaintenance quantopts
+    	@optional other_genome_refs attributes abstractreactions gapfilledcandidates metagenome_ref genome_ref template_refs ATPSynthaseStoichiometry ATPMaintenance quantopts
 		@metadata ws source_id as Source ID
 		@metadata ws source as Source
 		@metadata ws name as Name
@@ -542,7 +542,6 @@ module KBaseFBA {
 		string name;
 		string type;
 		genome_ref genome_ref;
-		list<genome_ref> other_genomes;
 		metagenome_ref metagenome_ref;
 		
 		template_ref template_ref;
@@ -1776,7 +1775,7 @@ module KBaseFBA {
     /* 
     	TemplateReaction object holds data on reaction in template
     	
-    	@optional upper_bound lower_bound reference base_cost forward_penalty reverse_penalty GapfillDirection reaction_ref
+    	@optional upper_bound lower_bound maxforflux maxrevflux reference base_cost forward_penalty reverse_penalty GapfillDirection reaction_ref
     */
 	typedef structure {
 		templatereaction_id id;
@@ -1788,6 +1787,8 @@ module KBaseFBA {
 		string GapfillDirection;
 		float upper_bound;
 		float lower_bound;
+		float maxforflux;
+		float maxrevflux;
 		templatecompartment_ref templatecompartment_ref;
 		float base_cost;
     	float forward_penalty;

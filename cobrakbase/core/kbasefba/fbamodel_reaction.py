@@ -23,11 +23,14 @@ def _get_gpr(data):
     gpr = []
     for mrp in data['modelReactionProteins']:
         #print(mrp.keys())
-        gpr_and = set()
+        gpr_and = []
         for mrps in mrp['modelReactionProteinSubunits']:
+            gpr_or = []
             #print(mrps.keys())
             for feature_ref in mrps['feature_refs']:
-                gpr_and.add(feature_ref.split('/')[-1])
+                gpr_or.append(feature_ref.split('/')[-1])
+            if len(gpr_or) > 0:
+                gpr_and.append(gpr_or)
         if len(gpr_and) > 0:
             gpr.append(gpr_and)
     return gpr
@@ -37,16 +40,21 @@ def _get_gpr_string(gpr):
     ors = []
     for ands in gpr:
         a = []
-        for g in ands:
-            a.append(g)
-        ors.append(" and ".join(a))
-    gpr_string = "(" + (") or (".join(ors)) + ")"
-    if gpr_string == "()":
+        for orss in ands:
+            if len(orss) == 1:
+                a.append(orss[0])
+            else:
+                a.append("("+" or ".join(orss)+")")
+        if len(a) == 1:
+            ors.append(a[0])
+        else:
+            ors.append("("+" and ".join(a)+")")
+    if len(ors) == 0:
         return ""
-    #if gpr_string.startswith("(") and gpr_string.endswith(")"):
-    #    gpr_string = gpr_string[1:-1].strip()
-    return gpr_string
-
+    elif len(ors) == 1:
+        return ors[0]
+    else:
+        return "("+" or ".join(ors)+")"
 
 def _get_reaction_constraints_from_direction(data):
     if 'direction' in data:
@@ -104,7 +112,8 @@ class ModelReaction(Reaction):
                          data['name'],
                          "",
                          lower_bound, upper_bound)
-
+        
+        logger.debug(rxn_id+":"+_get_gpr_string(_get_gpr(data)))
         self.gene_reaction_rule = _get_gpr_string(_get_gpr(data))
 
         for key in data_copy:
