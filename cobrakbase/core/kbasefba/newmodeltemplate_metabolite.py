@@ -1,4 +1,4 @@
-from cobra.core import Metabolite
+from modelseedpy.core.mstemplate import MSTemplateSpecies
 from cobra.util import format_long_string
 
 
@@ -77,17 +77,10 @@ class NewModelTemplateCompound:
                                ', '.join(r.id for r in self.species), 200))
 
 
-class NewModelTemplateCompCompound(Metabolite):
+class NewModelTemplateCompCompound(MSTemplateSpecies):
 
     def __init__(self, comp_cpd_id, charge, compartment, cpd_id, max_uptake=0, template=None):
-        self._template_compound = None
-        super().__init__(comp_cpd_id, '', '', charge, compartment)
-        self._template = template
-        self.cpd_id = cpd_id
-        self.max_uptake = max_uptake
-        if self._template:
-            if self.cpd_id in self._template.compounds:
-                self._template_compound = self._template.compounds.get_by_id(self.cpd_id)
+        super().__init__(comp_cpd_id, charge, compartment, cpd_id, max_uptake, template)
 
     @property
     def compound(self):

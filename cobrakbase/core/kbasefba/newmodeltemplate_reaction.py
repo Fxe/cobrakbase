@@ -3,6 +3,7 @@ from enum import Enum
 import math
 from cobra.core import Reaction
 from cobra.core.dictlist import DictList
+from modelseedpy.core.mstemplate import MSTemplateReaction
 from modelseedpy.core.msmodel import get_direction_from_constraints, \
     get_reaction_constraints_from_direction, get_cmp_token
 from cobrakbase.modelseed.modelseed_reaction import to_str2
@@ -15,12 +16,12 @@ class TemplateReactionType(Enum):
     GAPFILLING = 'gapfilling'
 
 
-class NewModelTemplateReaction(Reaction):
+class NewModelTemplateReaction(MSTemplateReaction):
 
     def __init__(self, rxn_id: str, reference_id: str, name='', subsystem='', lower_bound=0.0, upper_bound=None,
                  reaction_type=TemplateReactionType.CONDITIONAL, gapfill_direction='=',
                  base_cost=1000, reverse_penalty=1000, forward_penalty=1000,
-                 status='OK', delta_g=0.0, delta_g_err=0.0, reference_reaction_id=None):
+                 status='OK', delta_g=0.0, delta_g_err=0.0):
         """
 
         :param rxn_id:
@@ -37,23 +38,10 @@ class NewModelTemplateReaction(Reaction):
         :param status:
         :param delta_g:
         :param delta_g_err:
-        :param reference_reaction_id: DO NOT USE THIS duplicate of reference_id
-        :param template:
         """
-        super().__init__(rxn_id, name, subsystem, lower_bound, upper_bound)
-        self.reference_id = reference_id
-        self.GapfillDirection = gapfill_direction
-        self.base_cost = base_cost
-        self.reverse_penalty = reverse_penalty
-        self.forward_penalty = forward_penalty
-        self.status = status
-        self.type = reaction_type.value if type(reaction_type) == TemplateReactionType else reaction_type
-        self.deltaG = delta_g
-        self.deltaGErr = delta_g_err
-        self.reference_reaction_id = reference_reaction_id  #TODO: to be removed
-        self.complexes = DictList()
-        self.templateReactionReagents = {}
-        self._template = None
+        super().__init__(rxn_id, reference_id, name, subsystem, lower_bound, upper_bound, reaction_type,
+                         gapfill_direction, base_cost, reverse_penalty, forward_penalty,
+                         status, delta_g, delta_g_err, None)
 
     @property
     def gene_reaction_rule(self):
@@ -91,8 +79,7 @@ class NewModelTemplateReaction(Reaction):
             d['base_cost'], d['reverse_penalty'], d['forward_penalty'],
             d['status'] if 'status' in d else None,
             d['deltaG'] if 'deltaG' in d else None,
-            d['deltaGErr'] if 'deltaGErr' in d else None,
-            d['reaction_ref'].split('/')[-1]
+            d['deltaGErr'] if 'deltaGErr' in d else None
         )
         reaction.add_metabolites(metabolites)
         reaction.add_complexes(complexes)
