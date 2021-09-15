@@ -238,6 +238,11 @@ class KBaseFBAModelReaction:
         return s
     
     def get_bounds(self):
+        if 'maxrevflux' not in self.data or 'maxforflux' not in self.data:
+            import math
+            from modelseedpy.core.msmodel import get_reaction_constraints_from_direction
+            lb, ub = get_reaction_constraints_from_direction(self.data['direction'])
+            return math.fabs(lb), math.fabs(ub), self.data['direction']
         maxrevflux = self.data['maxrevflux']
         maxforflux = self.data['maxforflux']
         direction = '='
