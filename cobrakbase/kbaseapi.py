@@ -22,12 +22,6 @@ KBASE_SHOCK_URL = "https://kbase.us/services/shock-api"
 DEV_KBASE_WS_URL = "https://appdev.kbase.us/services/ws/"
 
 
-# Can we eliminate this now?
-def _get_object_wsc(wclient, oid, ws):
-    res = wclient.get_objects2({"objects": [{"name": oid, "workspace": ws}]})
-    return res["data"][0]["data"]
-
-
 # Why not put this in the constructor?
 def _get_ws_client(token, dev=False):
     url = KBASE_WS_URL
@@ -183,22 +177,22 @@ class KBaseAPI:
                 meta = data.get_metadata()
             else:
                 meta = {}
+
         to_save = data
-        if isinstance(data, KBaseObject):
+        if isinstance(data, KBaseObject) or 'get_data' in dir(data):
             to_save = data.get_data()
-        elif 'get_data' in dir(data):
-            to_save = data.get_data()
+
         # TODO temporary hack implement proper object serializer mapping later
         if type(data) == cobra.core.model.Model:
             from cobrakbase.core.kbasefba.fbamodel_from_cobra import CobraModelConverter
             json, fbamodel = CobraModelConverter(data, None, None).build()
-            json['id'] = object_id # rename object id to the saved object_id
+            json['id'] = object_id  # rename object id to the saved object_id
             # TODO use fbamodel in the future after fixing FBAModel serializer
             to_save = json
         from cobrakbase import __version__
         provenance = [
             {
-                'description': 'COBRA KBase API',
+                'description': 'ModelSEEDpy-KBase',
                 'input_ws_objects': [],
                 'method': 'save_object',
                 'script_command_line': f"{sys.version}",

@@ -7,6 +7,7 @@ from cobrakbase.core.kbasefba.newmodeltemplate_builder import NewModelTemplateBu
 from cobrakbase.core import KBaseGenome
 from cobrakbase.core.kbasegenome.pangenome import KBasePangenome
 from cobrakbase.core.kbasematrices.chemicalabundancematrix import ChemicalAbundanceMatrix
+from cobrakbase.core.kbasefba.eschermap import EscherMap
 from cobrakbase.core.kbasefba.newmodeltemplate import NewModelTemplate
 from cobrakbase.core.kbaseclassifier.genomeclassifiertrainingset import GenomeClassifierTrainingSet
 from cobrakbase.core.kbaseclassifier.genomeclassifier import GenomeClassifier
@@ -20,6 +21,10 @@ def _build_template(x, y, z):
     return NewModelTemplateBuilder.from_dict(x, y, z).build()
 
 
+def _build_escher_map(x, y, z):
+    return EscherMap.from_dict(x, y, z)
+
+
 class KBaseObjectFactory:
     """
     New class to build objects from workspace - converts base object fields into attributes
@@ -31,6 +36,7 @@ class KBaseObjectFactory:
             'KBaseFBA.FBAModel': _build_model,
             'KBaseFBA.NewModelTemplate': _build_template,
             # add FBA
+            'KBaseFBA.EscherMap': _build_escher_map,
             'KBaseBiochem.Media': Media,
             'KBaseGenomes.Genome': KBaseGenome,
             'KBaseGenomes.Pangenome': KBasePangenome,
