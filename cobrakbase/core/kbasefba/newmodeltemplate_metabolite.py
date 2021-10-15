@@ -1,8 +1,8 @@
-from modelseedpy.core.mstemplate import MSTemplateSpecies
+from modelseedpy.core.mstemplate import MSTemplateSpecies, MSTemplateMetabolite
 from cobra.util import format_long_string
 
 
-class NewModelTemplateCompound:
+class NewModelTemplateCompound(MSTemplateMetabolite):
 
     def __init__(self, cpd_id, formula=None, name='', default_charge=None,
                  mass=None, delta_g=None, delta_g_error=None, is_cofactor=False,
@@ -81,32 +81,6 @@ class NewModelTemplateCompCompound(MSTemplateSpecies):
 
     def __init__(self, comp_cpd_id, charge, compartment, cpd_id, max_uptake=0, template=None):
         super().__init__(comp_cpd_id, charge, compartment, cpd_id, max_uptake, template)
-
-    @property
-    def compound(self):
-        return self._template_compound
-
-    @property
-    def name(self):
-        if self._template_compound:
-            return self._template_compound.name
-        return ''
-
-    @name.setter
-    def name(self, value):
-        if self._template_compound:
-            self._template_compound.name = value
-
-    @property
-    def formula(self):
-        if self._template_compound:
-            return self._template_compound.formula
-        return ''
-
-    @formula.setter
-    def formula(self, value):
-        if self._template_compound:
-            self._template_compound.formula = value
 
     @staticmethod
     def from_dict(d, template=None):

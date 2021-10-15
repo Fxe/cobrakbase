@@ -20,8 +20,7 @@ class NewModelTemplateReaction(MSTemplateReaction):
 
     def __init__(self, rxn_id: str, reference_id: str, name='', subsystem='', lower_bound=0.0, upper_bound=None,
                  reaction_type=TemplateReactionType.CONDITIONAL, gapfill_direction='=',
-                 base_cost=1000, reverse_penalty=1000, forward_penalty=1000,
-                 status='OK', delta_g=0.0, delta_g_err=0.0):
+                 base_cost=1000, reverse_penalty=1000, forward_penalty=1000):
         """
 
         :param rxn_id:
@@ -36,12 +35,9 @@ class NewModelTemplateReaction(MSTemplateReaction):
         :param reverse_penalty:
         :param forward_penalty:
         :param status:
-        :param delta_g:
-        :param delta_g_err:
         """
         super().__init__(rxn_id, reference_id, name, subsystem, lower_bound, upper_bound, reaction_type,
-                         gapfill_direction, base_cost, reverse_penalty, forward_penalty,
-                         status, delta_g, delta_g_err, None)
+                         gapfill_direction, base_cost, reverse_penalty, forward_penalty, None)
 
     @property
     def gene_reaction_rule(self):
@@ -76,10 +72,7 @@ class NewModelTemplateReaction(MSTemplateReaction):
         reaction = NewModelTemplateReaction(
             d['id'], d['reaction_ref'].split('/')[-1], d['name'], '', lower_bound, upper_bound,
             d['type'], d['GapfillDirection'],
-            d['base_cost'], d['reverse_penalty'], d['forward_penalty'],
-            d['status'] if 'status' in d else None,
-            d['deltaG'] if 'deltaG' in d else None,
-            d['deltaGErr'] if 'deltaGErr' in d else None
+            d['base_cost'], d['reverse_penalty'], d['forward_penalty']
         )
         reaction.add_metabolites(metabolites)
         reaction.add_complexes(complexes)
@@ -140,8 +133,8 @@ class NewModelTemplateReaction(MSTemplateReaction):
             'base_cost': self.base_cost,
             'reverse_penalty': self.reverse_penalty,
             'forward_penalty': self.forward_penalty,
-            'deltaG': self.deltaG,
-            'deltaGErr': self.deltaGErr,
+            # 'deltaG': self.deltaG,
+            # 'deltaGErr': self.deltaGErr,
             'upper_bound': self.upper_bound,
             'lower_bound': self.lower_bound,
             'direction': get_direction_from_constraints(self.lower_bound, self.upper_bound),
@@ -151,7 +144,6 @@ class NewModelTemplateReaction(MSTemplateReaction):
             'templateReactionReagents': template_reaction_reagents,
             'templatecompartment_ref': '~/compartments/id/' + self.compartment,
             'templatecomplex_refs': list(map(lambda x: '~/complexes/id/' + x.id, self.complexes)),
-            'status': self.status,
             'type': self.type
         }
 
