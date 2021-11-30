@@ -4,6 +4,7 @@ from cobrakbase.core.kbaseobject import KBaseObject
 from cobrakbase.core.kbaseobject import AttrDict
 from cobrakbase.core.utils import get_id_from_ref
 
+
 class ChemicalAbundanceMatrix(KBaseObject):
     
     def __init__(self, data=None, info=None, args=None):

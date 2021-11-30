@@ -11,6 +11,7 @@ from cobrakbase.core.kbasefba.eschermap import EscherMap
 from cobrakbase.core.kbasefba.newmodeltemplate import NewModelTemplate
 from cobrakbase.core.kbaseclassifier.genomeclassifiertrainingset import GenomeClassifierTrainingSet
 from cobrakbase.core.kbaseclassifier.genomeclassifier import GenomeClassifier
+from cobrakbase.core.kbasefeaturevalues.expressionmatrix import ExpressionMatrix
 
 
 def _build_model(x, y, z):
@@ -42,7 +43,8 @@ class KBaseObjectFactory:
             'KBaseGenomes.Pangenome': KBasePangenome,
             'KBaseMatrices.ChemicalAbundanceMatrix': ChemicalAbundanceMatrix,
             'KBaseClassifier.GenomeClassifierTrainingSet': GenomeClassifierTrainingSet,
-            'KBaseClassifier.GenomeClassifier': GenomeClassifier
+            'KBaseClassifier.GenomeClassifier': GenomeClassifier,
+            'KBaseFeatureValues.ExpressionMatrix': ExpressionMatrix.from_dict
         }
     
     def build_object_from_file(self, filename, object_type):
