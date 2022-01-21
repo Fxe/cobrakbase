@@ -3,24 +3,28 @@ from cobra.util import format_long_string
 
 
 class NewModelTemplateCompound(MSTemplateMetabolite):
+    """
+    typedef structure {
+      templatecompound_id id;
+      @optional compound_ref compound_ref;
+      @optional string md5;
+      string name;
+      string abbreviation;
+      bool isCofactor;
+      list<string> aliases;
+      float defaultCharge;
+      float mass;
+      float deltaG;
+      float deltaGErr;
+      string formula;
+    } TemplateCompound;
+    """
 
     def __init__(self, cpd_id, formula=None, name='', default_charge=None,
                  mass=None, delta_g=None, delta_g_error=None, is_cofactor=False,
                  abbreviation='', aliases=None):
-        self.id = cpd_id
-        self.formula = formula
-        self.name = name
-        self.abbreviation = abbreviation
-        self.default_charge = default_charge
-        self.mass = mass
-        self.delta_g = delta_g
-        self.delta_g_error = delta_g_error
-        self.is_cofactor = is_cofactor
-        self.aliases = []
-        if aliases:
-            self.aliases = aliases
-        self.species = set()
-        self._template = None
+        super().__init__(cpd_id, formula, name, default_charge, mass,
+                         delta_g, delta_g_error, is_cofactor, abbreviation, aliases)
 
     @staticmethod
     def from_dict(d):
@@ -32,20 +36,6 @@ class NewModelTemplateCompound(MSTemplateMetabolite):
             d['abbreviation'],
             d['aliases']
         )
-
-    def get_data(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'abbreviation': self.abbreviation,
-            'aliases': [],
-            'defaultCharge': self.default_charge,
-            'deltaG': self.delta_g,
-            'deltaGErr': self.delta_g_error,
-            'formula': self.formula,
-            'isCofactor': 1 if self.is_cofactor else 0,
-            'mass': self.mass
-        }
 
     def __repr__(self):
         return "<%s %s at 0x%x>" % (self.__class__.__name__, self.id, id(self))
@@ -78,6 +68,16 @@ class NewModelTemplateCompound(MSTemplateMetabolite):
 
 
 class NewModelTemplateCompCompound(MSTemplateSpecies):
+    """
+    typedef structure {
+      string id;
+      float charge;
+      float maxuptake;
+      @optional string formula;
+      string templatecompound_ref;
+      templatecompartment_ref templatecompartment_ref;
+    } TemplateCompCompound;
+    """
 
     def __init__(self, comp_cpd_id, charge, compartment, cpd_id, max_uptake=0, template=None):
         super().__init__(comp_cpd_id, charge, compartment, cpd_id, max_uptake, template)
@@ -95,8 +95,8 @@ class NewModelTemplateCompCompound(MSTemplateSpecies):
 
     def get_data(self):
         return {
-            'charge': self.charge,
             'id': self.id,
+            'charge': self.charge,
             'maxuptake': self.max_uptake,
             'templatecompartment_ref': '~/compartments/id/' + self.compartment,
             'templatecompound_ref': '~/compounds/id/' + self.cpd_id

@@ -261,7 +261,7 @@ class TemplateManipulator:
     def add_compartment2(self, cmp_id, name, ph=7, index='0'):
         res = list(filter(lambda x: x['id'] == cmp_id, self.template.compartments))
         if len(res) > 0:
-            return res[0]
+            return res[0].get_data()
         return {
             'id': cmp_id,
             'name': name,
@@ -285,11 +285,11 @@ class TemplateManipulator:
 
         metabolites, stoich_cmps = self.configure_stoichiometry2(rxn.cstoichiometry, compartment_config)
         cmp = get_cmp_token(stoich_cmps)  # calculate compartment
-        self.add_compartment2(cmp, cmp)
+        # self.add_compartment2(cmp, cmp)
         name = rxn.id if type(rxn.data['name']) == float or len(rxn.data['name'].strip()) == 0 else rxn.data['name']
+
         template_reaction = NewModelTemplateReaction(f"{rxn.id}_{cmp}", rxn_id, name, '', 0, 1000,
-                                                     reaction_type, '=', base_cost, reverse_penalty, forward_penalty,
-                                                     'OK')
+                                                     reaction_type, '=', base_cost, reverse_penalty, forward_penalty)
         template_reaction.add_metabolites(metabolites)
         return template_reaction
 

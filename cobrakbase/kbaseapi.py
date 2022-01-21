@@ -221,7 +221,7 @@ class KBaseAPI:
             params["id"] = ws
         else:
             params["workspace"] = ws
-        return self.ws_client.save_objects(params)
+        return KBaseObjectInfo(self.ws_client.save_objects(params)[0])
 
     def save_model(self, object_id, ws, data):
         return self.save_object(object_id, ws, 'KBaseFBA.FBAModel', data)

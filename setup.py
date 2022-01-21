@@ -9,8 +9,9 @@ setup(name='cobrakbase',
       license='MIT',
       packages=find_packages(),
       install_requires=[
-          ""
+          # "modelseedpy >= 1.0.0", # when available in pypi
+          "pandas >= 1.0.0",
           "networkx >= 2.4",
           "cobra >= 0.17.1"
       ],
-      zip_safe=False)
+      zip_safe=True)

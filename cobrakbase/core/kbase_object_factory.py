@@ -12,6 +12,7 @@ from cobrakbase.core.kbasefba.newmodeltemplate import NewModelTemplate
 from cobrakbase.core.kbaseclassifier.genomeclassifiertrainingset import GenomeClassifierTrainingSet
 from cobrakbase.core.kbaseclassifier.genomeclassifier import GenomeClassifier
 from cobrakbase.core.kbasefeaturevalues.expressionmatrix import ExpressionMatrix
+from cobrakbase.core.kbaseexperiments.attributemapping import AttributeMapping
 
 
 def _build_model(x, y, z):
@@ -32,7 +33,6 @@ class KBaseObjectFactory:
     and sticks sub objects into dictlists
     """
     def __init__(self):
-
         self.object_mapper = {
             'KBaseFBA.FBAModel': _build_model,
             'KBaseFBA.NewModelTemplate': _build_template,
@@ -41,10 +41,11 @@ class KBaseObjectFactory:
             'KBaseBiochem.Media': Media,
             'KBaseGenomes.Genome': KBaseGenome,
             'KBaseGenomes.Pangenome': KBasePangenome,
-            'KBaseMatrices.ChemicalAbundanceMatrix': ChemicalAbundanceMatrix,
+            ChemicalAbundanceMatrix.OBJECT_TYPE: ChemicalAbundanceMatrix.from_dict,
             'KBaseClassifier.GenomeClassifierTrainingSet': GenomeClassifierTrainingSet,
             'KBaseClassifier.GenomeClassifier': GenomeClassifier,
-            'KBaseFeatureValues.ExpressionMatrix': ExpressionMatrix.from_dict
+            'KBaseFeatureValues.ExpressionMatrix': ExpressionMatrix.from_dict,
+            AttributeMapping.OBJECT_TYPE: AttributeMapping.from_dict
         }
     
     def build_object_from_file(self, filename, object_type):

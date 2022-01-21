@@ -67,7 +67,13 @@ class KBaseObjectInfo:
     
     @property
     def reference(self):
+        if self.workspace_uid is None or self.uid is None or self.version is None:
+            return None
         return "{}/{}/{}".format(self.workspace_uid, self.uid, self.version)
         
     def __str__(self):
-        return self.reference
+        ref = self.reference
+        if ref:
+            return ref
+        else:
+            return "0/0/0"
