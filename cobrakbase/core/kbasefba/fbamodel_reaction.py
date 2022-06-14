@@ -96,36 +96,81 @@ def _build_rxn_id(s):
 
 COBRA_DATA = ['id', 'name',
               'direction', 'maxrevflux', 'maxforflux',
-              'modelReactionReagents']
+              'modelReactionReagents',
+              'protons', 'probability', 'pathway', 'imported_gpr']
 
 
 class ModelReaction(Reaction):
+    """
+    typedef structure {
+        modelreaction_id id; cobra.id
+        string name; @optional cobra.name
+        string pathway; @optional cobra.subsystem
 
-    def __init__(self, data, reaction_id=None,
-                 name='', subsystem='', lower_bound=0.0, upper_bound=None, model=None):
-        if model:
-            self.model = model
-        data_copy = copy.deepcopy(data)
-        lower_bound, upper_bound = _get_reaction_constraints(data)
-        rxn_id = _build_rxn_id(data['id'])
-        super().__init__(rxn_id,
-                         data['name'],
-                         "",
+        reaction_ref reaction_ref;
+
+        Merged together to lower and upper bound
+        string direction;
+        float maxforflux; @optional
+        float maxrevflux; @optional
+
+        float protons;
+        float probability;
+
+        modelcompartment_ref modelcompartment_ref; auto generated from compounds
+
+        list<ModelReactionReagent> modelReactionReagents;
+        list<ModelReactionProtein> modelReactionProteins;
+
+        mapping<string, list<string>> dblinks; @optional
+        list<string> aliases; @optional
+
+        string reference; @optional
+        string imported_gpr; @optional
+        mapping<string, string> string_attributes; @optional
+        mapping<string, float> numerical_attributes; @optional
+        mapping<string, mapping<int, tuple<string, bool, list<ModelReactionProtein>>>> gapfill_data; @optional
+} ModelReaction;
+    """
+
+    def __init__(self, reaction_id=None, name='', subsystem='', lower_bound=0.0, upper_bound=None,
+                 protons=None, probability=None, imported_gpr=None,
+                 string_attributes=None, numerical_attributes=None):
+        super().__init__(reaction_id,
+                         name,
+                         subsystem,
                          lower_bound, upper_bound)
-        
-        logger.debug(rxn_id+":"+_get_gpr_string(_get_gpr(data)))
-        self.gene_reaction_rule = _get_gpr_string(_get_gpr(data))
-
-        for key in data_copy:
-            if key not in COBRA_DATA:
-                self.__dict__[key] = data_copy[key]
+        self.protons = protons
+        self.probability = probability
+        self.imported_gpr = imported_gpr
+        self.string_attributes = string_attributes
+        self.numerical_attributes = numerical_attributes
 
     @staticmethod
     def from_json(data):
         data_copy = copy.deepcopy(data)
         lower_bound, upper_bound = _get_reaction_constraints(data)
         rxn_id = _build_rxn_id(data['id'])
-        return ModelReaction({}, rxn_id, data_copy['name'], "", lower_bound, upper_bound)
+
+        reaction = ModelReaction(rxn_id, data_copy.get('name', ''), data_copy.get('pathway', ''),
+                                 lower_bound, upper_bound,
+                                 data_copy.get('protons'), data_copy.get('probability'),
+                                 data_copy.get('imported_gpr'),
+                                 data_copy.get('string_attributes'), data_copy.get('numerical_attributes'))
+        reaction.gene_reaction_rule = _get_gpr_string(_get_gpr(data))
+
+        logger.debug(rxn_id + ":" + _get_gpr_string(_get_gpr(data)))
+
+        for key in data_copy:
+            if key not in COBRA_DATA:
+                reaction.__dict__[key] = data_copy[key]
+
+        return reaction
+
+    @staticmethod
+    def from_cobra_reaction(reaction: Reaction):
+        return ModelReaction(reaction.id, reaction.name, reaction.subsystem,
+                             reaction.lower_bound, reaction.upper_bound)
 
     @property
     def compartment(self):
@@ -162,7 +207,9 @@ class ModelReaction(Reaction):
             })
 
         model_reaction_proteins = []
-        return {
+        if 'modelReactionProteins' in dir(self):
+            model_reaction_proteins = self.modelReactionProteins
+        data = {
             'id': self.id,
             'name': self.name,
             'direction': rev,
@@ -175,9 +222,14 @@ class ModelReaction(Reaction):
             'modelReactionProteins': model_reaction_proteins,
             'modelReactionReagents': model_reaction_reagents,
             'modelcompartment_ref': '~/modelcompartments/id/' + self.compartment,
-            'numerical_attributes': {},
-            'probability': 0,
-            'protons': 0,
+            'probability': self.probability,
+            'protons': self.protons,
             'reaction_ref': '~/template/reactions/id/' + self.id[:-1],
-            'string_attributes': {}
         }
+        if self.imported_gpr is not None:
+            data['imported_gpr'] = self.imported_gpr
+        if self.string_attributes is not None:
+            data['string_attributes'] = self.string_attributes
+        if self.numerical_attributes is not None:
+            data['numerical_attributes'] = self.numerical_attributes
+        return data

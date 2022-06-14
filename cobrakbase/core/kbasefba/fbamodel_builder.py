@@ -3,6 +3,7 @@ import copy
 from cobra.core import Reaction, Gene
 from cobra.util.solver import linear_reaction_coefficients
 from cobrakbase.kbase_object_info import KBaseObjectInfo
+from cobrakbase.core.kbasefba.fbamodel import ModelCompartment
 from cobrakbase.core.kbasefba import ModelCompound, ModelReaction, Biomass, FBAModel
 
 logger = logging.getLogger(__name__)
@@ -20,6 +21,7 @@ class FBAModelBuilder:
         self.data = data
         self.info = info
         self.args = args
+        self.compartments = {}
         self.metabolites_remap = {}
         self.metabolites = {}
         self.reactions = {}
@@ -77,9 +79,8 @@ class FBAModelBuilder:
         #    id = annotation["bigg.metabolite"] + "_" + compartment
         #        #print(id)
 
-        met = ModelCompound(data)
+        met = ModelCompound.from_json(data)
         self.metabolites_remap[data['id']] = met.id
-
 
         # simple chemical - Simple, non-repetitive chemical entity.
         met.annotation[self.SBO_ANNOTATION] = "SBO:0000247"
@@ -98,7 +99,7 @@ class FBAModelBuilder:
 
         # gpr = reaction.get_gpr()
 
-        reaction = ModelReaction(data)
+        reaction = ModelReaction.from_json(data)
         reaction.annotation[self.SBO_ANNOTATION] = "SBO:0000176"  # biochemical reaction
         reaction.annotation.update(annotation)
 
@@ -114,21 +115,21 @@ class FBAModelBuilder:
 
         return reaction
 
-    def convert_biomass_to_reaction(self, biomass):
+    def convert_biomass_to_reaction(self, kbase_biomass_dict):
         # mr_id = biomass['id'] + "_biomass"
         # name = biomass['name']
         object_stoichiometry = {}
-        for biomasscompound in biomass['biomasscompounds']:
-            coefficient = biomasscompound['coefficient']
-            metabolite_id = biomasscompound['modelcompound_ref'].split('/')[-1]
+        for o in kbase_biomass_dict['biomasscompounds']:
+            coefficient = o['coefficient']
+            metabolite_id = o['modelcompound_ref'].split('/')[-1]
 
             if metabolite_id in self.metabolites_remap:
                 mapped_id = self.metabolites_remap[metabolite_id]
                 object_stoichiometry[self.metabolites[mapped_id]] = coefficient
             else:
-                logger.warning('[%s] undeclared biomass species: %s', biomass['id'], metabolite_id)
+                logger.warning('[%s] undeclared biomass species: %s', kbase_biomass_dict['id'], metabolite_id)
 
-        reaction = Biomass(biomass)
+        reaction = Biomass.from_json(kbase_biomass_dict)
         objective_id = reaction.id
         reaction.add_metabolites(object_stoichiometry)
         # SBO:0000629 [biomass production]
@@ -174,8 +175,15 @@ class FBAModelBuilder:
             return drain_reaction
 
     def build(self):
-        for modelcompound in self.data['modelcompounds']:
-            metabolite = self.convert_modelcompound(modelcompound)
+        for cmp_data in self.data['modelcompartments']:
+            cmp = ModelCompartment.from_json(cmp_data)
+            if cmp.id not in self.compartments:
+                self.compartments[cmp.id] = cmp
+            else:
+                logger.warning('cmp %s is found twice? ignoring duplicate', cmp.id)
+
+        for mc in self.data['modelcompounds']:
+            metabolite = self.convert_modelcompound(mc)
             self.metabolites[metabolite.id] = metabolite
             if metabolite.compartment == self.auto_exchange:
                 logger.debug('Add Exchange: [%s]', metabolite.id)
@@ -216,7 +224,7 @@ class FBAModelBuilder:
                 # self.add_reaction(drain_reaction)
                 logger.debug('created exchange for [%s]: %s', cpd_id, drain_reaction)
             else:
-                logger.warning('unable to add exchange for [%s]: not found', cpd_id)
+                logger.debug('unable to add exchange for [%s]: not found', cpd_id)
         for cpd_id in self.demand_compounds:
             if cpd_id in self.metabolites:
                 drain_reaction = self.build_drain_from_metabolite_id(cpd_id, self.COBRA_0_BOUND, self.COBRA_DEFAULT_UB,
@@ -225,7 +233,7 @@ class FBAModelBuilder:
                 # self.add_reaction(drain_reaction)
                 logger.debug('created demand for [%s]: %s', cpd_id, drain_reaction)
             else:
-                logger.warning('unable to add demand for [%s]: not found', cpd_id)
+                logger.debug('unable to add demand for [%s]: not found', cpd_id)
         for cpd_id in self.sink_compounds:
             if cpd_id in self.metabolites:
                 drain_reaction = self.build_drain_from_metabolite_id(cpd_id, self.COBRA_0_BOUND, self.COBRA_DEFAULT_UB,
@@ -234,10 +242,10 @@ class FBAModelBuilder:
             # self.add_reaction(drain_reaction)
                 logger.debug('created sink for [%s]: %s', cpd_id, drain_reaction)
             else:
-                logger.warning('unable to add sink for [%s]: not found', cpd_id)
+                logger.debug('unable to add sink for [%s]: not found', cpd_id)
 
         model.add_metabolites(self.metabolites.values())
-        model.add_reactions(self.reactions.values())
+        model.add_reactions(list(self.reactions.values()))
 
         if len(self.biomass_reactions) > 0:
             default_biomass = list(self.biomass_reactions)[0]

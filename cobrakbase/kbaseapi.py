@@ -34,18 +34,21 @@ class KBaseAPI:
 
     def __init__(self, token=None, dev=False, config=None):
         self.max_retry = 3
-        self.token = token
-        if token is None and Path(str(Path.home()) + '/.kbase/token').exists():
+        self._token = token
+        if self._token is None and Path(str(Path.home()) + '/.kbase/token').exists():
             with open(str(Path.home()) + '/.kbase/token', 'r') as fh:
-                token = fh.read().strip()
-        if token is None:
+                self._token = fh.read().strip()
+        if self._token is None:
             raise Exception("missing token value or ~/.kbase/token file")
 
         if config is None:
             self.ws_client = _get_ws_client(token, dev)
-            self.hs = HandleService(KBASE_HANDLE_URL, token=token)
+            self.hs = HandleService(KBASE_HANDLE_URL, token=self._token)
         else:
-            self.ws_client = WorkspaceClient(config['workspace-url'], token=token)
+            self.ws_client = WorkspaceClient(config['workspace-url'], token=self._token)
+
+    #def _find_token(self):
+
 
     @staticmethod
     def process_workspace_identifiers(id_or_ref, workspace=None):
@@ -81,16 +84,15 @@ class KBaseAPI:
             raise ShockException(errtxt + str(err))
         pass
 
-    def download_file_from_kbase(self, token, file_id, file_path, is_handle_ref=1):
+    def download_file_from_kbase(self, file_id, file_path, is_handle_ref=1):
         """
         FIXME: THIS SEEMS TO DOWNLOAD THE FILE TWICE !
-        :param token:
         :param file_id:
         :param file_path:
         :param is_handle_ref:
         :return:
         """
-        headers = {'Authorization': 'OAuth ' + token}
+        headers = {'Authorization': 'OAuth ' + self._token}
 
         if is_handle_ref == 1:
             handles = self.hs.hids_to_handles([file_id])
@@ -109,8 +111,8 @@ class KBaseAPI:
         r = requests.get(node_url, headers=headers, allow_redirects=True)
 
         if not r.ok:
-            errtxt = 'Error downloading file from shock node {}: '.format(file_id)
-            raise ShockException(errtxt)
+            err_txt = 'Error downloading file from shock node {}: '.format(file_id)
+            raise ShockException(err_txt)
 
         resp_obj = r.json()
         size = resp_obj['data']['file']['size']
@@ -124,8 +126,8 @@ class KBaseAPI:
         with open(file_path, 'wb') as fh:
             with requests.get(node_url + '?download_raw', stream=True, headers=headers, allow_redirects=True) as r:
                 if not r.ok:
-                    errtxt = 'Error downloading file from shock node {}: '.format(file_id)
-                    raise ShockException(errtxt)
+                    err_txt = 'Error downloading file from shock node {}: '.format(file_id)
+                    raise ShockException(err_txt)
                 for chunk in r.iter_content(1024):
                     if not chunk:
                         break
