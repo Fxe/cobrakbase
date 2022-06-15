@@ -42,7 +42,7 @@ class KBaseAPI:
             raise Exception("missing token value or ~/.kbase/token file")
 
         if config is None:
-            self.ws_client = _get_ws_client(token, dev)
+            self.ws_client = _get_ws_client(self._token, dev)
             self.hs = HandleService(KBASE_HANDLE_URL, token=self._token)
         else:
             self.ws_client = WorkspaceClient(config['workspace-url'], token=self._token)
