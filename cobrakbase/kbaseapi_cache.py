@@ -38,6 +38,7 @@ class KBaseCache(KBaseAPI):
             with open(f'{object_path}/{file_name}', 'w') as fh:
                 fh.write(json.dumps(data))
             logger.debug(f'created file [{object_path}/{file_name}]')
+            return data
         else:
             with open(f'{object_path}/{file_name}', 'r') as fh:
                 data = json.load(fh)
