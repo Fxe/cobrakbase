@@ -49,7 +49,6 @@ class KBaseAPI:
 
     #def _find_token(self):
 
-
     @staticmethod
     def process_workspace_identifiers(id_or_ref, workspace=None):
         """
@@ -83,6 +82,26 @@ class KBaseAPI:
                 r.raise_for_status()
             raise ShockException(errtxt + str(err))
         pass
+
+    def download_file_from_kbase2(self, handle_ref, file_name):
+        headers = {'Authorization': 'OAuth ' + self._token}
+
+        handles = self.hs.hids_to_handles([handle_ref])
+        file_id = handles[0]['id']
+        node_url = KBASE_SHOCK_URL + '/node/' + file_id
+
+        written_bytes = 0
+
+        with open(file_name, 'wb') as fh:
+            with requests.get(node_url + '?download_raw', stream=True, headers=headers, allow_redirects=True) as r:
+                if not r.ok:
+                    err_txt = 'Error downloading file from shock node {}: '.format(file_id)
+                    raise ShockException(err_txt)
+                for chunk in r.iter_content(1024):
+                    if not chunk:
+                        break
+                    written_bytes += fh.write(chunk)
+        return written_bytes
 
     def download_file_from_kbase(self, file_id, file_path, is_handle_ref=1):
         """
@@ -160,7 +179,7 @@ class KBaseAPI:
         logger.warning("get_objects2 failed after multiple tries: %s", sys.exc_info()[0])
         raise
 
-    def get_object(self, object_id, ws):
+    def get_object(self, object_id, ws=None):
         res = self.get_objects2({"objects": [self.process_workspace_identifiers(object_id, ws)]})
         if res is None:
             return None

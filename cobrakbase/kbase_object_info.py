@@ -70,6 +70,9 @@ class KBaseObjectInfo:
         if self.workspace_uid is None or self.uid is None or self.version is None:
             return None
         return "{}/{}/{}".format(self.workspace_uid, self.uid, self.version)
+
+    def to_kbase_json(self):
+        return self._tuple
         
     def __str__(self):
         ref = self.reference
