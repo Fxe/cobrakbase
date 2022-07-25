@@ -4,7 +4,7 @@ from cobrakbase.core.kbaseobject import KBaseObject
 from cobrakbase.core.kbasebiochem import Media
 from cobrakbase.core.kbasefba.fbamodel_builder import FBAModelBuilder
 from cobrakbase.core.kbasefba.newmodeltemplate_builder import NewModelTemplateBuilder
-from cobrakbase.core import KBaseGenome
+from cobrakbase.core.kbasegenome.genome import KBaseGenome
 from cobrakbase.core.kbasegenome.pangenome import KBasePangenome
 from cobrakbase.core.kbasematrices.chemicalabundancematrix import ChemicalAbundanceMatrix
 from cobrakbase.core.kbasefba.eschermap import EscherMap
@@ -39,7 +39,7 @@ class KBaseObjectFactory:
             # add FBA
             'KBaseFBA.EscherMap': _build_escher_map,
             'KBaseBiochem.Media': Media,
-            'KBaseGenomes.Genome': KBaseGenome,
+            KBaseGenome.OBJECT_TYPE: KBaseGenome.from_kbase_data,
             'KBaseGenomes.Pangenome': KBasePangenome,
             ChemicalAbundanceMatrix.OBJECT_TYPE: ChemicalAbundanceMatrix.from_dict,
             'KBaseClassifier.GenomeClassifierTrainingSet': GenomeClassifierTrainingSet,

@@ -21,6 +21,11 @@ class KBaseGenome(KBaseObject):
             info = KBaseObjectInfo(object_type='KBaseGenomes.Genome')
         KBaseObject.__init__(self, data, info, args, kbase_type, ['ontology_events'])
 
+    @staticmethod
+    def from_kbase_data(self):
+
+        pass
+
     def _to_object(self, key, data):
         if key == 'features':
             return KBaseGenomeFeature(data)
