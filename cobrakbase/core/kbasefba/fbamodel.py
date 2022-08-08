@@ -81,9 +81,11 @@ class FBAModel(KBaseObject, Model):
 
             KBase Media object enconding medium
         """
-        for exchange_reaction in self.exchanges:
-            exchange_reaction.lower_bound = 0
         if type(medium) == Media:
+            for exchange_reaction in self.exchanges:
+                if exchange_reaction.upper_bound < 0:
+                    exchange_reaction.upper_bound = 0
+                exchange_reaction.lower_bound = 0
             in_model = dict(filter(lambda x: x[0] in self.metabolites, medium.get_media_constraints().items()))
             for compound_id in in_model:
                 for exchange_reaction in self.get_exchange_by_metabolite_id(compound_id):
