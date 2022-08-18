@@ -105,6 +105,8 @@ class FBAModel(KBaseObject, Model):
                     data[key] = self.data[key]
 
         data['modelcompounds'] = []
+        data['modelreactions'] = []
+        
         for metabolite in self.metabolites:
             if type(metabolite) is ModelCompound:
                 data['modelcompounds'].append(metabolite._to_json())
