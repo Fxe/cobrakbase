@@ -119,3 +119,14 @@ class FBAModel(KBaseObject, Model):
                     data['modelreactions'].append(ModelReaction.from_cobra_reaction(reaction)._to_json())
 
         return data
+
+    def copy(self):
+        from cobrakbase.core.kbasefba.fbamodel_builder import FBAModelBuilder
+        from cobrakbase.kbase_object_info import KBaseObjectInfo
+
+        # copy data, info, args
+        json = self._to_json()
+        info = KBaseObjectInfo.from_kbase_json(self.info.to_kbase_json())
+        args = self.get_kbase_args()
+
+        return FBAModelBuilder.from_kbase_json(json, info, args).build()

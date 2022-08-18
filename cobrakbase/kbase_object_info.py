@@ -13,6 +13,11 @@ class KBaseObjectInfo:
                 self._type_version = array[1]
                 self._tuple[2] = array[0]
 
+    @staticmethod
+    def from_kbase_json(d):
+        info = KBaseObjectInfo(d)
+        return info
+
     @property
     def uid(self):
         return self._tuple[0]

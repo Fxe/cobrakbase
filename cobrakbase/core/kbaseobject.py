@@ -1,9 +1,13 @@
 import logging
+import copy
 from cobra.core.dictlist import DictList
 from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.exceptions import ObjectError
 
 logger = logging.getLogger(__name__)
+
+KBASE_ARGS = ["provenance", "path", "creator", "orig_wsid", "created",
+              "epoch", "refs", "copied", "copy_source_inaccessible"]
 
 
 class AttrDict(dict):
@@ -58,13 +62,18 @@ class KBaseObject:
             raise ObjectError("KBase object without type")
         self.data = self._from_json(data)
 
-        fields = ["provenance", "path", "creator", "orig_wsid", "created", "epoch", "refs", "copied",
-                  "copy_source_inaccessible"]
-        for field in fields:
+        for field in KBASE_ARGS:
             if field not in args:
                 self.__dict__[field] = None
             else:
                 self.__dict__[field] = args[field]
+
+    def get_kbase_args(self):
+        args = {}
+        for k in KBASE_ARGS:
+            if k in self.__dict__:
+                args[k] = copy.deepcopy(self.__dict__[k])
+        return args
 
     def _to_json(self):
         data = {}
