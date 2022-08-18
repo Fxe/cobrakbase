@@ -29,6 +29,7 @@ class KBaseObject:
         :param exclude_dict:
         """
         #If an object has a key "data", we need to replace it befor setting attributes to the data
+        data = data or {}
         if "data" in data:
             data["_data"] = data["data"]
             del(data["data"])
@@ -39,8 +40,6 @@ class KBaseObject:
         # Turning all fields in the dictionary into attributes
         if args is None:
             args = {}
-        if data is None:
-            data = {}
         self.__dict__ = data
         self.exclude_dict = set()
         if exclude_dict:
