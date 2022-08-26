@@ -3,6 +3,7 @@ from cobrakbase.core.kbasefba.fbamodel_builder import FBAModelBuilder
 from cobrakbase.core.kbasefba.fbamodel_metabolite import ModelCompound
 from cobrakbase.core.kbasefba.fbamodel_reaction import ModelReaction, get_for_rev_flux_from_bounds
 from modelseedpy.core.msmodel import get_direction_from_constraints
+from cobrakbase.core.kbasefba.fbamodel_biomass import Biomass
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,8 @@ class CobraModelConverter:
         """
         detect biomass reaction from SBO term SBO:0000629
         """
-        return 'sbo' in reaction.annotation and reaction.annotation['sbo'] == "SBO:0000629"
+        return type(reaction) == Biomass or \
+            'sbo' in reaction.annotation and reaction.annotation['sbo'] == "SBO:0000629"
 
     @staticmethod
     def reaction_is_drain(reaction):

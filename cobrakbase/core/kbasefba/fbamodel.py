@@ -1,9 +1,14 @@
+import logging
 import copy
 from cobra.core import Model
 from cobrakbase.core.kbaseobject import KBaseObject
 from cobrakbase.core.kbasebiochem.media import Media
 from cobrakbase.core.kbasefba.fbamodel_metabolite import ModelCompound
 from cobrakbase.core.kbasefba.fbamodel_reaction import ModelReaction
+from cobrakbase.core.kbasefba.fbamodel_biomass import Biomass
+
+logger = logging.getLogger(__name__)
+
 
 class ModelCompartment:
     """
@@ -96,7 +101,7 @@ class FBAModel(KBaseObject, Model):
     def _to_json(self):
         from cobrakbase.core.kbasefba.fbamodel_from_cobra import CobraModelConverter
         data = {}
-        ignore = {'modelcompounds', 'modelreactions'}
+        ignore = {'modelcompounds', 'modelreactions', 'biomasses'}
         for key in self.data_keys:
             if key not in ignore:
                 if self.data_keys[key] is list:
@@ -106,7 +111,8 @@ class FBAModel(KBaseObject, Model):
 
         data['modelcompounds'] = []
         data['modelreactions'] = []
-        
+        data['biomasses'] = []
+
         for metabolite in self.metabolites:
             if type(metabolite) is ModelCompound:
                 data['modelcompounds'].append(metabolite._to_json())
@@ -115,10 +121,17 @@ class FBAModel(KBaseObject, Model):
         for reaction in self.reactions:
             if not CobraModelConverter.reaction_is_drain(reaction) and \
                     not CobraModelConverter.reaction_is_biomass(reaction):
-                if type(metabolite) is ModelReaction:
+                if type(reaction) is ModelReaction:
                     data['modelreactions'].append(reaction._to_json())
                 else:
                     data['modelreactions'].append(ModelReaction.from_cobra_reaction(reaction)._to_json())
+
+        for reaction in self.reactions:
+            if CobraModelConverter.reaction_is_biomass(reaction):
+                if type(reaction) is Biomass:
+                    data['biomasses'].append(reaction._to_json())
+                else:
+                    logger.warning('unable to biomass type', type(reaction))
 
         return data
 

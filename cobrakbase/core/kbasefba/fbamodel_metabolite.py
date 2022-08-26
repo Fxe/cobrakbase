@@ -35,7 +35,7 @@ class ModelCompound(Metabolite):
 
     def __init__(self, metabolite_id=None, formula=None, name=None, charge=None, compartment=None,
                  smiles=None, inchi_key=None, max_uptake=None,
-                 string_attributes=None, numerical_attributes=None):
+                 string_attributes=None, numerical_attributes=None, db_links=None):
         """
         KBase FBAModel Metabolite is a subclass of cobra.core.Metabolite
         """
@@ -45,6 +45,7 @@ class ModelCompound(Metabolite):
         self.inchi_key = inchi_key
         self.string_attributes = string_attributes
         self.numerical_attributes = numerical_attributes
+        self.db_links = db_links
 
     @staticmethod
     def from_json(data):
@@ -54,7 +55,8 @@ class ModelCompound(Metabolite):
 
         cpd = ModelCompound(cpd_id, data_copy['formula'], data_copy['name'], data_copy['charge'], compartment,
                             data_copy.get('smiles'), data_copy.get('inchikey'), data_copy.get('maxuptake'),
-                            data_copy.get('string_attributes'), data_copy.get('numerical_attributes'))
+                            data_copy.get('string_attributes'), data_copy.get('numerical_attributes'),
+                            data_copy.get('dblinks'))
 
         for key in data_copy:
             if key not in COBRA_DATA:
@@ -85,8 +87,6 @@ class ModelCompound(Metabolite):
             'name': self.name,
             'charge': self.charge,
             'formula': self.formula,
-            'aliases': [],
-            'dblinks': {},
             'compound_ref': f'~/template/compounds/id/{self.compound_id}',
             'modelcompartment_ref': f'~/modelcompartments/id/{self.compartment}',
         }
@@ -100,4 +100,6 @@ class ModelCompound(Metabolite):
             data['string_attributes'] = self.string_attributes
         if self.numerical_attributes is not None:
             data['numerical_attributes'] = self.numerical_attributes
+        if self.db_links is not None:
+            data['dblinks'] = self.db_links
         return data
