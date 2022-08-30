@@ -67,7 +67,7 @@ class FBAModel(KBaseObject, Model):
 
     @Model.compartments.getter
     def compartments(self):
-        return {cmp.id: cmp.name for cmp in self._model_compartments}
+        return {cmp.id: cmp.name for (k, cmp) in self._model_compartments.items()}
 
     @compartments.setter
     def compartments(self, value: dict) -> None:
@@ -75,8 +75,8 @@ class FBAModel(KBaseObject, Model):
             raise ValueError('value cannot be None')
         for k in value:
             v = value[k]
-            if v is None or type(v) != str or isinstance(v, ModelCompartment):
-                raise ValueError('value for compartment must be either string or ModelCompartment')
+            if v is None or (type(v) != str and not isinstance(v, ModelCompartment)):
+                raise ValueError(f'value for compartment must be either string or ModelCompartment, found {type(v)}')
             if type(v) == str:
                 self._model_compartments[k] = ModelCompartment(k, v, 7.0, 0.0, 0)
             else:

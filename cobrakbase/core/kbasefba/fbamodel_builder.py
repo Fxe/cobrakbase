@@ -244,6 +244,7 @@ class FBAModelBuilder:
             else:
                 logger.debug('unable to add sink for [%s]: not found', cpd_id)
 
+        model.compartments = self.compartments
         model.add_metabolites(self.metabolites.values())
         model.add_reactions(list(self.reactions.values()))
 

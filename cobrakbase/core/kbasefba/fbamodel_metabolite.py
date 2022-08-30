@@ -52,8 +52,14 @@ class ModelCompound(Metabolite):
         data_copy = copy.deepcopy(data)
         cpd_id = build_cpd_id(data['id'])
         compartment = data_copy['modelcompartment_ref'].split('/')[-1]
+        formula = data_copy.get('formula')
+        charge = data_copy.get('charge')
+        if type(charge) == float or type(charge) == str:
+            charge = int(charge)
+        if formula == '*':
+            formula = None
 
-        cpd = ModelCompound(cpd_id, data_copy['formula'], data_copy['name'], data_copy['charge'], compartment,
+        cpd = ModelCompound(cpd_id, formula, data_copy['name'], charge, compartment,
                             data_copy.get('smiles'), data_copy.get('inchikey'), data_copy.get('maxuptake'),
                             data_copy.get('string_attributes'), data_copy.get('numerical_attributes'),
                             data_copy.get('dblinks'))
