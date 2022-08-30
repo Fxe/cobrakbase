@@ -1,6 +1,7 @@
 import logging
 import copy
 from cobra.core import Model
+from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbaseobject import KBaseObject
 from cobrakbase.core.kbasebiochem.media import Media
 from cobrakbase.core.kbasefba.fbamodel_metabolite import ModelCompound
@@ -50,7 +51,11 @@ class ModelCompartment:
 
 class FBAModel(KBaseObject, Model):
 
+    OBJECT_TYPE = 'KBaseFBA.FBAModel'
+
     def __init__(self, data=None, info=None, args=None, kbase_type=None):
+        if info is None:
+            info = KBaseObjectInfo(object_type=FBAModel.OBJECT_TYPE)
         KBaseObject.__init__(self, data, info, args, kbase_type)
         Model.__init__(self, self.data['id'], self.data['name'])
         self._model_compartments = {}
@@ -63,6 +68,20 @@ class FBAModel(KBaseObject, Model):
     @Model.compartments.getter
     def compartments(self):
         return {cmp.id: cmp.name for cmp in self._model_compartments}
+
+    @compartments.setter
+    def compartments(self, value: dict) -> None:
+        if value is None:
+            raise ValueError('value cannot be None')
+        for k in value:
+            v = value[k]
+            if v is None or type(v) != str or isinstance(v, ModelCompartment):
+                raise ValueError('value for compartment must be either string or ModelCompartment')
+            if type(v) == str:
+                self._model_compartments[k] = ModelCompartment(k, v, 7.0, 0.0, 0)
+            else:
+                self._model_compartments[v.id] = v
+        self._compartments.update(value)
 
     def get_exchange_by_metabolite_id(self, metabolite_id):
         return list(filter(lambda x: list(x.metabolites)[0].id == metabolite_id, self.exchanges))
