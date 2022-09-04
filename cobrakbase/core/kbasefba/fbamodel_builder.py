@@ -193,11 +193,18 @@ class FBAModelBuilder:
 
         for modelreaction in self.data['modelreactions']:
             reaction = self.convert_modelreaction(modelreaction)
-            self.reactions[reaction.id] = reaction
+            if reaction.id not in self.reactions:
+                self.reactions[reaction.id] = reaction
+            else:
+                logger.warning(f"duplicate reaction ID: {reaction.id}")
 
         logger.info('reactions %d', len(self.reactions))
 
-        model = FBAModel(copy.deepcopy(self.data), self.info, self.args)
+        data_copy = copy.deepcopy(self.data)
+        del data_copy['biomasses']
+        del data_copy['modelcompounds']
+        del data_copy['modelreactions']
+        model = FBAModel(data_copy, self.info, self.args)
 
         for gene_id in self.genes:
             gene = Gene(id=_build_gene_id(gene_id), name=gene_id)
@@ -210,8 +217,11 @@ class FBAModelBuilder:
             reaction = self.convert_biomass_to_reaction(biomass)
             reaction.lower_bound = self.COBRA_0_BOUND
             reaction.upper_bound = self.COBRA_DEFAULT_UB
-            self.reactions[reaction.id] = reaction
-            self.biomass_reactions.add(reaction.id)
+            if reaction.id not in self.reactions:
+                self.reactions[reaction.id] = reaction
+                self.biomass_reactions.add(reaction.id)
+            else:
+                logger.warning(f"duplicate reaction ID: {reaction.id}")
 
         for cpd_id in self.exchange_compounds:
             if cpd_id in self.metabolites:
