@@ -56,7 +56,7 @@ class ModelCompound(Metabolite):
         charge = data_copy.get('charge')
         if type(charge) == float or type(charge) == str:
             charge = int(charge)
-        if formula == '*':
+        if formula == '*' or formula == 'null':
             formula = None
 
         cpd = ModelCompound(cpd_id, formula, data_copy['name'], charge, compartment,
