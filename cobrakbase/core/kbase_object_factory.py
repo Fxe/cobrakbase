@@ -8,7 +8,6 @@ from cobrakbase.core.kbasegenome.genome import KBaseGenome
 from cobrakbase.core.kbasegenome.pangenome import KBasePangenome
 from cobrakbase.core.kbasematrices.chemicalabundancematrix import ChemicalAbundanceMatrix
 from cobrakbase.core.kbasefba.eschermap import EscherMap
-from cobrakbase.core.kbasefba.newmodeltemplate import NewModelTemplate
 from cobrakbase.core.kbaseclassifier.genomeclassifiertrainingset import GenomeClassifierTrainingSet
 from cobrakbase.core.kbaseclassifier.genomeclassifier import GenomeClassifier
 from cobrakbase.core.kbasefeaturevalues.expressionmatrix import ExpressionMatrix
@@ -61,14 +60,16 @@ class KBaseObjectFactory:
         if ws_output is None:
             return KBaseObject(None, None, None, object_type)
 
+        ws_data = ws_output["data"][0]
+
         args = {}
         fields = ["provenance", "path", "creator", "orig_wsid", "created", "epoch", "refs", "copied",
                   "copy_source_inaccessible"]
         for field in fields:
-            if field in ws_output["data"][0]:
-                args[field] = ws_output["data"][0][field]
-        data = ws_output["data"][0]["data"]
-        info = KBaseObjectInfo(ws_output["data"][0]["info"])
+            if field in ws_data:
+                args[field] = ws_data[field]
+        data = ws_data["data"]
+        info = KBaseObjectInfo(ws_data["info"])
 
         if info and info.type and info.type in self.object_mapper:
             return self.object_mapper[info.type](data, info, args)
