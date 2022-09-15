@@ -275,7 +275,7 @@ class KBaseGenomeFeature(MSFeature):
         functions = KBaseGenomeFeature.extract_functions(kbase_data)
         functions_split = KBaseGenomeFeature.split_annotation(functions)
         o = KBaseGenomeFeature(kbase_data['id'],
-                               kbase_data['protein_translation'], kbase_data['dna_sequence'],
+                               kbase_data['protein_translation'], kbase_data.get('dna_sequence'),
                                kbase_data['location'], kbase_data['cdss'], functions)
         for f in functions_split:
             o.add_ontology_term('RAST', f)
@@ -284,7 +284,6 @@ class KBaseGenomeFeature(MSFeature):
     def to_kbase_data(self):
         d = {
             'id': self.id,
-            'dna_sequence': self.dna_sequence,
             'md5': self.md5,
             'cdss': self.cdss,
             'functions': list(self.functions),
@@ -293,5 +292,6 @@ class KBaseGenomeFeature(MSFeature):
             'protein_translation': self.seq,
             'protein_translation_length': self.protein_translation_length,
         }
-
+        if self.dna_sequence:
+            d['dna_sequence'] = self.dna_sequence
         return d
