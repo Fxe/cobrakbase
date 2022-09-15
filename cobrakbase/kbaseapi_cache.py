@@ -51,3 +51,4 @@ class KBaseCache(KBaseAPI):
             return None
         factory = KBaseObjectFactory()
         return factory.create({'data': [_data]}, None)
+

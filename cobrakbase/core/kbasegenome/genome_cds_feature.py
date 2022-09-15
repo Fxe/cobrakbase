@@ -114,20 +114,21 @@ to a protein (minus introns and UTRs).
     @staticmethod
     def from_kbase_data(kbase_data):
         o = KBaseGenomeCDS(kbase_data['id'],
-                           kbase_data['protein_translation'], kbase_data['dna_sequence'],
+                           kbase_data['protein_translation'], kbase_data.get('dna_sequence'),
                            kbase_data['location'])
         return o
 
     def to_kbase_data(self):
         d = {
             'id': self.id,
-            'dna_sequence': self.dna_sequence,
             'dna_sequence_length': self.dna_sequence_length,
             'md5': self.dna_md5,
             'protein_translation': self.seq,
             'protein_translation_length': self.protein_translation_length,
             'protein_md5': self.protein_md5
         }
+        if self.dna_sequence:
+            d['dna_sequence'] = self.dna_sequence
         return d
 
 
@@ -292,4 +293,5 @@ class KBaseGenomeFeature(MSFeature):
             'protein_translation': self.seq,
             'protein_translation_length': self.protein_translation_length,
         }
+
         return d
