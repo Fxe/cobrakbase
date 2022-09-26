@@ -1,6 +1,8 @@
 import math
 import copy
 import logging
+from cobrakbase.core.kbasegenome.genome import KBaseGenome
+from cobrakbase.core.kbasefba.fbamodel_protein import ModelReactionProtein
 from cobra.core import Reaction
 from modelseedpy.core.msmodel import get_direction_from_constraints
 
@@ -145,6 +147,7 @@ class ModelReaction(Reaction):
         self.imported_gpr = imported_gpr
         self.string_attributes = string_attributes
         self.numerical_attributes = numerical_attributes
+        self.model_reaction_proteins = None
 
     @staticmethod
     def from_json(data):
@@ -158,6 +161,7 @@ class ModelReaction(Reaction):
                                  data_copy.get('imported_gpr'),
                                  data_copy.get('string_attributes'), data_copy.get('numerical_attributes'))
         reaction.gene_reaction_rule = _get_gpr_string(_get_gpr(data))
+        reaction.model_reaction_proteins = [ModelReactionProtein.from_json(o) for o in data['modelReactionProteins']]
 
         logger.debug(rxn_id + ":" + _get_gpr_string(_get_gpr(data)))
 
@@ -207,8 +211,30 @@ class ModelReaction(Reaction):
             })
 
         model_reaction_proteins = []
-        if 'modelReactionProteins' in dir(self):
-            model_reaction_proteins = self.modelReactionProteins
+        if 'model_reaction_proteins' in dir(self) and self.model_reaction_proteins:
+            model_reaction_proteins = [o.get_data() for o in self.model_reaction_proteins]
+        elif 'genome' in dir(self.model) and type(self.model.genome) == KBaseGenome:
+            from modelseedpy.core.msmodel import get_set_set
+            gpr_sets = get_set_set(self.gene_reaction_rule)
+            for gpr_cpx in gpr_sets:
+                data_cpx = {
+                    'complex_ref': '',
+                    'modelReactionProteinSubunits': [],
+                    'note': '',
+                    'source': ''
+                }
+                for gpr_cpx_subunit in gpr_cpx:
+                    # TODO check if gpr_cpx_subunit in self.model.genome
+                    data_su = {
+                        'feature_refs': ['~/genome/features/id/' + gpr_cpx_subunit],
+                        'note': '',
+                        'optionalSubunit': 0,
+                        'role': '',
+                        'triggering': 1
+                    }
+                    data_cpx['modelReactionProteinSubunits'].append(data_su)
+                model_reaction_proteins.append(data_cpx)
+
         data = {
             'id': self.id,
             'name': self.name,
@@ -222,8 +248,8 @@ class ModelReaction(Reaction):
             'modelReactionProteins': model_reaction_proteins,
             'modelReactionReagents': model_reaction_reagents,
             'modelcompartment_ref': '~/modelcompartments/id/' + self.compartment,
-            'probability': self.probability,
-            'protons': self.protons,
+            'probability': self.probability if self.probability else 0,
+            'protons': self.protons if self.protons else 0,
             'reaction_ref': '~/template/reactions/id/' + self.id[:-1],
         }
         if self.imported_gpr is not None:

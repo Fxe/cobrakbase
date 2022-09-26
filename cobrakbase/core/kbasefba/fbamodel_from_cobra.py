@@ -1,8 +1,7 @@
 import logging
 from cobrakbase.core.kbasefba.fbamodel_builder import FBAModelBuilder
 from cobrakbase.core.kbasefba.fbamodel_metabolite import ModelCompound
-from cobrakbase.core.kbasefba.fbamodel_reaction import ModelReaction, get_for_rev_flux_from_bounds
-from modelseedpy.core.msmodel import get_direction_from_constraints
+from cobrakbase.core.kbasefba.fbamodel_reaction import ModelReaction
 from cobrakbase.core.kbasefba.fbamodel_biomass import Biomass
 
 logger = logging.getLogger(__name__)
@@ -69,47 +68,21 @@ class CobraModelConverter:
                 'potential': 0
             })
 
-        model_compounds = []
+        model_compounds = {}
         for m in self.model.metabolites:
-            model_compound = ModelCompound({
-                'id': m.id,
-                'modelcompartment_ref': '~/modelcompartments/id/' + m.compartment,
-                'formula': m.formula,
-                'name': m.name,
-                'charge': m.charge
-            })
-            model_compounds.append(model_compound._to_json())
+            model_compound = ModelCompound(m.id, m.formula, m.name, m.charge, m.compartment)
+            if model_compound.id not in model_compounds:
+                model_compounds[model_compound.id] = model_compound
+            else:
+                logger.warning(f"duplicate metabolite {model_compound.id}")
 
         model_reactions = []
         for r in self.metabolic_reactions:
-            direction = get_direction_from_constraints(r.lower_bound, r.upper_bound)
-            if direction == '?':
-                logger.warning('invalid bounds assume reversible %s %s', r.lower_bound, r.upper_bound)
-                direction = '='
-            max_rev_flux, max_for_flux = get_for_rev_flux_from_bounds(r.lower_bound, r.upper_bound)
-            proteins = []
-            model_reaction_data = {
-                'id': r.id,
-                'name': r.name,
-                'direction': direction,
-                'aliases': [],
-                'coverage': 3,
-                'dblinks': {},
-                'edits': {}, 'gapfill_data': {},
-                'gene_count': 0,
-                'maxrevflux': max_rev_flux,
-                'maxforflux': max_for_flux,
-                'modelReactionProteins': proteins,
-                'modelReactionReagents': [],
-                'modelcompartment_ref': '~/modelcompartments/id/c0',
-                'numerical_attributes': {}, 'string_attributes': {},
-                'probability': 1,
-                'protons': 0,
-                'reaction_ref': '~/template/reactions/id/' + r.id[:-1],
-            }
-            model_reaction = ModelReaction(model_reaction_data)
-            model_reaction.add_metabolites(r.metabolites)
-            model_reactions.append(model_reaction._to_json())
+            model_reaction = ModelReaction(r.id, r.name, r.subsystem, r.lower_bound, r.upper_bound,
+                                           imported_gpr=r.gene_reaction_rule)
+            model_reaction.gene_reaction_rule = r.gene_reaction_rule
+            model_reaction.add_metabolites(dict([(model_compounds[c.id], v) for (c, v) in r.metabolites.items()]))
+            model_reactions.append(model_reaction)
 
         model_biomass = []
         for r in self.biomass_reactions:
@@ -126,13 +99,13 @@ class CobraModelConverter:
                 'id': r.id,
                 'name': r.name,
                 'biomasscompounds': biomass_compounds,
-                'dna': 0.031,
-                'rna': 0.21,
-                'protein': 0.563,
-                'cellwall': 0.177,
-                'cofactor': 0.039,
-                'energy': 40,
-                'lipid': 0.093,
+                'dna': 0,
+                'rna': 0,
+                'protein': 0,
+                'cellwall': 0,
+                'cofactor': 0,
+                'energy': 0,
+                'lipid': 0,
                 'other': 0,
                 'edits': {},
                 'deleted_compounds': {},
@@ -150,8 +123,9 @@ class CobraModelConverter:
             'name': self.model_id,
             'source': 'ModelSEEDpy',
             'modelcompartments': model_compartments,
-            'modelcompounds': model_compounds,
-            'modelreactions': model_reactions,
+            'modelcompounds': [o._to_json() for o in model_compounds.values()],
+            'modelreactions': [],
+            #'modelreactions': [o._to_json() for o in model_reactions],
             'biomasses': model_biomass,
             'attributes': {'auxotrophy': {}, 'fbas': {}, 'gene_count': 0, 'pathways': {}},
             'contig_coverages': {},
@@ -170,4 +144,6 @@ class CobraModelConverter:
             model_base['genome_ref'] = self.get_genome_ref()
 
         cobra_model = FBAModelBuilder(model_base).build()
-        return model_base, cobra_model
+        cobra_model.genome = self.genome
+        cobra_model.add_reactions(model_reactions)
+        return cobra_model

@@ -1,5 +1,6 @@
 import logging
 import copy
+from typing import Union, Optional
 from cobra.core import Model
 from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbaseobject import KBaseObject
@@ -50,8 +51,56 @@ class ModelCompartment:
 
 
 class FBAModel(KBaseObject, Model):
+    """
+      fbamodel_id id; id_or_model
 
+  string name; name
+        string source;
+    source_id source_id;
+  string type;
+  template_ref template_ref;
+
+  list<ModelGapfill> gapfillings;
+  list<ModelGapgen> gapgens;
+  list<Biomass> biomasses;
+  list<ModelCompartment> modelcompartments;
+  list<ModelCompound> modelcompounds;
+  list<ModelReaction> modelreactions;
+
+        @optional
+        list<genome_ref> other_genome_refs;
+        ComputedAttributes attributes;
+        list<ModelReaction> abstractreactions;
+        list<ModelReaction> gapfilledcandidates;
+        metagenome_ref metagenome_ref;
+        genome_ref genome_ref;
+        list<template_ref> template_refs;
+        float ATPSynthaseStoichiometry;
+        float ATPMaintenance;
+        list<ModelQuantOpt> quantopts;
+    """
     OBJECT_TYPE = 'KBaseFBA.FBAModel'
+
+    def future__init__(self, id_or_model: Union[str, "Model", None] = None, name: Optional[str] = None,
+                       info=None, args=None) -> None:
+        """
+
+        @param id_or_model:
+        @param name:
+        @param info:
+        @param args:
+        @return:
+        """
+        if info is None:
+            info = KBaseObjectInfo(object_type=FBAModel.OBJECT_TYPE)
+        KBaseObject.__init__(self, {}, info, args, None)
+        Model.__init__(self, id_or_model, name)
+        self.source = None
+        self.source_id = None
+        self.type = None
+        self.template = None
+        self.gap_fillings = None
+        self.gap_gens = None
 
     def __init__(self, data=None, info=None, args=None, kbase_type=None):
         if info is None:
