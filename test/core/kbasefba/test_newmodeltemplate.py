@@ -11,7 +11,7 @@ def test_add_role1():
 
     assert id(list(complex1.roles)[0]) != id(role1)
 
-    template = NewModelTemplate()
+    template = NewModelTemplate("test")
     template.add_complexes([complex1])
 
     assert id(list(template.complexes.complex1.roles)[0]) != id(role1)
@@ -24,7 +24,7 @@ def test_add_role2():
 
     assert id(list(complex1.roles)[0]) != id(role1)
 
-    template = NewModelTemplate()
+    template = NewModelTemplate("test")
     template.add_roles([role1])
     template.add_complexes([complex1])
 
@@ -38,7 +38,7 @@ def test_add_role3():
 
     assert id(list(complex1.roles)[0]) == id(role1)
 
-    template = NewModelTemplate()
+    template = NewModelTemplate("test")
     template.add_roles([role1])
     template.add_complexes([complex1])
 
@@ -46,7 +46,7 @@ def test_add_role3():
 
 
 def test_add_role4():
-    template = NewModelTemplate()
+    template = NewModelTemplate("test")
 
     role1 = NewModelTemplateRole('role1', 'A fine function for a gene')
     role2 = NewModelTemplateRole('role2', 'A fine sub unit A for a complex ABX')
@@ -77,7 +77,7 @@ def test_add_reaction1():
     cpd_nadh = NewModelTemplateCompCompound('cpd00004_c', 0, 'c', 'cpd00004')
     cpd_co2 = NewModelTemplateCompCompound('cpd00011_c', 0, 'c', 'cpd00011')
     cpd_accoa = NewModelTemplateCompCompound('cpd00022_c', 0, 'c', 'cpd00022')
-    rxn1 = NewModelTemplateReaction('rxn1')
+    rxn1 = NewModelTemplateReaction('rxn1', 'rxn1')
     rxn1.add_metabolites({
         cpd_nad: -1,
         cpd_coa: -1,
