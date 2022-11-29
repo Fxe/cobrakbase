@@ -113,8 +113,14 @@ to a protein (minus introns and UTRs).
 
     @staticmethod
     def from_kbase_data(kbase_data):
+        protein_translation = kbase_data['protein_translation']
+        dna_sequence = kbase_data.get('dna_sequence')
+        if protein_translation:
+            protein_translation = protein_translation.upper()
+        if dna_sequence:
+            dna_sequence = dna_sequence.upper()
         o = KBaseGenomeCDS(kbase_data['id'],
-                           kbase_data['protein_translation'], kbase_data.get('dna_sequence'),
+                           protein_translation, dna_sequence,
                            kbase_data['location'])
         return o
 
@@ -274,8 +280,14 @@ class KBaseGenomeFeature(MSFeature):
     def from_kbase_data(kbase_data):
         functions = KBaseGenomeFeature.extract_functions(kbase_data)
         functions_split = KBaseGenomeFeature.split_annotation(functions)
+        protein_translation = kbase_data['protein_translation']
+        dna_sequence = kbase_data['dna_sequence']
+        if protein_translation:
+            protein_translation = protein_translation.upper()
+        if dna_sequence:
+            dna_sequence = dna_sequence.upper()
         o = KBaseGenomeFeature(kbase_data['id'],
-                               kbase_data['protein_translation'], kbase_data.get('dna_sequence'),
+                               protein_translation, dna_sequence,
                                kbase_data['location'], kbase_data['cdss'], functions)
         for f in functions_split:
             o.add_ontology_term('RAST', f)
