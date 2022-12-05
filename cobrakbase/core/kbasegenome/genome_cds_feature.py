@@ -115,15 +115,15 @@ class KBaseGenomeCDS(MSFeature):
 
     @staticmethod
     def from_kbase_data(kbase_data):
-        protein_translation = kbase_data['protein_translation']
-        dna_sequence = kbase_data.get('dna_sequence')
+        protein_translation = kbase_data["protein_translation"]
+        dna_sequence = kbase_data.get("dna_sequence")
         if protein_translation:
             protein_translation = protein_translation.upper()
         if dna_sequence:
             dna_sequence = dna_sequence.upper()
-        result = KBaseGenomeCDS(kbase_data['id'],
-                           protein_translation, dna_sequence,
-                           kbase_data['location'])
+        result = KBaseGenomeCDS(
+            kbase_data["id"], protein_translation, dna_sequence, kbase_data["location"]
+        )
         return result
 
     def to_kbase_data(self):
@@ -293,17 +293,22 @@ class KBaseGenomeFeature(MSFeature):
     def from_kbase_data(kbase_data):
         functions = KBaseGenomeFeature.extract_functions(kbase_data)
         functions_split = KBaseGenomeFeature.split_annotation(functions)
-        protein_translation = kbase_data['protein_translation']
-        dna_sequence = kbase_data['dna_sequence']
+        protein_translation = kbase_data["protein_translation"]
+        dna_sequence = kbase_data["dna_sequence"]
         if protein_translation:
             protein_translation = protein_translation.upper()
         if dna_sequence:
             dna_sequence = dna_sequence.upper()
-        feature = KBaseGenomeFeature(kbase_data['id'],
-                               protein_translation, dna_sequence,
-                               kbase_data['location'], kbase_data['cdss'], functions)
+        feature = KBaseGenomeFeature(
+            kbase_data["id"],
+            protein_translation,
+            dna_sequence,
+            kbase_data["location"],
+            kbase_data["cdss"],
+            functions,
+        )
         for f in functions_split:
-            feature.add_ontology_term('RAST', f)
+            feature.add_ontology_term("RAST", f)
         return feature
 
     def to_kbase_data(self):

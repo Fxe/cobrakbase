@@ -183,7 +183,7 @@ class ModelCompound(Metabolite):
             "id": self.id,
             "name": self.name,
             "charge": self.charge,
-            "formula": self.formula if self.formula else 'null',
+            "formula": self.formula if self.formula else "null",
             "compound_ref": f"~/template/compounds/id/{self.compound_id}",
             "modelcompartment_ref": f"~/modelcompartments/id/{self.compartment}",
         }
