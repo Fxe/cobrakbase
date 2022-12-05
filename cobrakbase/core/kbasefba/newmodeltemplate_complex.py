@@ -2,9 +2,7 @@ from cobra.util import format_long_string
 
 
 class NewModelTemplateRole:
-
-    def __init__(self, role_id, name,
-                 features=None, source='', aliases=None):
+    def __init__(self, role_id, name, features=None, source="", aliases=None):
         """
 
         :param role_id:
@@ -23,15 +21,17 @@ class NewModelTemplateRole:
 
     @staticmethod
     def from_dict(d):
-        return NewModelTemplateRole(d['id'], d['name'], d['features'], d['source'], d['aliases'])
+        return NewModelTemplateRole(
+            d["id"], d["name"], d["features"], d["source"], d["aliases"]
+        )
 
     def get_data(self):
         return {
-            'id': self.id,
-            'name': self.name,
-            'aliases': self.aliases,
-            'features': self.features,
-            'source': self.source
+            "id": self.id,
+            "name": self.name,
+            "aliases": self.aliases,
+            "features": self.features,
+            "source": self.source,
         }
 
     def __repr__(self):
@@ -54,16 +54,19 @@ class NewModelTemplateRole:
                 <td><strong>In {n_complexes} complexes</strong></td><td>
                     {complexes}</td>
             </tr>
-        </table>""".format(id=self.id, name=format_long_string(self.name),
-                           address='0x0%x' % id(self),
-                           n_complexes=len(self._complexes),
-                           complexes=format_long_string(
-                               ', '.join(r.id for r in self._complexes), 200))
+        </table>""".format(
+            id=self.id,
+            name=format_long_string(self.name),
+            address="0x0%x" % id(self),
+            n_complexes=len(self._complexes),
+            complexes=format_long_string(", ".join(r.id for r in self._complexes), 200),
+        )
 
 
 class NewModelTemplateComplex:
-
-    def __init__(self, complex_id, name, source='', reference='', confidence=0, template=None):
+    def __init__(
+        self, complex_id, name, source="", reference="", confidence=0, template=None
+    ):
         """
 
         :param complex_id:
@@ -84,22 +87,22 @@ class NewModelTemplateComplex:
     @staticmethod
     def from_dict(d, template):
         protein_complex = NewModelTemplateComplex(
-            d['id'], d['name'],
-            d['source'], d['reference'], d['confidence'],
-            template
+            d["id"], d["name"], d["source"], d["reference"], d["confidence"], template
         )
-        for o in d['complexroles']:
-            role = template.roles.get_by_id(o['templaterole_ref'].split('/')[-1])
-            protein_complex.add_role(role, o['triggering'] == 1, o['optional_role'] == 1)
+        for o in d["complexroles"]:
+            role = template.roles.get_by_id(o["templaterole_ref"].split("/")[-1])
+            protein_complex.add_role(
+                role, o["triggering"] == 1, o["optional_role"] == 1
+            )
         return protein_complex
 
     def add_role(self, role: NewModelTemplateRole, triggering=True, optional=False):
         """
         Add role (function) to the complex
-        :param role: 
-        :param triggering: 
-        :param optional: 
-        :return: 
+        :param role:
+        :param triggering:
+        :param optional:
+        :return:
         """
         self.roles[role] = (triggering, optional)
 
@@ -107,25 +110,31 @@ class NewModelTemplateComplex:
         complex_roles = []
         for role in self.roles:
             triggering, optional = self.roles[role]
-            complex_roles.append({
-                'triggering': 1 if triggering else 0,
-                'optional_role': 1 if optional else 0,
-                'templaterole_ref': '~/roles/id/' + role.id
-            })
+            complex_roles.append(
+                {
+                    "triggering": 1 if triggering else 0,
+                    "optional_role": 1 if optional else 0,
+                    "templaterole_ref": "~/roles/id/" + role.id,
+                }
+            )
         return {
-            'id': self.id,
-            'name': self.name,
-            'reference': self.reference,
-            'confidence': self.confidence,
-            'source': self.source,
-            'complexroles': complex_roles,
+            "id": self.id,
+            "name": self.name,
+            "reference": self.reference,
+            "confidence": self.confidence,
+            "source": self.source,
+            "complexroles": complex_roles,
         }
 
     def __str__(self):
-        return " and ".join(map(lambda x: "{}{}{}".format(
-            x[0].id,
-            ":trig" if x[1][0] else "",
-            ":optional" if x[1][1] else ""), self.roles.items()))
+        return " and ".join(
+            map(
+                lambda x: "{}{}{}".format(
+                    x[0].id, ":trig" if x[1][0] else "", ":optional" if x[1][1] else ""
+                ),
+                self.roles.items(),
+            )
+        )
 
     def __repr__(self):
         return "<%s %s at 0x%x>" % (self.__class__.__name__, self.id, id(self))
@@ -145,9 +154,16 @@ class NewModelTemplateComplex:
                 <td><strong>Contains {n_complexes} role(s)</strong></td><td>
                     {complexes}</td>
             </tr>
-        </table>""".format(id=self.id, name=format_long_string(self.name),
-                           address='0x0%x' % id(self),
-                           n_complexes=len(self.roles),
-                           complexes=format_long_string(
-                               ', '.join("{}:{}:{}:{}".format(r[0].id, r[0].name, r[1][0], r[1][1]) for r in
-                                         self.roles.items()), 200))
+        </table>""".format(
+            id=self.id,
+            name=format_long_string(self.name),
+            address="0x0%x" % id(self),
+            n_complexes=len(self.roles),
+            complexes=format_long_string(
+                ", ".join(
+                    "{}:{}:{}:{}".format(r[0].id, r[0].name, r[1][0], r[1][1])
+                    for r in self.roles.items()
+                ),
+                200,
+            ),
+        )

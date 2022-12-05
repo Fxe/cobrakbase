@@ -23,14 +23,14 @@ def get_for_rev_flux_from_bounds(lb, ub):
 
 def _get_gpr(data):
     gpr = []
-    for mrp in data['modelReactionProteins']:
-        #print(mrp.keys())
+    for mrp in data["modelReactionProteins"]:
+        # print(mrp.keys())
         gpr_and = []
-        for mrps in mrp['modelReactionProteinSubunits']:
+        for mrps in mrp["modelReactionProteinSubunits"]:
             gpr_or = []
-            #print(mrps.keys())
-            for feature_ref in mrps['feature_refs']:
-                gpr_or.append(feature_ref.split('/')[-1])
+            # print(mrps.keys())
+            for feature_ref in mrps["feature_refs"]:
+                gpr_or.append(feature_ref.split("/")[-1])
             if len(gpr_or) > 0:
                 gpr_and.append(gpr_or)
         if len(gpr_and) > 0:
@@ -46,23 +46,24 @@ def _get_gpr_string(gpr):
             if len(orss) == 1:
                 a.append(orss[0])
             else:
-                a.append("("+" or ".join(orss)+")")
+                a.append("(" + " or ".join(orss) + ")")
         if len(a) == 1:
             ors.append(a[0])
         else:
-            ors.append("("+" and ".join(a)+")")
+            ors.append("(" + " and ".join(a) + ")")
     if len(ors) == 0:
         return ""
     elif len(ors) == 1:
         return ors[0]
     else:
-        return "("+" or ".join(ors)+")"
+        return "(" + " or ".join(ors) + ")"
+
 
 def _get_reaction_constraints_from_direction(data):
-    if 'direction' in data:
-        if data['direction'] == '>':
+    if "direction" in data:
+        if data["direction"] == ">":
             return 0, 1000
-        elif data['direction'] == '<':
+        elif data["direction"] == "<":
             return -1000, 0
         else:
             return -1000, 1000
@@ -71,15 +72,19 @@ def _get_reaction_constraints_from_direction(data):
 
 def _get_reaction_constraints(data):
     # clean this function !
-    if 'maxrevflux' in data and 'maxforflux' in data:
-        if data['maxrevflux'] == 1000000 and data['maxforflux'] == 1000000 and 'direction' in data:
+    if "maxrevflux" in data and "maxforflux" in data:
+        if (
+            data["maxrevflux"] == 1000000
+            and data["maxforflux"] == 1000000
+            and "direction" in data
+        ):
             return _get_reaction_constraints_from_direction(data)
 
-        return -1 * data['maxrevflux'], data['maxforflux']
-    elif 'direction' in data:
+        return -1 * data["maxrevflux"], data["maxforflux"]
+    elif "direction" in data:
         return _get_reaction_constraints_from_direction(data)
     else:
-        logger.warning('unable to determine reversibility constraint assume reversible')
+        logger.warning("unable to determine reversibility constraint assume reversible")
         return -1000, 1000
 
 
@@ -89,59 +94,74 @@ def _build_rxn_id(s):
     elif s.startswith("R-"):
         s = s[2:]
     str_fix = s
-    if '-' in str_fix:
-        str_fix = str_fix.replace('-', '__DASH__')
+    if "-" in str_fix:
+        str_fix = str_fix.replace("-", "__DASH__")
     if not s == str_fix:
-        logger.debug('[Reaction] rename: [%s] -> [%s]', s, str_fix)
+        logger.debug("[Reaction] rename: [%s] -> [%s]", s, str_fix)
     return str_fix
 
 
-COBRA_DATA = ['id', 'name',
-              'direction', 'maxrevflux', 'maxforflux',
-              'modelReactionReagents',
-              'protons', 'probability', 'pathway', 'imported_gpr']
+COBRA_DATA = [
+    "id",
+    "name",
+    "direction",
+    "maxrevflux",
+    "maxforflux",
+    "modelReactionReagents",
+    "protons",
+    "probability",
+    "pathway",
+    "imported_gpr",
+]
 
 
 class ModelReaction(Reaction):
     """
-    typedef structure {
-        modelreaction_id id; cobra.id
-        string name; @optional cobra.name
-        string pathway; @optional cobra.subsystem
+        typedef structure {
+            modelreaction_id id; cobra.id
+            string name; @optional cobra.name
+            string pathway; @optional cobra.subsystem
 
-        reaction_ref reaction_ref;
+            reaction_ref reaction_ref;
 
-        Merged together to lower and upper bound
-        string direction;
-        float maxforflux; @optional
-        float maxrevflux; @optional
+            Merged together to lower and upper bound
+            string direction;
+            float maxforflux; @optional
+            float maxrevflux; @optional
 
-        float protons;
-        float probability;
+            float protons;
+            float probability;
 
-        modelcompartment_ref modelcompartment_ref; auto generated from compounds
+            modelcompartment_ref modelcompartment_ref; auto generated from compounds
 
-        list<ModelReactionReagent> modelReactionReagents;
-        list<ModelReactionProtein> modelReactionProteins;
+            list<ModelReactionReagent> modelReactionReagents;
+            list<ModelReactionProtein> modelReactionProteins;
 
-        mapping<string, list<string>> dblinks; @optional
-        list<string> aliases; @optional
+            mapping<string, list<string>> dblinks; @optional
+            list<string> aliases; @optional
 
-        string reference; @optional
-        string imported_gpr; @optional
-        mapping<string, string> string_attributes; @optional
-        mapping<string, float> numerical_attributes; @optional
-        mapping<string, mapping<int, tuple<string, bool, list<ModelReactionProtein>>>> gapfill_data; @optional
-} ModelReaction;
+            string reference; @optional
+            string imported_gpr; @optional
+            mapping<string, string> string_attributes; @optional
+            mapping<string, float> numerical_attributes; @optional
+            mapping<string, mapping<int, tuple<string, bool, list<ModelReactionProtein>>>> gapfill_data; @optional
+    } ModelReaction;
     """
 
-    def __init__(self, reaction_id=None, name='', subsystem='', lower_bound=0.0, upper_bound=None,
-                 protons=None, probability=None, imported_gpr=None,
-                 string_attributes=None, numerical_attributes=None):
-        super().__init__(reaction_id,
-                         name,
-                         subsystem,
-                         lower_bound, upper_bound)
+    def __init__(
+        self,
+        reaction_id=None,
+        name="",
+        subsystem="",
+        lower_bound=0.0,
+        upper_bound=None,
+        protons=None,
+        probability=None,
+        imported_gpr=None,
+        string_attributes=None,
+        numerical_attributes=None,
+    ):
+        super().__init__(reaction_id, name, subsystem, lower_bound, upper_bound)
         self.protons = protons
         self.probability = probability
         self.imported_gpr = imported_gpr
@@ -153,15 +173,24 @@ class ModelReaction(Reaction):
     def from_json(data):
         data_copy = copy.deepcopy(data)
         lower_bound, upper_bound = _get_reaction_constraints(data)
-        rxn_id = _build_rxn_id(data['id'])
+        rxn_id = _build_rxn_id(data["id"])
 
-        reaction = ModelReaction(rxn_id, data_copy.get('name', ''), data_copy.get('pathway', ''),
-                                 lower_bound, upper_bound,
-                                 data_copy.get('protons'), data_copy.get('probability'),
-                                 data_copy.get('imported_gpr'),
-                                 data_copy.get('string_attributes'), data_copy.get('numerical_attributes'))
+        reaction = ModelReaction(
+            rxn_id,
+            data_copy.get("name", ""),
+            data_copy.get("pathway", ""),
+            lower_bound,
+            upper_bound,
+            data_copy.get("protons"),
+            data_copy.get("probability"),
+            data_copy.get("imported_gpr"),
+            data_copy.get("string_attributes"),
+            data_copy.get("numerical_attributes"),
+        )
         reaction.gene_reaction_rule = _get_gpr_string(_get_gpr(data))
-        reaction.model_reaction_proteins = [ModelReactionProtein.from_json(o) for o in data['modelReactionProteins']]
+        reaction.model_reaction_proteins = [
+            ModelReactionProtein.from_json(o) for o in data["modelReactionProteins"]
+        ]
 
         logger.debug(rxn_id + ":" + _get_gpr_string(_get_gpr(data)))
 
@@ -173,8 +202,13 @@ class ModelReaction(Reaction):
 
     @staticmethod
     def from_cobra_reaction(reaction: Reaction):
-        return ModelReaction(reaction.id, reaction.name, reaction.subsystem,
-                             reaction.lower_bound, reaction.upper_bound)
+        return ModelReaction(
+            reaction.id,
+            reaction.name,
+            reaction.subsystem,
+            reaction.lower_bound,
+            reaction.upper_bound,
+        )
 
     @property
     def compartment(self):
@@ -188,16 +222,18 @@ class ModelReaction(Reaction):
         if len(compartments) == 1:
             return list(compartments)[0]
 
-        if 'e0' in compartments and 'c0' in compartments:
-            return 'c0'
-        elif len(compartments) == 2 and 'c0' in compartments:
-            return list(compartments - {'c0'})[0]
+        if "e0" in compartments and "c0" in compartments:
+            return "c0"
+        elif len(compartments) == 2 and "c0" in compartments:
+            return list(compartments - {"c0"})[0]
 
-        return 'c0'
-    
+        return "c0"
+
     def _get_rev_and_max_min_flux(self):
         rev = get_direction_from_constraints(self.lower_bound, self.upper_bound)
-        min_flux, max_flux = get_for_rev_flux_from_bounds(self.lower_bound, self.upper_bound)
+        min_flux, max_flux = get_for_rev_flux_from_bounds(
+            self.lower_bound, self.upper_bound
+        )
         return rev, max_flux, min_flux
 
     def _to_json(self):
@@ -205,57 +241,62 @@ class ModelReaction(Reaction):
         model_reaction_reagents = []
         s = self.metabolites
         for m in s:
-            model_reaction_reagents.append({
-                'modelcompound_ref': '~/modelcompounds/id/' + m.id,
-                'coefficient': s[m]
-            })
+            model_reaction_reagents.append(
+                {
+                    "modelcompound_ref": "~/modelcompounds/id/" + m.id,
+                    "coefficient": s[m],
+                }
+            )
 
         model_reaction_proteins = []
-        if 'model_reaction_proteins' in dir(self) and self.model_reaction_proteins:
-            model_reaction_proteins = [o.get_data() for o in self.model_reaction_proteins]
-        elif 'genome' in dir(self.model) and type(self.model.genome) == KBaseGenome:
+        if "model_reaction_proteins" in dir(self) and self.model_reaction_proteins:
+            model_reaction_proteins = [
+                o.get_data() for o in self.model_reaction_proteins
+            ]
+        elif "genome" in dir(self.model) and type(self.model.genome) == KBaseGenome:
             from modelseedpy.core.msmodel import get_set_set
+
             gpr_sets = get_set_set(self.gene_reaction_rule)
             for gpr_cpx in gpr_sets:
                 data_cpx = {
-                    'complex_ref': '',
-                    'modelReactionProteinSubunits': [],
-                    'note': '',
-                    'source': ''
+                    "complex_ref": "",
+                    "modelReactionProteinSubunits": [],
+                    "note": "",
+                    "source": "",
                 }
                 for gpr_cpx_subunit in gpr_cpx:
                     # TODO check if gpr_cpx_subunit in self.model.genome
                     data_su = {
-                        'feature_refs': ['~/genome/features/id/' + gpr_cpx_subunit],
-                        'note': '',
-                        'optionalSubunit': 0,
-                        'role': '',
-                        'triggering': 1
+                        "feature_refs": ["~/genome/features/id/" + gpr_cpx_subunit],
+                        "note": "",
+                        "optionalSubunit": 0,
+                        "role": "",
+                        "triggering": 1,
                     }
-                    data_cpx['modelReactionProteinSubunits'].append(data_su)
+                    data_cpx["modelReactionProteinSubunits"].append(data_su)
                 model_reaction_proteins.append(data_cpx)
 
         data = {
-            'id': self.id,
-            'name': self.name,
-            'direction': rev,
-            'maxforflux': max_flux,
-            'maxrevflux': min_flux,
-            'aliases': [],
-            'dblinks': {},
-            'edits': {},
-            'gapfill_data': {},
-            'modelReactionProteins': model_reaction_proteins,
-            'modelReactionReagents': model_reaction_reagents,
-            'modelcompartment_ref': '~/modelcompartments/id/' + self.compartment,
-            'probability': self.probability if self.probability else 0,
-            'protons': self.protons if self.protons else 0,
-            'reaction_ref': '~/template/reactions/id/' + self.id[:-1],
+            "id": self.id,
+            "name": self.name,
+            "direction": rev,
+            "maxforflux": max_flux,
+            "maxrevflux": min_flux,
+            "aliases": [],
+            "dblinks": {},
+            "edits": {},
+            "gapfill_data": {},
+            "modelReactionProteins": model_reaction_proteins,
+            "modelReactionReagents": model_reaction_reagents,
+            "modelcompartment_ref": "~/modelcompartments/id/" + self.compartment,
+            "probability": self.probability if self.probability else 0,
+            "protons": self.protons if self.protons else 0,
+            "reaction_ref": "~/template/reactions/id/" + self.id[:-1],
         }
         if self.imported_gpr is not None:
-            data['imported_gpr'] = self.imported_gpr
+            data["imported_gpr"] = self.imported_gpr
         if self.string_attributes is not None:
-            data['string_attributes'] = self.string_attributes
+            data["string_attributes"] = self.string_attributes
         if self.numerical_attributes is not None:
-            data['numerical_attributes'] = self.numerical_attributes
+            data["numerical_attributes"] = self.numerical_attributes
         return data

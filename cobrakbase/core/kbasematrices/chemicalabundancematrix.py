@@ -71,16 +71,27 @@ class ChemicalAbundanceMatrix(FloatMatrix2D):
     } ChemicalAbundanceMatrix;
     """
 
-    OBJECT_TYPE = 'KBaseMatrices.ChemicalAbundanceMatrix'
-    
-    def __init__(self, data, scale, biochemistry_ref, row_attribute_mapping,
-                 matrix_type=None, row_mapping=None, description=None, unit=None,
-                 sample_set_ref=None, info=None, args=None):
+    OBJECT_TYPE = "KBaseMatrices.ChemicalAbundanceMatrix"
+
+    def __init__(
+        self,
+        data,
+        scale,
+        biochemistry_ref,
+        row_attribute_mapping,
+        matrix_type=None,
+        row_mapping=None,
+        description=None,
+        unit=None,
+        sample_set_ref=None,
+        info=None,
+        args=None,
+    ):
         """
         super().__init__(data, info, args, 'KBaseMatrices.ChemicalAbundanceMatrix')
         self.row_attributemapping_ref = None
         self.attributes = []
-            
+
         if "row_attributemapping_ref" in data:
             kbase_api = cobrakbase.KBaseAPI()
             mapping = kbase_api.get_from_ws(self.row_attributemapping_ref)
@@ -110,61 +121,82 @@ class ChemicalAbundanceMatrix(FloatMatrix2D):
         self.biochemistry_ref = biochemistry_ref
         self.unit = unit
 
-        self.info = info if info else KBaseObjectInfo(object_type=ChemicalAbundanceMatrix.OBJECT_TYPE)
+        self.info = (
+            info
+            if info
+            else KBaseObjectInfo(object_type=ChemicalAbundanceMatrix.OBJECT_TYPE)
+        )
         self.args = args
 
     @property
     def peaks(self):
         peaks = DictList()
-        for i in range(len(self.data['_data']['row_ids'])):
+        for i in range(len(self.data["_data"]["row_ids"])):
             values = {}
-            for j in range(len(self.data['_data']['col_ids'])):
-                values[self.data['_data']['col_ids'][j]] = self.data['_data']['values'][i][j]
-            peak = AttrDict({
-                "id" : self.data['_data']['row_ids'][i],
-                "values" : values,
-                "attributes" : {}
-            })
+            for j in range(len(self.data["_data"]["col_ids"])):
+                values[self.data["_data"]["col_ids"][j]] = self.data["_data"]["values"][
+                    i
+                ][j]
+            peak = AttrDict(
+                {
+                    "id": self.data["_data"]["row_ids"][i],
+                    "values": values,
+                    "attributes": {},
+                }
+            )
             peaks.append(peak)
         return peaks
 
     @staticmethod
     def from_dict(data, info=None, args=None):
-        matrix_data = FloatMatrix2D.from_kbase_data(data['data'])
-        description = data['description'] if 'description' in data else None
-        matrix_type = data['type'] if 'type' in data else None
-        unit = data['unit'] if 'unit' in data else None
-        sample_set_ref = data['sample_set_ref'] if 'sample_set_ref' in data else None
-        row_mapping = data['row_mapping'] if 'row_mapping' in data else None
+        matrix_data = FloatMatrix2D.from_kbase_data(data["data"])
+        description = data["description"] if "description" in data else None
+        matrix_type = data["type"] if "type" in data else None
+        unit = data["unit"] if "unit" in data else None
+        sample_set_ref = data["sample_set_ref"] if "sample_set_ref" in data else None
+        row_mapping = data["row_mapping"] if "row_mapping" in data else None
 
         if info is None:
             info = KBaseObjectInfo(object_type=ChemicalAbundanceMatrix.OBJECT_TYPE)
-        return ChemicalAbundanceMatrix(matrix_data, data['scale'], data['biochemistry_ref'],
-                                       data['row_attributemapping_ref'],
-                                       matrix_type, row_mapping, description, unit,
-                                       sample_set_ref, info, args)
+        return ChemicalAbundanceMatrix(
+            matrix_data,
+            data["scale"],
+            data["biochemistry_ref"],
+            data["row_attributemapping_ref"],
+            matrix_type,
+            row_mapping,
+            description,
+            unit,
+            sample_set_ref,
+            info,
+            args,
+        )
 
     def get_data(self):
         kbase_data = {
-            'data': super().get_kbase_data(),
-            'scale': self.scale,
-            'biochemistry_ref': self.biochemistry_ref
+            "data": super().get_kbase_data(),
+            "scale": self.scale,
+            "biochemistry_ref": self.biochemistry_ref,
         }
         if self.description:
-            kbase_data['description'] = self.description
+            kbase_data["description"] = self.description
         if self.sample_set_ref:
-            kbase_data['sample_set_ref'] = self.sample_set_ref
+            kbase_data["sample_set_ref"] = self.sample_set_ref
         if self.type:
-            kbase_data['type'] = self.type
+            kbase_data["type"] = self.type
         if self.row_mapping:
-            kbase_data['row_mapping'] = self.row_mapping
+            kbase_data["row_mapping"] = self.row_mapping
         if self.row_attribute_mapping:
             if type(self.row_attribute_mapping) is str:
-                kbase_data['row_attributemapping_ref'] = self.row_attribute_mapping
+                kbase_data["row_attributemapping_ref"] = self.row_attribute_mapping
             elif self.row_attribute_mapping.info.reference:
-                kbase_data['row_attributemapping_ref'] = self.row_attribute_mapping.info.reference
+                kbase_data[
+                    "row_attributemapping_ref"
+                ] = self.row_attribute_mapping.info.reference
             else:
-                raise ObjectError("Invalid row_attribute_mapping, object info not mapped to KBase reference ?")
+                raise ObjectError(
+                    "Invalid row_attribute_mapping, object info not mapped to KBase reference ?"
+                )
         return kbase_data
 
     def __repr__(self):
@@ -172,47 +204,52 @@ class ChemicalAbundanceMatrix(FloatMatrix2D):
 
     def _repr_html_(self):
         return self.data._repr_html_()
-    
-    def get_chemical_abundance_data(self, dataset, mapping, attr = 'seed_id'):
+
+    def get_chemical_abundance_data(self, dataset, mapping, attr="seed_id"):
         col_index = None
         result = {}
         try:
-            col_index = self.data['data']['col_ids'].index(dataset)
+            col_index = self.data["data"]["col_ids"].index(dataset)
         except ValueError:
             return None
-        
+
         seed_id_index = 0
         if not mapping == None:
-            for i in range(len(mapping['attributes'])):
-                a = mapping['attributes'][i]
-                if a['attribute'] == attr:
+            for i in range(len(mapping["attributes"])):
+                a = mapping["attributes"][i]
+                if a["attribute"] == attr:
                     seed_id_index = i
-                
-        for i in range(len(self.data['data']['row_ids'])):
-            k = self.data['data']['row_ids'][i]
-            v = self.data['data']['values'][i][col_index]
+
+        for i in range(len(self.data["data"]["row_ids"])):
+            k = self.data["data"]["row_ids"][i]
+            v = self.data["data"]["values"][i][col_index]
             if not v == None:
                 if mapping == None:
                     result[k] = v
-                elif k in mapping['instances'] and not len(mapping['instances'][k][seed_id_index]) == 0:
-                    attr_val = mapping['instances'][k][seed_id_index]
-                    for maybe_seed_id in attr_val.split(';'):
+                elif (
+                    k in mapping["instances"]
+                    and not len(mapping["instances"][k][seed_id_index]) == 0
+                ):
+                    attr_val = mapping["instances"][k][seed_id_index]
+                    for maybe_seed_id in attr_val.split(";"):
                         result[maybe_seed_id] = v
                 else:
                     result[k] = v
 
         return result
 
-    def get_all_chemical_abundance_data(self, data, mapping, attr = 'seed_id'):
+    def get_all_chemical_abundance_data(self, data, mapping, attr="seed_id"):
         result = {}
-        for dataset in data['data']['col_ids']:
-            chemical_abundance = self.get_chemical_abundance_data(dataset, mapping, attr)
+        for dataset in data["data"]["col_ids"]:
+            chemical_abundance = self.get_chemical_abundance_data(
+                dataset, mapping, attr
+            )
             if len(chemical_abundance) > 0:
                 result[dataset] = chemical_abundance
 
         return result
-    
-    def map_to_modelseed(self,modelseed,suffix = ""):
+
+    def map_to_modelseed(self, modelseed, suffix=""):
         formula_hash = {}
         smiles_hash = {}
         base_inchikey_hash = {}
@@ -222,45 +259,57 @@ class ChemicalAbundanceMatrix(FloatMatrix2D):
             if "kegg" in modelseed.compound_aliases[cpdid]:
                 for keggid in modelseed.compound_aliases[cpdid]["kegg"]:
                     if keggid not in output_hash[keggid]:
-                        kegg_hash[keggid]  = []
+                        kegg_hash[keggid] = []
                     kegg_hash[keggid].append(keggid)
-        
+
         for compound in modelseed.compounds:
             if "smiles" in compound:
                 if compound["smiles"] not in smiles_hash:
                     smiles_hash[compound["smiles"]] = []
-                smiles_hash[compound["smiles"]].append(compound['id'])
+                smiles_hash[compound["smiles"]].append(compound["id"])
             if "formula" in compound:
                 if compound["formula"] not in formula_hash:
                     formula_hash[compound["formula"]] = []
-                formula_hash[compound["formula"]].append(compound['id'])
+                formula_hash[compound["formula"]].append(compound["id"])
             if "inchikey" in compound:
                 array = compound["inchikey"].split("-")
                 if array[0] not in base_inchikey_hash:
                     base_inchikey_hash[array[0]] = []
-                base_inchikey_hash[array[0]].append(compound['id'])
+                base_inchikey_hash[array[0]].append(compound["id"])
         for peak in self.peaks:
             if "modelseed" in peak.attributes and len(peak.attributes["modelseed"]) > 0:
-                output_hash[peak.id] = [peak.attributes["modelseed"]+suffix]
+                output_hash[peak.id] = [peak.attributes["modelseed"] + suffix]
             elif "kegg" in peak.attributes and len(peak.attributes["kegg"]) > 0:
                 if peak.attributes["kegg"] in kegg_hash:
                     for item in kegg_hash[peak.attributes["kegg"]]:
-                        if peak.id not in output_hash or item+suffix not in output_hash[peak.id]:
-                            output_hash[peak.id].append(item+suffix)
+                        if (
+                            peak.id not in output_hash
+                            or item + suffix not in output_hash[peak.id]
+                        ):
+                            output_hash[peak.id].append(item + suffix)
             elif "inchikey" in peak.attributes and len(peak.attributes["inchikey"]) > 0:
                 array = peak.attributes["inchikey"].split("-")
                 if array[0] in base_inchikey_hash:
                     for item in base_inchikey_hash[array[0]]:
-                        if peak.id not in output_hash or item+suffix not in output_hash[peak.id]:
-                            output_hash[peak.id].append(item+suffix)
+                        if (
+                            peak.id not in output_hash
+                            or item + suffix not in output_hash[peak.id]
+                        ):
+                            output_hash[peak.id].append(item + suffix)
             elif "smiles" in peak.attributes and len(peak.attributes["smiles"]) > 0:
                 if peak.attributes["smiles"] in smiles_hash:
                     for item in smiles_hash[peak.attributes["smiles"]]:
-                        if peak.id not in output_hash or item not in output_hash[peak.id]:
-                            output_hash[peak.id].append(item+suffix)
+                        if (
+                            peak.id not in output_hash
+                            or item not in output_hash[peak.id]
+                        ):
+                            output_hash[peak.id].append(item + suffix)
             elif "formula" in peak.attributes and len(peak.attributes["formula"]) > 0:
                 if peak.attributes["formula"] in formula_hash:
                     for item in formula_hash[peak.attributes["formula"]]:
-                        if peak.id not in output_hash or item not in output_hash[peak.id]:
-                            output_hash[peak.id].append(item+suffix)
+                        if (
+                            peak.id not in output_hash
+                            or item not in output_hash[peak.id]
+                        ):
+                            output_hash[peak.id].append(item + suffix)
         return output_hash

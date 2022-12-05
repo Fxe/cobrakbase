@@ -7,31 +7,44 @@
 ############################################################
 
 from __future__ import print_function
+
 # the following is a hack to get the baseclient to import whether we're in a
 # package or not. This makes pep8 unhappy hence the annotations.
 try:
     # baseclient and this client are in a package
-    from cobrakbase.Workspace.baseclient import BaseClient as _BaseClient  # @UnusedImport
+    from cobrakbase.Workspace.baseclient import (
+        BaseClient as _BaseClient,
+    )  # @UnusedImport
 except ImportError:
     # no they aren't
     from baseclient import BaseClient as _BaseClient  # @Reimport
 
 
 class AbstractHandle(object):
-
     def __init__(
-            self, url=None, timeout=30 * 60, user_id=None,
-            password=None, token=None, ignore_authrc=False,
-            trust_all_ssl_certificates=False,
-            auth_svc='https://ci.kbase.us/services/auth/api/legacy/KBase/Sessions/Login'):
+        self,
+        url=None,
+        timeout=30 * 60,
+        user_id=None,
+        password=None,
+        token=None,
+        ignore_authrc=False,
+        trust_all_ssl_certificates=False,
+        auth_svc="https://ci.kbase.us/services/auth/api/legacy/KBase/Sessions/Login",
+    ):
         if url is None:
-            raise ValueError('A url is required')
+            raise ValueError("A url is required")
         self._service_ver = None
         self._client = _BaseClient(
-            url, timeout=timeout, user_id=user_id, password=password,
-            token=token, ignore_authrc=ignore_authrc,
+            url,
+            timeout=timeout,
+            user_id=user_id,
+            password=password,
+            token=token,
+            ignore_authrc=ignore_authrc,
             trust_all_ssl_certificates=trust_all_ssl_certificates,
-            auth_svc=auth_svc)
+            auth_svc=auth_svc,
+        )
 
     def persist_handle(self, handle, context=None):
         """
@@ -52,8 +65,9 @@ class AbstractHandle(object):
            of String
         :returns: instance of String
         """
-        return self._client.call_method('AbstractHandle.persist_handle',
-                                        [handle], self._service_ver, context)
+        return self._client.call_method(
+            "AbstractHandle.persist_handle", [handle], self._service_ver, context
+        )
 
     def hids_to_handles(self, hids, context=None):
         """
@@ -84,8 +98,9 @@ class AbstractHandle(object):
            String, parameter "remote_md5" of String, parameter "remote_sha1"
            of String
         """
-        return self._client.call_method('AbstractHandle.hids_to_handles',
-                                        [hids], self._service_ver, context)
+        return self._client.call_method(
+            "AbstractHandle.hids_to_handles", [hids], self._service_ver, context
+        )
 
     def ids_to_handles(self, ids, context=None):
         """
@@ -108,8 +123,9 @@ class AbstractHandle(object):
            String, parameter "remote_md5" of String, parameter "remote_sha1"
            of String
         """
-        return self._client.call_method('AbstractHandle.ids_to_handles',
-                                        [ids], self._service_ver, context)
+        return self._client.call_method(
+            "AbstractHandle.ids_to_handles", [ids], self._service_ver, context
+        )
 
     def fetch_handles_by(self, params, context=None):
         """
@@ -132,8 +148,9 @@ class AbstractHandle(object):
            String, parameter "remote_md5" of String, parameter "remote_sha1"
            of String
         """
-        return self._client.call_method('AbstractHandle.fetch_handles_by',
-                                        [params], self._service_ver, context)
+        return self._client.call_method(
+            "AbstractHandle.fetch_handles_by", [params], self._service_ver, context
+        )
 
     def is_owner(self, hids, context=None):
         """
@@ -151,8 +168,9 @@ class AbstractHandle(object):
            to verify uploads and downloads.)
         :returns: instance of Long
         """
-        return self._client.call_method('AbstractHandle.is_owner',
-                                        [hids], self._service_ver, context)
+        return self._client.call_method(
+            "AbstractHandle.is_owner", [hids], self._service_ver, context
+        )
 
     def delete_handles(self, handles, context=None):
         """
@@ -173,8 +191,9 @@ class AbstractHandle(object):
            of String
         :returns: instance of Long
         """
-        return self._client.call_method('AbstractHandle.delete_handles',
-                                        [handles], self._service_ver, context)
+        return self._client.call_method(
+            "AbstractHandle.delete_handles", [handles], self._service_ver, context
+        )
 
     def are_readable(self, hids, context=None):
         """
@@ -192,8 +211,9 @@ class AbstractHandle(object):
            to verify uploads and downloads.)
         :returns: instance of Long
         """
-        return self._client.call_method('AbstractHandle.are_readable',
-                                        [hids], self._service_ver, context)
+        return self._client.call_method(
+            "AbstractHandle.are_readable", [hids], self._service_ver, context
+        )
 
     def is_readable(self, hid, context=None):
         """
@@ -210,8 +230,9 @@ class AbstractHandle(object):
            downloads.)
         :returns: instance of Long
         """
-        return self._client.call_method('AbstractHandle.is_readable',
-                                        [hid], self._service_ver, context)
+        return self._client.call_method(
+            "AbstractHandle.is_readable", [hid], self._service_ver, context
+        )
 
     def add_read_acl(self, hids, username, context=None):
         """
@@ -231,8 +252,9 @@ class AbstractHandle(object):
         :param username: instance of String
         :returns: instance of Long
         """
-        return self._client.call_method('AbstractHandle.add_read_acl',
-                                        [hids, username], self._service_ver, context)
+        return self._client.call_method(
+            "AbstractHandle.add_read_acl", [hids, username], self._service_ver, context
+        )
 
     def set_public_read(self, hids, context=None):
         """
@@ -250,9 +272,11 @@ class AbstractHandle(object):
            to verify uploads and downloads.)
         :returns: instance of Long
         """
-        return self._client.call_method('AbstractHandle.set_public_read',
-                                        [hids], self._service_ver, context)
+        return self._client.call_method(
+            "AbstractHandle.set_public_read", [hids], self._service_ver, context
+        )
 
     def status(self, context=None):
-        return self._client.call_method('AbstractHandle.status',
-                                        [], self._service_ver, context)
+        return self._client.call_method(
+            "AbstractHandle.status", [], self._service_ver, context
+        )

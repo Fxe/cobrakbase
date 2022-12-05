@@ -1,8 +1,18 @@
 class KBaseObjectInfo:
-    
     def __init__(self, data=None, object_type=None):
         if data is None:
-            self._tuple = [None, None, object_type, None, None, None, None, None, None, None]
+            self._tuple = [
+                None,
+                None,
+                object_type,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+                None,
+            ]
         else:
             self._tuple = data
 
@@ -21,11 +31,11 @@ class KBaseObjectInfo:
     @property
     def uid(self):
         return self._tuple[0]
-    
+
     @property
     def id(self):
         return self._tuple[1]
-    
+
     @property
     def type(self):
         return self._tuple[2]
@@ -41,19 +51,19 @@ class KBaseObjectInfo:
     @property
     def created_at(self):
         return self._tuple[3]
-    
+
     @property
     def version(self):
         return self._tuple[4]
-    
+
     @property
     def user(self):
         return self._tuple[5]
-    
+
     @property
     def workspace_uid(self):
         return self._tuple[6]
-    
+
     @property
     def workspace_id(self):
         return self._tuple[7]
@@ -69,7 +79,7 @@ class KBaseObjectInfo:
     @property
     def metadata(self):
         return self._tuple[10]
-    
+
     @property
     def reference(self):
         if self.workspace_uid is None or self.uid is None or self.version is None:
@@ -78,7 +88,7 @@ class KBaseObjectInfo:
 
     def to_kbase_json(self):
         return self._tuple
-        
+
     def __str__(self):
         ref = self.reference
         if ref:

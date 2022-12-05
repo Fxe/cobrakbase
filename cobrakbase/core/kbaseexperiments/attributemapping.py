@@ -20,27 +20,39 @@ class AttributeMapping:
     } AttributeMapping;
     """
 
-    OBJECT_TYPE = 'KBaseExperiments.AttributeMapping'
+    OBJECT_TYPE = "KBaseExperiments.AttributeMapping"
 
-    def __init__(self, instances: dict, attributes: list, ontology_mapping_method: str, info=None, args=None):
+    def __init__(
+        self,
+        instances: dict,
+        attributes: list,
+        ontology_mapping_method: str,
+        info=None,
+        args=None,
+    ):
         self.instances = instances
         self.attributes = attributes
         self.ontology_mapping_method = ontology_mapping_method
-        self.info = info if info else KBaseObjectInfo(object_type=AttributeMapping.OBJECT_TYPE)
+        self.info = (
+            info if info else KBaseObjectInfo(object_type=AttributeMapping.OBJECT_TYPE)
+        )
         self.args = args
 
     @staticmethod
     def from_dict(data, info=None, args=None):
         if info is None:
             info = KBaseObjectInfo(object_type=AttributeMapping.OBJECT_TYPE)
-        return AttributeMapping(data['instances'],
-                                data['attributes'],
-                                data['ontology_mapping_method'],
-                                info, args)
+        return AttributeMapping(
+            data["instances"],
+            data["attributes"],
+            data["ontology_mapping_method"],
+            info,
+            args,
+        )
 
     def get_data(self):
         return {
-            'attributes': self.attributes,
-            'instances': self.instances,
-            'ontology_mapping_method': self.ontology_mapping_method
+            "attributes": self.attributes,
+            "instances": self.instances,
+            "ontology_mapping_method": self.ontology_mapping_method,
         }

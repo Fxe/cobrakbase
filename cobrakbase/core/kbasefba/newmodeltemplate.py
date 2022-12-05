@@ -3,8 +3,14 @@ from cobrakbase.core.kbaseobject import KBaseObject, KBaseObjectBase, AttrDict
 from cobrakbase.core.kbasegenomesgenome import normalize_role
 from cobra.core.dictlist import DictList
 from cobrakbase.kbase_object_info import KBaseObjectInfo
-from cobrakbase.core.kbasefba.newmodeltemplate_complex import NewModelTemplateRole, NewModelTemplateComplex
-from cobrakbase.core.kbasefba.newmodeltemplate_metabolite import NewModelTemplateCompound, NewModelTemplateCompCompound
+from cobrakbase.core.kbasefba.newmodeltemplate_complex import (
+    NewModelTemplateRole,
+    NewModelTemplateComplex,
+)
+from cobrakbase.core.kbasefba.newmodeltemplate_metabolite import (
+    NewModelTemplateCompound,
+    NewModelTemplateCompCompound,
+)
 from cobrakbase.core.kbasefba.newmodeltemplate_reaction import NewModelTemplateReaction
 from modelseedpy.core.mstemplate import MSTemplate, MSTemplateCompartment
 
@@ -12,54 +18,36 @@ logger = logging.getLogger(__name__)
 
 
 class TemplateRole(KBaseObjectBase):
-    
     def __init__(self, data, template=None):
         super().__init__(data)
         self.template = template
 
 
 class TemplateCompartment(MSTemplateCompartment):
-
-    def __init__(self, compartment_id: str, name: str, ph: float, hierarchy=0, aliases=None):
+    def __init__(
+        self, compartment_id: str, name: str, ph: float, hierarchy=0, aliases=None
+    ):
         super().__init__(compartment_id, name, ph, hierarchy, aliases)
 
 
 class NewModelTemplate(MSTemplate):
-    
-    def __init__(self, template_id, name='', domain='', template_type='', version=1, info=None, args=None):
+    def __init__(
+        self,
+        template_id,
+        name="",
+        domain="",
+        template_type="",
+        version=1,
+        info=None,
+        args=None,
+    ):
         super().__init__(template_id, name, domain, template_type, version)
         self.__VERSION__ = version
-        self.biochemistry_ref = ''
-        self.info = info if info else KBaseObjectInfo(object_type='KBaseFBA.NewModelTemplate')
+        self.biochemistry_ref = ""
+        self.info = (
+            info if info else KBaseObjectInfo(object_type="KBaseFBA.NewModelTemplate")
+        )
         self.args = args
-
-    def add_reactions(self, reaction_list: list):
-        """
-
-        :param reaction_list:
-        :return:
-        """
-        duplicates = list(filter(lambda x: x.id in self.reactions, reaction_list))
-        if len(duplicates) > 0:
-            logger.error("unable to add reactions [%s] already present in the template", duplicates)
-            return None
-
-        for x in reaction_list:
-            metabolites_replace = {}
-            complex_replace = set()
-            x._template = self
-            for comp_cpd, coefficient in x.metabolites.items():
-                if comp_cpd.id not in self.compcompounds:
-                    self.add_comp_compounds([comp_cpd])
-                metabolites_replace[self.compcompounds.get_by_id(comp_cpd.id)] = coefficient
-            for cpx in x.complexes:
-                if cpx.id not in self.complexes:
-                    self.add_complexes([cpx])
-                complex_replace.add(self.complexes.get_by_id(cpx.id))
-            x._metabolites = metabolites_replace
-            x.complexes = complex_replace
-
-        self.reactions += reaction_list
 
     def get_role_sources(self):
         pass
@@ -72,7 +60,7 @@ class NewModelTemplate(MSTemplate):
         last_id = 0
         for o in object_list:
             if o.id.startswith(s):
-                number_part = id[len(s):]
+                number_part = id[len(s) :]
                 if len(number_part) == 5:
                     if int(number_part) > last_id:
                         last_id = int(number_part)
@@ -89,21 +77,21 @@ class NewModelTemplate(MSTemplate):
 
     def get_data(self):
         return {
-            '__VERSION__': self.__VERSION__,
-            'id': self.id,
-            'name': self.name,
-            'domain': self.domain,
-            'biochemistry_ref': self.biochemistry_ref,
-            'type': 'Test',
-            'compartments': list(map(lambda x: x.get_data(), self.compartments)),
-            'compcompounds': list(map(lambda x: x.get_data(), self.compcompounds)),
-            'compounds': list(map(lambda x: x.get_data(), self.compounds)),
-            'roles': list(map(lambda x: x.get_data(), self.roles)),
-            'complexes': list(map(lambda x: x.get_data(), self.complexes)),
-            'reactions': list(map(lambda x: x.get_data(), self.reactions)),
-            'biomasses': list(self.biomasses),
-            'pathways': [],
-            'subsystems': [],
+            "__VERSION__": self.__VERSION__,
+            "id": self.id,
+            "name": self.name,
+            "domain": self.domain,
+            "biochemistry_ref": self.biochemistry_ref,
+            "type": "Test",
+            "compartments": list(map(lambda x: x.get_data(), self.compartments)),
+            "compcompounds": list(map(lambda x: x.get_data(), self.compcompounds)),
+            "compounds": list(map(lambda x: x.get_data(), self.compounds)),
+            "roles": list(map(lambda x: x.get_data(), self.roles)),
+            "complexes": list(map(lambda x: x.get_data(), self.complexes)),
+            "reactions": list(map(lambda x: x.get_data(), self.reactions)),
+            "biomasses": list(self.biomasses),
+            "pathways": [],
+            "subsystems": [],
         }
 
     def _repr_html_(self):
@@ -140,10 +128,11 @@ class NewModelTemplate(MSTemplate):
             </tr>
           </table>""".format(
             id=self.id,
-            address='0x0%x' % id(self),
+            address="0x0%x" % id(self),
             num_metabolites=len(self.compounds),
             num_species=len(self.compcompounds),
             num_reactions=len(self.reactions),
             num_bio=len(self.biomasses),
             num_roles=len(self.roles),
-            num_complexes=len(self.complexes))
+            num_complexes=len(self.complexes),
+        )
