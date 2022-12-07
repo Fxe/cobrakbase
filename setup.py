@@ -22,7 +22,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
-        "Natural Language :: English"
+        "Natural Language :: English",
     ],
     install_requires=[
         # "modelseedpy >= 1.0.0", # when available in pypi

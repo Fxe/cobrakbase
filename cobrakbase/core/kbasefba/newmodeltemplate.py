@@ -94,7 +94,7 @@ class NewModelTemplate(MSTemplate):
             "subsystems": [],
         }
         if self.drains is not None:
-            d['drain_list'] = {c.id: t for c, t in self.drains.items()}
+            d["drain_list"] = {c.id: t for c, t in self.drains.items()}
 
         return d
 

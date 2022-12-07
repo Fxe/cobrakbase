@@ -85,8 +85,6 @@ class CobraModelConverter:
             if CobraModelConverter.reaction_is_biomass(reaction):
                 yield reaction
 
-
-
     def build(self):
         model_compartments = []
         for cmp_id in self.model.compartments:

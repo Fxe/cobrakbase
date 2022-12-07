@@ -47,7 +47,7 @@ class ModelCompartment:
         )
 
     def get_sbml_notes_key(self):
-        return f'kbase_compartment_data_{self.id}'
+        return f"kbase_compartment_data_{self.id}"
 
     def get_sbml_notes_data(self):
         return {
@@ -99,18 +99,20 @@ class FBAModel(KBaseObject, Model):
 
     OBJECT_TYPE = "KBaseFBA.FBAModel"
 
-    SBML_FIELD_SOURCE = 'kbase_source'
-    SBML_FIELD_SOURCE_ID = 'kbase_source_id'
-    SBML_FIELD_GAPFILLINGS = 'kbase_gapfillings'
-    SBML_FIELD_MODEL_TYPE = 'kbase_model_type'
-    SBML_FIELD_GAPGENS = 'kbase_gapgens'
-    SBML_FIELD_TEMPLATE_REFS = 'kbase_template_refs'
-    SBML_FIELD_GENOME_REFS = 'kbase_genome_ref'
-    SBML_FIELD_ATTRIBUTES = 'kbase_attributes'
+    SBML_FIELD_SOURCE = "kbase_source"
+    SBML_FIELD_SOURCE_ID = "kbase_source_id"
+    SBML_FIELD_GAPFILLINGS = "kbase_gapfillings"
+    SBML_FIELD_MODEL_TYPE = "kbase_model_type"
+    SBML_FIELD_GAPGENS = "kbase_gapgens"
+    SBML_FIELD_TEMPLATE_REFS = "kbase_template_refs"
+    SBML_FIELD_GENOME_REFS = "kbase_genome_ref"
+    SBML_FIELD_ATTRIBUTES = "kbase_attributes"
 
     def _get_gapfillings(self):
         if self.SBML_FIELD_GAPFILLINGS in self.notes:
-            return json.loads(self.notes[self.SBML_FIELD_GAPFILLINGS].replace("&quot;", '"'))
+            return json.loads(
+                self.notes[self.SBML_FIELD_GAPFILLINGS].replace("&quot;", '"')
+            )
         else:
             return []
 
@@ -121,7 +123,9 @@ class FBAModel(KBaseObject, Model):
 
     def _get_computed_attributes(self):
         if self.SBML_FIELD_ATTRIBUTES in self.notes:
-            return json.loads(self.notes[self.SBML_FIELD_ATTRIBUTES].replace("&quot;", '"'))
+            return json.loads(
+                self.notes[self.SBML_FIELD_ATTRIBUTES].replace("&quot;", '"')
+            )
         else:
             return None
 
@@ -134,7 +138,7 @@ class FBAModel(KBaseObject, Model):
         if self.SBML_FIELD_SOURCE in self.notes:
             return self.notes[self.SBML_FIELD_SOURCE]
         else:
-            return ''
+            return ""
 
     def _set_source(self, value: str):
         self.notes[self.SBML_FIELD_SOURCE] = value
@@ -145,7 +149,7 @@ class FBAModel(KBaseObject, Model):
         if self.SBML_FIELD_SOURCE_ID in self.notes:
             return self.notes[self.SBML_FIELD_SOURCE_ID]
         else:
-            return ''
+            return ""
 
     def _set_source_id(self, value: str):
         self.notes[self.SBML_FIELD_SOURCE_ID] = value
@@ -156,7 +160,7 @@ class FBAModel(KBaseObject, Model):
         if self.SBML_FIELD_MODEL_TYPE in self.notes:
             return self.notes[self.SBML_FIELD_MODEL_TYPE]
         else:
-            return ''
+            return ""
 
     def _set_type(self, value: str):
         self.notes[self.SBML_FIELD_MODEL_TYPE] = value
@@ -187,7 +191,9 @@ class FBAModel(KBaseObject, Model):
 
     def _get_gapgens(self):
         if self.SBML_FIELD_GAPGENS in self.notes:
-            return json.loads(self.notes[self.SBML_FIELD_GAPGENS].replace("&quot;", '"'))
+            return json.loads(
+                self.notes[self.SBML_FIELD_GAPGENS].replace("&quot;", '"')
+            )
         else:
             return []
 
@@ -314,28 +320,29 @@ class FBAModel(KBaseObject, Model):
         data["modelcompartments"] = []
         for cmp_id, name in self.compartments.items():
             model_compartment = {
-                'id': cmp_id,
-                'label': name,
-                'compartment_ref': '~/template/compartments/id/' + cmp_id[:-1]
+                "id": cmp_id,
+                "label": name,
+                "compartment_ref": "~/template/compartments/id/" + cmp_id[:-1],
             }
-            cmp_meta_data_key = f'kbase_compartment_data_{cmp_id}'
+            cmp_meta_data_key = f"kbase_compartment_data_{cmp_id}"
             if cmp_meta_data_key in self.notes:
                 m = self.notes[cmp_meta_data_key]
                 if type(m) == str:
-                    extra_data = json.loads(m.replace('&apos;', '"'))
+                    extra_data = json.loads(m.replace("&apos;", '"'))
                 elif type(m) == dict:
                     extra_data = m
                 else:
-                    raise ValueError(f"note field for {cmp_meta_data_key} must be either str or dict, found: {type(m)}")
-                if 'compartmentIndex' in extra_data:
-                    extra_data['compartmentIndex'] = int(extra_data['compartmentIndex'])
-                if 'pH' in extra_data:
-                    extra_data['pH'] = float(extra_data['pH'])
-                if 'potential' in extra_data:
-                    extra_data['potential'] = float(extra_data['potential'])
+                    raise ValueError(
+                        f"note field for {cmp_meta_data_key} must be either str or dict, found: {type(m)}"
+                    )
+                if "compartmentIndex" in extra_data:
+                    extra_data["compartmentIndex"] = int(extra_data["compartmentIndex"])
+                if "pH" in extra_data:
+                    extra_data["pH"] = float(extra_data["pH"])
+                if "potential" in extra_data:
+                    extra_data["potential"] = float(extra_data["potential"])
                 model_compartment.update(extra_data)
             data["modelcompartments"].append(model_compartment)
-
 
         for key in self.data_keys:
             if key not in ignore:
@@ -395,7 +402,11 @@ class FBAModel(KBaseObject, Model):
                 if type(reaction) is Biomass:
                     data["biomasses"].append(reaction._to_json())
                 elif type(reaction) is Reaction:
-                    data["biomasses"].append(CobraModelConverter.convert_reaction_to_biomass(reaction)._to_json())
+                    data["biomasses"].append(
+                        CobraModelConverter.convert_reaction_to_biomass(
+                            reaction
+                        )._to_json()
+                    )
                 else:
                     logger.warning(f"unable to biomass type {type(reaction)}")
 

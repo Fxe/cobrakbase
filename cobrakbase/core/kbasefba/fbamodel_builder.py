@@ -215,20 +215,24 @@ class FBAModelBuilder:
             else:
                 logger.warning(f"duplicate reaction ID: {reaction.id}")
 
-            for complex_data in modelreaction['modelReactionProteins']:
-                complex_id = complex_data['complex_ref'].split('/')[-1]
+            for complex_data in modelreaction["modelReactionProteins"]:
+                complex_id = complex_data["complex_ref"].split("/")[-1]
                 notes = {}
                 if complex_id not in complex_groups:
                     complex_group = Group(complex_id)
-                    notes['complex_note'] = complex_data['note']
-                    notes['complex_source'] = complex_data['source']
-                    for u in complex_data['modelReactionProteinSubunits']:
-                        role_id = u['role']
-                        features = ';'.join({x.split('/')[-1] for x in u['feature_refs']})
-                        notes[f'complex_subunit_features_{role_id}'] = features
-                        notes[f'complex_subunit_note_{role_id}'] = u['note']
-                        notes[f'complex_subunit_optional_{role_id}'] = u['optionalSubunit']
-                        notes[f'complex_subunit_triggering_{role_id}'] = u['triggering']
+                    notes["complex_note"] = complex_data["note"]
+                    notes["complex_source"] = complex_data["source"]
+                    for u in complex_data["modelReactionProteinSubunits"]:
+                        role_id = u["role"]
+                        features = ";".join(
+                            {x.split("/")[-1] for x in u["feature_refs"]}
+                        )
+                        notes[f"complex_subunit_features_{role_id}"] = features
+                        notes[f"complex_subunit_note_{role_id}"] = u["note"]
+                        notes[f"complex_subunit_optional_{role_id}"] = u[
+                            "optionalSubunit"
+                        ]
+                        notes[f"complex_subunit_triggering_{role_id}"] = u["triggering"]
                     complex_group.notes = notes
                     complex_groups[complex_group.id] = complex_group
 
@@ -248,7 +252,7 @@ class FBAModelBuilder:
         model.gapfillings = self.data["gapfillings"]
         model.gapgens = self.data["gapgens"]
         if "attributes" in self.data:
-            model.computed_attributes = self.data['attributes']
+            model.computed_attributes = self.data["attributes"]
 
         templates = []
         if "template_refs" in self.data:
