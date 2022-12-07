@@ -70,6 +70,9 @@ class NewModelTemplateBuilder(MSTemplateBuilder):
         builder.reactions = d["reactions"]
         builder.biochemistry_ref = d["biochemistry_ref"]
         builder.biomasses = d["biomasses"]
+        if 'drain_list' in d:
+            builder.drains = d['drain_list']
+
         return builder
 
     @staticmethod
@@ -126,5 +129,8 @@ class NewModelTemplateBuilder(MSTemplateBuilder):
         template.biomasses += list(
             map(lambda x: AttrDict(x), self.biomasses)
         )  # TODO: biomass object
+
+        for compound_id, (lb, ub) in self.drains.items():
+            template.add_drain(compound_id, lb, ub)
 
         return template

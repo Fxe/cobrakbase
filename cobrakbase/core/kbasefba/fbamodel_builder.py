@@ -1,7 +1,7 @@
 import logging
 import json
 import copy
-from cobra.core import Reaction, Gene
+from cobra.core import Reaction, Gene, Group
 from cobra.util.solver import linear_reaction_coefficients
 from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbasefba.fbamodel import ModelCompartment
@@ -189,10 +189,12 @@ class FBAModelBuilder:
             return drain_reaction
 
     def build(self):
+        cmp_notes = {}
         for cmp_data in self.data["modelcompartments"]:
             cmp = ModelCompartment.from_json(cmp_data)
             if cmp.id not in self.compartments:
                 self.compartments[cmp.id] = cmp
+                cmp_notes[cmp.get_sbml_notes_key()] = cmp.get_sbml_notes_data()
             else:
                 logger.warning("cmp %s is found twice? ignoring duplicate", cmp.id)
 
@@ -205,6 +207,7 @@ class FBAModelBuilder:
 
         logger.info("metabolites %d", len(self.metabolites))
 
+        complex_groups = {}
         for modelreaction in self.data["modelreactions"]:
             reaction = self.convert_modelreaction(modelreaction)
             if reaction.id not in self.reactions:
@@ -212,19 +215,41 @@ class FBAModelBuilder:
             else:
                 logger.warning(f"duplicate reaction ID: {reaction.id}")
 
+            for complex_data in modelreaction['modelReactionProteins']:
+                complex_id = complex_data['complex_ref'].split('/')[-1]
+                notes = {}
+                if complex_id not in complex_groups:
+                    complex_group = Group(complex_id)
+                    notes['complex_note'] = complex_data['note']
+                    notes['complex_source'] = complex_data['source']
+                    for u in complex_data['modelReactionProteinSubunits']:
+                        role_id = u['role']
+                        features = ';'.join({x.split('/')[-1] for x in u['feature_refs']})
+                        notes[f'complex_subunit_features_{role_id}'] = features
+                        notes[f'complex_subunit_note_{role_id}'] = u['note']
+                        notes[f'complex_subunit_optional_{role_id}'] = u['optionalSubunit']
+                        notes[f'complex_subunit_triggering_{role_id}'] = u['triggering']
+                    complex_group.notes = notes
+                    complex_groups[complex_group.id] = complex_group
+
         logger.info("reactions %d", len(self.reactions))
 
         data_copy = copy.deepcopy(self.data)
         del data_copy["biomasses"]
         del data_copy["modelcompounds"]
         del data_copy["modelreactions"]
+        del data_copy["modelcompartments"]
+
         model = FBAModel(data_copy, self.info, self.args)
+        model.genome_ref = self.data["genome_ref"]
+        model.model_type = self.data["type"]
+        model.source = self.data["source"]
+        model.source_id = self.data["source_id"]
+        model.gapfillings = self.data["gapfillings"]
+        model.gapgens = self.data["gapgens"]
         if "attributes" in self.data:
-            model.notes["kbase_attributes"] = json.dumps(self.data["attributes"])
-        if "gapfillings" in self.data:
-            model.notes["kbase_gapfillings"] = json.dumps(self.data["gapfillings"])
-        if "source_id" in self.data:
-            model.notes["kbase_source_id"] = self.data["source_id"]
+            model.computed_attributes = self.data['attributes']
+
         templates = []
         if "template_refs" in self.data:
             templates = [x for x in self.data["template_refs"]]
@@ -232,8 +257,6 @@ class FBAModelBuilder:
             templates.append(self.data["template_ref"])
         if len(templates) > 0:
             model.notes["kbase_template_refs"] = ";".join(templates)
-        if "genome_ref" in self.data:
-            model.notes["kbase_genome_ref"] = self.data["genome_ref"]
 
         for gene_id in self.genes:
             gene = Gene(id=_build_gene_id(gene_id), name=gene_id)
@@ -300,8 +323,10 @@ class FBAModelBuilder:
                 logger.debug("unable to add sink for [%s]: not found", cpd_id)
 
         model.compartments = self.compartments
-        model.add_metabolites(self.metabolites.values())
+        model.add_metabolites(list(self.metabolites.values()))
         model.add_reactions(list(self.reactions.values()))
+        model.add_groups(list(complex_groups.values()))
+        model.notes.update(cmp_notes)
 
         if len(self.biomass_reactions) > 0:
             default_biomass = list(self.biomass_reactions)[0]

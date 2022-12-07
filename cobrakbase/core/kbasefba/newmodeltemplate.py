@@ -76,7 +76,7 @@ class NewModelTemplate(MSTemplate):
         return self.roles.get_by_id(id)
 
     def get_data(self):
-        return {
+        d = {
             "__VERSION__": self.__VERSION__,
             "id": self.id,
             "name": self.name,
@@ -93,6 +93,10 @@ class NewModelTemplate(MSTemplate):
             "pathways": [],
             "subsystems": [],
         }
+        if self.drains is not None:
+            d['drain_list'] = {c.id: t for c, t in self.drains.items()}
+
+        return d
 
     def _repr_html_(self):
         """

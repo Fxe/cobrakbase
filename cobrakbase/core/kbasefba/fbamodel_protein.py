@@ -1,3 +1,6 @@
+from cobra.core import Group
+
+
 class ModelReactionProteinSubunit:
     """
         typedef structure {
@@ -47,7 +50,7 @@ class ModelReactionProteinSubunit:
         return d
 
 
-class ModelReactionProtein:
+class ModelReactionProtein(Group):
     """
         @optional source complex_ref
     */
@@ -59,7 +62,7 @@ class ModelReactionProtein:
     } ModelReactionProtein;
     """
 
-    def __init__(self, note: str, source: str, subunits: list, cpx=None):
+    def __init__(self, complex_id, note: str, source: str, subunits: list, cpx=None):
         """
 
         @param note:
@@ -67,6 +70,7 @@ class ModelReactionProtein:
         @param subunits: list of ModelReactionProteinSubunit
         @param cpx:  ~/template/complexes/name/cpx01517
         """
+        super().__init__(complex_id)
         self.subunits = subunits
         self.note = note
         self.source = source
@@ -78,8 +82,9 @@ class ModelReactionProtein:
             ModelReactionProteinSubunit.from_json(o)
             for o in data["modelReactionProteinSubunits"]
         ]
+        complex_id = data.get("complex_ref")
         return ModelReactionProtein(
-            data["note"], data["source"], subunits, data.get("complex_ref")
+            complex_id, data["note"], data["source"], subunits, complex_id
         )
 
     def get_data(self):

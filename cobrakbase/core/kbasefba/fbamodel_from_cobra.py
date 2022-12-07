@@ -19,6 +19,14 @@ class CobraModelConverter:
         )
 
     @staticmethod
+    def convert_reaction_to_biomass(reaction):
+        reaction_biomass = Biomass(reaction.id, reaction.name)
+        reaction_biomass.add_metabolites(reaction.metabolites)
+        reaction_biomass.notes = reaction.notes
+        reaction_biomass.annotation = reaction.annotation
+        return reaction_biomass
+
+    @staticmethod
     def reaction_is_biomass(reaction):
         """
         detect biomass reaction from SBO term SBO:0000629
@@ -77,6 +85,8 @@ class CobraModelConverter:
             if CobraModelConverter.reaction_is_biomass(reaction):
                 yield reaction
 
+
+
     def build(self):
         model_compartments = []
         for cmp_id in self.model.compartments:
@@ -124,10 +134,7 @@ class CobraModelConverter:
 
         model_biomass = {}
         for r in self.biomass_reactions:
-            reaction_biomass = Biomass(r.id, r.name)
-            reaction_biomass.add_metabolites(r.metabolites)
-            reaction_biomass.notes = r.notes
-            reaction_biomass.annotation = r.annotation
+            reaction_biomass = self.convert_reaction_to_biomass(r)
             model_biomass[reaction_biomass.id] = reaction_biomass
             """
             
@@ -185,6 +192,7 @@ class CobraModelConverter:
             "gapfilledcandidates": [],
             "gapfillings": [],
             "gapgens": [],
+            "genome_ref": "",
             "loops": [],
             "model_edits": [],
             "other_genome_refs": [],
@@ -197,9 +205,11 @@ class CobraModelConverter:
             model_base["genome_ref"] = self.get_genome_ref()
 
         cobra_model = FBAModelBuilder(model_base).build()
+        cobra_model.genome = self.genome
         cobra_model.name = self.model.name
         cobra_model.notes = self.model.notes
         cobra_model.annotation = self.model.annotation
-        cobra_model.genome = self.genome
+        cobra_model.add_groups(self.model.groups)
+        #
         cobra_model.add_reactions(model_reactions)
         return cobra_model
