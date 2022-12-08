@@ -48,6 +48,8 @@ class CobraModelConverter:
 
     @staticmethod
     def reaction_is_drain(reaction, detect_from_id=False, exclude=None):
+        if exclude is None:
+            exclude = {}
         """
         assume reactions of size 1 as drain reactions
         if annotated with sbo SBO:0000176 overrides drain check
@@ -56,9 +58,34 @@ class CobraModelConverter:
             exclude = set()
         if "sbo" in reaction.annotation and reaction.annotation["sbo"] == "SBO:0000176":
             return False
+        if "sbo" in reaction.annotation and reaction.annotation["sbo"] in {
+            "SBO:0000632",
+            "SBO:0000628",
+        }:
+            return True
         return (
             CobraModelConverter.get_seed_id(reaction, detect_from_id) not in exclude
             and len(reaction.metabolites) == 1
+        )
+
+    @staticmethod
+    def reaction_is_exchange(reaction, detect_from_id=False, exclude=None):
+        if exclude is None:
+            exclude = {}
+        """
+        assume reactions of size 1 as drain reactions
+        if annotated with sbo SBO:0000176 overrides drain check
+        """
+        if "sbo" in reaction.annotation and reaction.annotation["sbo"] == "SBO:0000176":
+            return False
+        if "sbo" in reaction.annotation and reaction.annotation["sbo"] == "SBO:0000627":
+            return True
+        compartments = reaction.compartments
+        return (
+            CobraModelConverter.get_seed_id(reaction, detect_from_id) not in exclude
+            and len(reaction.metabolites) == 1
+            and len(compartments) == 1
+            and (list(compartments)[0] == "e0" or list(compartments)[0] == "e")
         )
 
     def get_template_ref(self):

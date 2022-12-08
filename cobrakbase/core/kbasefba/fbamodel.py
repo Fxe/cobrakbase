@@ -374,6 +374,7 @@ class FBAModel(KBaseObject, Model):
         data["type"] = self.model_type
         data["gapgens"] = self.gapgens
         data["gapfillings"] = self.gapfillings
+        data["drain_list"] = {}
 
         for metabolite in self.metabolites:
             if type(metabolite) is ModelCompound:
@@ -382,20 +383,6 @@ class FBAModel(KBaseObject, Model):
                 data["modelcompounds"].append(
                     ModelCompound.from_cobra_metabolite(metabolite)._to_json()
                 )
-
-        for reaction in self.reactions:
-            if not CobraModelConverter.reaction_is_drain(
-                reaction
-            ) and not CobraModelConverter.reaction_is_biomass(reaction):
-                if type(reaction) is ModelReaction:
-                    data["modelreactions"].append(reaction._to_json())
-                else:
-                    r = ModelReaction.from_cobra_reaction(reaction)
-                    r.add_metabolites(reaction.metabolites)
-                    r.annotation = reaction.annotation
-                    r.notes = reaction.notes
-                    r._model = self
-                    data["modelreactions"].append(r._to_json())
 
         for reaction in self.reactions:
             if CobraModelConverter.reaction_is_biomass(reaction):
@@ -409,6 +396,26 @@ class FBAModel(KBaseObject, Model):
                     )
                 else:
                     logger.warning(f"unable to biomass type {type(reaction)}")
+            elif CobraModelConverter.reaction_is_drain(
+                reaction
+            ) and not CobraModelConverter.reaction_is_exchange(reaction):
+                cpd_id = list(reaction.metabolites)[0].id
+                if cpd_id not in data["drain_list"]:
+                    data["drain_list"][cpd_id] = [0, 0]
+                if reaction.lower_bound < 0:
+                    data["drain_list"][cpd_id][0] = reaction.lower_bound
+                if reaction.upper_bound > 0:
+                    data["drain_list"][cpd_id][1] = reaction.upper_bound
+            elif not CobraModelConverter.reaction_is_exchange(reaction):
+                if type(reaction) is ModelReaction:
+                    data["modelreactions"].append(reaction._to_json())
+                else:
+                    r = ModelReaction.from_cobra_reaction(reaction)
+                    r.add_metabolites(reaction.metabolites)
+                    r.annotation = reaction.annotation
+                    r.notes = reaction.notes
+                    r._model = self
+                    data["modelreactions"].append(r._to_json())
 
         return data
 

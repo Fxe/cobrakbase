@@ -32,8 +32,8 @@ class FBAModelBuilder:
 
         self.biomass_reactions = set()
 
-        self.sink_compounds = set()
-        self.demand_compounds = set()
+        self.sink_compounds = {}
+        self.demand_compounds = {}
         self.exchange_compounds = set()
 
         self.SBO_ANNOTATION = "sbo"
@@ -49,9 +49,20 @@ class FBAModelBuilder:
     @staticmethod
     def from_kbase_json(data, info, args=None, auto_exchange="e0"):
         b = FBAModelBuilder(copy.deepcopy(data), info, args)
-        b.with_sink("cpd02701_c0").with_sink("cpd11416_c0").with_sink(
-            "cpd15302_c0"
-        ).with_sink("cpd11416_c0")
+
+        if "drain_list" not in data:
+            from modelseedpy.core.msbuilder import DEFAULT_SINKS
+
+            for template_cpd_id in DEFAULT_SINKS:
+                b.with_sink(template_cpd_id + "0", DEFAULT_SINKS[template_cpd_id])
+        else:
+            for cpd_id in data["drain_list"]:
+                lb, ub = data["drain_list"][cpd_id]
+                if ub > 0:
+                    b.with_sink(cpd_id, ub)
+                if lb < 0:
+                    b.with_demand(cpd_id, lb)
+
         b.auto_exchange = auto_exchange
         return b
 
@@ -59,12 +70,12 @@ class FBAModelBuilder:
         self.exchange_compounds.add(compound_id)
         return self
 
-    def with_sink(self, compound_id):
-        self.sink_compounds.add(compound_id)
+    def with_sink(self, compound_id, upper_bound):
+        self.sink_compounds[compound_id] = upper_bound
         return self
 
-    def with_demand(self, compound_id):
-        self.demand_compounds.add(compound_id)
+    def with_demand(self, compound_id, lower_bound):
+        self.demand_compounds[compound_id] = lower_bound
         return self
 
     def convert_modelcompound(self, data, bigg=False):
@@ -297,12 +308,13 @@ class FBAModelBuilder:
                 logger.debug("created exchange for [%s]: %s", cpd_id, drain_reaction)
             else:
                 logger.debug("unable to add exchange for [%s]: not found", cpd_id)
-        for cpd_id in self.demand_compounds:
+
+        for cpd_id, v in self.demand_compounds.items():
             if cpd_id in self.metabolites:
                 drain_reaction = self.build_drain_from_metabolite_id(
                     cpd_id,
+                    v,
                     self.COBRA_0_BOUND,
-                    self.COBRA_DEFAULT_UB,
                     "DM_",
                     "Demand for ",
                 )
@@ -311,12 +323,12 @@ class FBAModelBuilder:
                 logger.debug("created demand for [%s]: %s", cpd_id, drain_reaction)
             else:
                 logger.debug("unable to add demand for [%s]: not found", cpd_id)
-        for cpd_id in self.sink_compounds:
+        for cpd_id, v in self.sink_compounds.items():
             if cpd_id in self.metabolites:
                 drain_reaction = self.build_drain_from_metabolite_id(
                     cpd_id,
                     self.COBRA_0_BOUND,
-                    self.COBRA_DEFAULT_UB,
+                    v,
                     "SK_",
                     "Sink for ",
                 )
