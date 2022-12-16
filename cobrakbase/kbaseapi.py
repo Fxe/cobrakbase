@@ -31,14 +31,17 @@ def _get_ws_client(token, dev=False):
 
 
 class KBaseAPI:
-    def __init__(self, token=None, dev=False, config=None):
+    def __init__(self, token=None, dev=False, config=None, public=False):
         self.max_retry = 3
         self._token = token
-        if self._token is None and Path(str(Path.home()) + "/.kbase/token").exists():
-            with open(str(Path.home()) + "/.kbase/token", "r") as fh:
-                self._token = fh.read().strip()
-        if self._token is None:
-            raise Exception("missing token value or ~/.kbase/token file")
+        if not public:
+            if self._token is None and Path(str(Path.home()) + "/.kbase/token").exists():
+                with open(str(Path.home()) + "/.kbase/token", "r") as fh:
+                    self._token = fh.read().strip()
+            if self._token is None:
+                raise Exception("missing token value or ~/.kbase/token file")
+        else:
+            self._token = None
 
         if config is None:
             self.ws_client = _get_ws_client(self._token, dev)
