@@ -317,7 +317,7 @@ class FBAModelBuilder:
                     self.COBRA_0_BOUND,
                     "DM_",
                     "Demand for ",
-                    sbo="SBO:0000628"
+                    sbo="SBO:0000628",
                 )
                 self.reactions[drain_reaction.id] = drain_reaction
                 # self.add_reaction(drain_reaction)
@@ -327,12 +327,7 @@ class FBAModelBuilder:
         for cpd_id, v in self.sink_compounds.items():
             if cpd_id in self.metabolites:
                 drain_reaction = self.build_drain_from_metabolite_id(
-                    cpd_id,
-                    self.COBRA_0_BOUND,
-                    v,
-                    "SK_",
-                    "Sink for ",
-                    sbo="SBO:0000632"
+                    cpd_id, self.COBRA_0_BOUND, v, "SK_", "Sink for ", sbo="SBO:0000632"
                 )
                 self.reactions[drain_reaction.id] = drain_reaction
                 # self.add_reaction(drain_reaction)

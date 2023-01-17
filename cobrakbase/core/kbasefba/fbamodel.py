@@ -428,13 +428,13 @@ class FBAModel(KBaseObject, Model):
         info = KBaseObjectInfo.from_kbase_json(self.info.to_kbase_json())
         args = self.get_kbase_args()
         builder = FBAModelBuilder.from_kbase_json(json, info, args)
-        
+
         for r in self.reactions:
-            if r.annotation.get('sbo') == 'SBO:0000632':
+            if r.annotation.get("sbo") == "SBO:0000632":
                 builder.with_sink(list(r.metabolites)[0].id, 1000)
-            elif r.annotation.get('sbo') == 'SBO:0000628':
-                builder.with_demand(list(r.metabolites)[0].id, -1000)             
-        
+            elif r.annotation.get("sbo") == "SBO:0000628":
+                builder.with_demand(list(r.metabolites)[0].id, -1000)
+
         model_copy = builder.build()
         model_copy.medium = self.medium
         return model_copy

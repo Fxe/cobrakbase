@@ -12,6 +12,7 @@ from cobrakbase.core.kbasefba.newmodeltemplate_metabolite import (
     NewModelTemplateCompound,
     NewModelTemplateCompCompound,
 )
+from cobrakbase.core.kbasefba.newmodeltemplate_biomass import NewModelTemplateBiomass
 from cobrakbase.core.kbasefba.newmodeltemplate_reaction import NewModelTemplateReaction
 from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbaseobject import AttrDict
@@ -126,9 +127,9 @@ class NewModelTemplateBuilder(MSTemplateBuilder):
                 )
             )
         )
-        template.biomasses += list(
-            map(lambda x: AttrDict(x), self.biomasses)
-        )  # TODO: biomass object
+        template.biomasses += [
+            NewModelTemplateBiomass.from_dict(o, template) for o in self.biomasses
+        ]
 
         for compound_id, (lb, ub) in self.drains.items():
             template.add_drain(compound_id, lb, ub)

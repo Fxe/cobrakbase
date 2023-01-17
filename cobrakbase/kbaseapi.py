@@ -35,7 +35,10 @@ class KBaseAPI:
         self.max_retry = 3
         self._token = token
         if not public:
-            if self._token is None and Path(str(Path.home()) + "/.kbase/token").exists():
+            if (
+                self._token is None
+                and Path(str(Path.home()) + "/.kbase/token").exists()
+            ):
                 with open(str(Path.home()) + "/.kbase/token", "r") as fh:
                     self._token = fh.read().strip()
             if self._token is None:
