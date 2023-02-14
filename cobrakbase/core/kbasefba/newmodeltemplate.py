@@ -89,7 +89,7 @@ class NewModelTemplate(MSTemplate):
             "roles": list(map(lambda x: x.get_data(), self.roles)),
             "complexes": list(map(lambda x: x.get_data(), self.complexes)),
             "reactions": list(map(lambda x: x.get_data(), self.reactions)),
-            "biomasses": list(self.biomasses),
+            "biomasses": list(map(lambda x: x.get_data(), self.biomasses)),
             "pathways": [],
             "subsystems": [],
         }
