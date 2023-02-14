@@ -329,3 +329,11 @@ class KBaseAPI:
             return wclient.copy_object(params)
 
         pass
+
+    def get_workspace_info(self, ws_id_or_name):
+        if type(ws_id_or_name) == str:
+            return self.ws_client.get_workspace_info({'workspace': ws_id_or_name})
+        elif type(ws_id_or_name) == int:
+            return self.ws_client.get_workspace_info({'id': ws_id_or_name})
+        else:
+            raise Exception(f'bad type {type(ws_id_or_name)} workspace identifier must be either int or str')

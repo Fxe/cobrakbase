@@ -22,3 +22,21 @@ class NewModelTemplateBiomass(MSTemplateBiomass):
             self.templateBiomassComponents.add(biocomp)
         self._template = template
         return self
+
+    def get_data(self):
+        data = {
+            "id": self.id,
+            "name": self.name,
+            "type": self.type,
+            "dna": self.dna,
+            "rna": self.rna,
+            "protein": self.protein,
+            "lipid": self.lipid,
+            "cellwall": self.cellwall,
+            "cofactor": self.cofactor,
+            "energy": self.energy,
+            "other": self.other,
+            "templateBiomassComponents": [],
+        }
+        for comp in self.templateBiomassComponents:
+            data["templateBiomassComponents"].append(comp.get_data())
