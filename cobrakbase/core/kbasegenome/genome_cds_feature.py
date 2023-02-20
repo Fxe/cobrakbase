@@ -186,9 +186,8 @@ class KBaseGenomeFeature(MSFeature):
         self.location = location
         self.cdss = cdss
         self.functions = set(functions)
-        self.aliases = aliases
         MSFeature.__init__(
-            self, feature_id, protein_translation, "; ".join(self.functions)
+            self, feature_id, protein_translation, "; ".join(self.functions), aliases
         )
         self.location = location
 
