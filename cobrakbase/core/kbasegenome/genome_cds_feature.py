@@ -149,6 +149,7 @@ class KBaseGenomeFeature(MSFeature):
         location,
         cdss: list,
         functions,
+        aliases=None
     ):
         """
                 Feature_id id;
@@ -185,6 +186,7 @@ class KBaseGenomeFeature(MSFeature):
         self.location = location
         self.cdss = cdss
         self.functions = set(functions)
+        self.aliases = aliases
         MSFeature.__init__(
             self, feature_id, protein_translation, "; ".join(self.functions)
         )
@@ -306,6 +308,7 @@ class KBaseGenomeFeature(MSFeature):
             kbase_data["location"],
             kbase_data["cdss"],
             functions,
+            kbase_data.get("aliases")
         )
         for f in functions_split:
             feature.add_ontology_term("RAST", f)
