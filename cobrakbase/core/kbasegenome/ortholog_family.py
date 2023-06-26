@@ -1,3 +1,4 @@
+import hashlib
 
 
 class OrthologItem:
@@ -38,12 +39,18 @@ class OrthologFamily:
         self.type = family_type
         self.function = function
         self.protein_translation = protein_translation
-        self.md5 = md5
         self._pangenome = None
 
     @property
     def genomes(self):
         return {o.genome for o in self.orthologs}
+
+    @property
+    def md5(self):
+        if self.protein_translation is None:
+            return None
+        else:
+            return hashlib.md5(self.protein_translation.encode("utf-8")).hexdigest()
 
     @property
     def gene_ids(self):
@@ -66,5 +73,6 @@ class OrthologFamily:
             data['function'] = self.function
         if self.protein_translation is not None:
             data['protein_translation'] = self.protein_translation
+            data['md5'] = self.md5
 
         return data

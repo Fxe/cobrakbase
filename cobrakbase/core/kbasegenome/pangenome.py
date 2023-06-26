@@ -1,5 +1,6 @@
 import logging
 from cobra.core.dictlist import DictList
+from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbasegenome.ortholog_family import OrthologFamily, OrthologItem
 from cobrakbase.core.kbaseobject import KBaseObject
 
@@ -8,7 +9,10 @@ logger = logging.getLogger(__name__)
 
 class KBasePangenome(KBaseObject):
 
+
     def __init__(self, pangenome_id: str, name: str, pangenome_type: str, genome_refs: list, info=None, args=None):
+        if info is None:
+            info = KBaseObjectInfo(None, 'KBaseGenomes.Pangenome')
         super().__init__({}, info, args)
         self.id = pangenome_id
         self.name = name
