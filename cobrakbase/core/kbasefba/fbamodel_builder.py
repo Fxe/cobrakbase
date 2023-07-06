@@ -257,6 +257,7 @@ class FBAModelBuilder:
 
         model = FBAModel(data_copy, self.info, self.args)
         model.genome_ref = self.data["genome_ref"]
+        model.core_template_ref = self.data.get("core_template_ref", None)
         model.model_type = self.data["type"]
         model.source = self.data["source"]
         model.source_id = self.data["source_id"]

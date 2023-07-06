@@ -105,6 +105,7 @@ class FBAModel(KBaseObject, Model):
     SBML_FIELD_MODEL_TYPE = "kbase_model_type"
     SBML_FIELD_GAPGENS = "kbase_gapgens"
     SBML_FIELD_TEMPLATE_REFS = "kbase_template_refs"
+    SBML_FIELD_CORE_TEMPLATE_REF = "kbase_core_template_ref"
     SBML_FIELD_GENOME_REFS = "kbase_genome_ref"
     SBML_FIELD_ATTRIBUTES = "kbase_attributes"
 
@@ -188,6 +189,15 @@ class FBAModel(KBaseObject, Model):
         self.notes[self.SBML_FIELD_TEMPLATE_REFS] = value
 
     template_ref = property(_get_template_ref, _set_template_ref)
+
+    def _get_core_template_ref(self):
+        return self.notes.get(self.SBML_FIELD_CORE_TEMPLATE_REF, None)
+
+    def _set_core_template_ref(self, value: str):
+        if value is not None:
+            self.notes[self.SBML_FIELD_CORE_TEMPLATE_REF] = value
+
+    core_template_ref = property(_get_core_template_ref, _set_core_template_ref)
 
     def _get_gapgens(self):
         if self.SBML_FIELD_GAPGENS in self.notes:
@@ -368,6 +378,8 @@ class FBAModel(KBaseObject, Model):
         computed_attributes = self.computed_attributes
         if computed_attributes:
             data["attributes"] = computed_attributes
+        if self.core_template_ref:
+            data["core_template_ref"] = self.core_template_ref
         data["genome_ref"] = self.genome_ref
         data["source_id"] = self.source_id
         data["source"] = self.source
