@@ -147,10 +147,7 @@ class FBAModel(KBaseObject, Model):
     source = property(_get_source, _set_source)
 
     def _get_source_id(self):
-        if self.SBML_FIELD_SOURCE_ID in self.notes:
-            return self.notes[self.SBML_FIELD_SOURCE_ID]
-        else:
-            return ""
+        return self.notes.get(self.SBML_FIELD_SOURCE_ID, "")
 
     def _set_source_id(self, value: str):
         self.notes[self.SBML_FIELD_SOURCE_ID] = value
@@ -169,10 +166,7 @@ class FBAModel(KBaseObject, Model):
     model_type = property(_get_type, _set_type)
 
     def _get_genome_ref(self):
-        if self.SBML_FIELD_GENOME_REFS in self.notes:
-            return self.notes[self.SBML_FIELD_GENOME_REFS]
-        else:
-            return None
+        return self.notes.get(self.SBML_FIELD_GENOME_REFS, None)
 
     def _set_genome_ref(self, value: str):
         self.notes[self.SBML_FIELD_GENOME_REFS] = value
