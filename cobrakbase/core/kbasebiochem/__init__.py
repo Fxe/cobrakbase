@@ -1,1 +1,1 @@
-from cobrakbase.core.kbasebiochem.media import Media
+from cobrakbase.core.kbasebiochemmedia import KBaseBiochemMedia as Media

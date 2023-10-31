@@ -5,7 +5,7 @@ from typing import Union, Optional
 from cobra.core import Model, Reaction
 from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbaseobject import KBaseObject
-from cobrakbase.core.kbasebiochem.media import Media
+from cobrakbase.core.kbasebiochemmedia import KBaseBiochemMedia as Media
 from cobrakbase.core.kbasefba.fbamodel_metabolite import ModelCompound
 from cobrakbase.core.kbasefba.fbamodel_reaction import ModelReaction
 from cobrakbase.core.kbasefba.fbamodel_biomass import Biomass
