@@ -2,7 +2,7 @@ import json
 import logging
 from cobrakbase.kbase_object_info import KBaseObjectInfo
 from cobrakbase.core.kbaseobject import KBaseObject
-from cobrakbase.core.kbasebiochem import Media
+from cobrakbase.core.kbasebiochemmedia import KBaseBiochemMedia as Media
 from cobrakbase.core.kbasefba.fbamodel_builder import FBAModelBuilder
 from cobrakbase.core.kbasefba.newmodeltemplate_builder import NewModelTemplateBuilder
 from cobrakbase.core.kbasegenome.genome import KBaseGenome
