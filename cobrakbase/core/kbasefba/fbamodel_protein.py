@@ -83,8 +83,11 @@ class ModelReactionProtein(Group):
             for o in data["modelReactionProteinSubunits"]
         ]
         complex_id = data.get("complex_ref")
+        data_source=None
+        if("source" in data):
+            data_source=data["source"]
         return ModelReactionProtein(
-            complex_id, data["note"], data["source"], subunits, complex_id
+            complex_id, data["note"], data_source, subunits, complex_id
         )
 
     def get_data(self):
