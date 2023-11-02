@@ -232,7 +232,9 @@ class FBAModelBuilder:
                 if complex_id not in complex_groups:
                     complex_group = Group(complex_id)
                     notes["complex_note"] = complex_data["note"]
-                    notes["complex_source"] = complex_data["source"]
+                    complex_source=None
+                    if("complex_source" in complex_data):
+                        notes["complex_source"] = complex_data["source"]
                     for u in complex_data["modelReactionProteinSubunits"]:
                         role_id = u["role"]
                         features = ";".join(
