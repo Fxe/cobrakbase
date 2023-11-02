@@ -1,7 +1,16 @@
 from cobrakbase.core.kbaseobject import KBaseObject
+from cobrakbase.kbase_object_info import KBaseObjectInfo
 
 
 class Media(KBaseObject):
+
+    OBJECT_TYPE = "KBaseBiochem.Media"
+
+    def __init__(self, data=None, info=None, args=None):
+        if info is None:
+            info = KBaseObjectInfo(object_type=Media.OBJECT_TYPE)
+        super().__init__(data, info, args)
+
     def get_media_constraints(self, cmp="e0"):
         """
         Parameters:
