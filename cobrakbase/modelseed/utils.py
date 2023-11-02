@@ -1,27 +1,29 @@
 import re
 
+
 class KBaseFBAModelBuilder:
-    
     def __init__(self, fbamodel, modelseed):
         self.fbamodel = fbamodel
         self.modelseed = modelseed
+
 
 def get_mapping(df, valid_databases, pd):
     mapping = {}
     for id, row in df.iterrows():
         mapping[id] = {}
-        #print(dir(row))
+        # print(dir(row))
         for db in df.keys():
-            #print(db)
+            # print(db)
             if db in valid_databases:
                 value = row[db]
                 if not pd.isna(value):
                     mapping[id][db] = value
     return mapping
 
+
 def atom_count(formula):
     atoms = {}
-    pairs = re.findall(r'([A-Z][a-z]*)(\d*)', formula)
+    pairs = re.findall(r"([A-Z][a-z]*)(\d*)", formula)
     for p in pairs:
         if not p[0] in atoms:
             atoms[p[0]] = 0
@@ -29,8 +31,9 @@ def atom_count(formula):
         if len(v) == 0:
             v = 1
         atoms[p[0]] += int(v)
-        #print(p[0], v)
+        # print(p[0], v)
     return atoms
+
 
 def is_valid_formula(f, pt):
     atoms = atom_count(f)
@@ -40,8 +43,8 @@ def is_valid_formula(f, pt):
             return False
     return True
 
+
 class PeriodicTable:
-    
     def __init__(self):
         self.elements_v = {
             "Ac": 89,
@@ -161,129 +164,129 @@ class PeriodicTable:
             "Y": 39,
             "Yb": 70,
             "Zn": 30,
-            "Zr": 40
+            "Zr": 40,
         }
         self.elements = {
-            "Ac" : "Actinium",
-            "Ag" : "Silver",
-            "Al" : "Aluminum",
-            "Am" : "Americium",
-            "Ar" : "Argon",
-            "As" : "Arsenic",
-            "At" : "Astatine",
-            "Au" : "Gold",
-            "B" : "Boron",
-            "Ba" : "Barium",
-            "Be" : "Beryllium",
-            "Bh" : "Bohrium",
-            "Bi" : "Bismuth",
-            "Bk" : "Berkelium",
-            "Br" : "Bromine",
-            "C" : "Carbon",
-            "Ca" : "Calcium",
-            "Cd" : "Cadmium",
-            "Ce" : "Cerium",
-            "Cf" : "Californium",
-            "Cl" : "Chlorine",
-            "Cm" : "Curium",
-            "Cn" : "Copernicium",
-            "Co" : "Cobalt",
-            "Cr" : "Chromium",
-            "Cs" : "Cesium",
-            "Cu" : "Copper",
-            "Db" : "Dubnium",
-            "Ds" : "Darmstadtium",
-            "Dy" : "Dysprosium",
-            "Er" : "Erbium",
-            "Es" : "Einsteinium",
-            "Eu" : "Europium",
-            "F" : "Fluorine",
-            "Fe" : "Iron",
-            "Fl" : "Flerovium",
-            "Fm" : "Fermium",
-            "Fr" : "Francium",
-            "Ga" : "Gallium",
-            "Gd" : "Gadolinium",
-            "Ge" : "Germanium",
-            "H" : "Hydrogen",
-            "He" : "Helium",
-            "Hf" : "Hafnium",
-            "Hg" : "Mercury",
-            "Ho" : "Holmium",
-            "Hs" : "Hassium",
-            "I" : "Iodine",
-            "In" : "Indium",
-            "Ir" : "Iridium",
-            "K" : "Potassium",
-            "Kr" : "Krypton",
-            "La" : "Lanthanum",
-            "Li" : "Lithium",
-            "Lr" : "Lawrencium",
-            "Lu" : "Lutetium",
-            "Lv" : "Livermorium",
-            "Mc" : "Moscovium",
-            "Md" : "Mendelevium",
-            "Mg" : "Magnesium",
-            "Mn" : "Manganese",
-            "Mo" : "Molybdenum",
-            "Mt" : "Meitnerium",
-            "N" : "Nitrogen",
-            "Na" : "Sodium",
-            "Nb" : "Niobium",
-            "Nd" : "Neodymium",
-            "Ne" : "Neon",
-            "Nh" : "Nihonium",
-            "Ni" : "Nickel",
-            "No" : "Nobelium",
-            "Np" : "Neptunium",
-            "O" : "Oxygen",
-            "Og" : "Oganesson",
-            "Os" : "Osmium",
-            "P" : "Phosphorus",
-            "Pa" : "Protactinium",
-            "Pb" : "Lead",
-            "Pd" : "Palladium",
-            "Pm" : "Promethium",
-            "Po" : "Polonium",
-            "Pr" : "Praseodymium",
-            "Pt" : "Platinum",
-            "Pu" : "Plutonium",
-            "Ra" : "Radium",
-            "Rb" : "Rubidium",
-            "Re" : "Rhenium",
-            "Rf" : "Rutherfordium",
-            "Rg" : "Roentgenium",
-            "Rh" : "Rhodium",
-            "Rn" : "Radon",
-            "Ru" : "Ruthenium",
-            "S" : "Sulfur",
-            "Sb" : "Antimony",
-            "Sc" : "Scandium",
-            "Se" : "Selenium",
-            "Sg" : "Seaborgium",
-            "Si" : "Silicon",
-            "Sm" : "Samarium",
-            "Sn" : "Tin",
-            "Sr" : "Strontium",
-            "Ta" : "Tantalum",
-            "Tb" : "Terbium",
-            "Tc" : "Technetium",
-            "Te" : "Tellurium",
-            "Th" : "Thorium",
-            "Ti" : "Titanium",
-            "Tl" : "Thallium",
-            "Tm" : "Thulium",
-            "Ts" : "Tennessine",
-            "U" : "Uranium",
-            "V" : "Vanadium",
-            "W" : "Tungsten",
-            "Xe" : "Xenon",
-            "Y" : "Yttrium",
-            "Yb" : "Ytterbium",
-            "Zn" : "Zinc",
-            "Zr" : "Zirconium"
+            "Ac": "Actinium",
+            "Ag": "Silver",
+            "Al": "Aluminum",
+            "Am": "Americium",
+            "Ar": "Argon",
+            "As": "Arsenic",
+            "At": "Astatine",
+            "Au": "Gold",
+            "B": "Boron",
+            "Ba": "Barium",
+            "Be": "Beryllium",
+            "Bh": "Bohrium",
+            "Bi": "Bismuth",
+            "Bk": "Berkelium",
+            "Br": "Bromine",
+            "C": "Carbon",
+            "Ca": "Calcium",
+            "Cd": "Cadmium",
+            "Ce": "Cerium",
+            "Cf": "Californium",
+            "Cl": "Chlorine",
+            "Cm": "Curium",
+            "Cn": "Copernicium",
+            "Co": "Cobalt",
+            "Cr": "Chromium",
+            "Cs": "Cesium",
+            "Cu": "Copper",
+            "Db": "Dubnium",
+            "Ds": "Darmstadtium",
+            "Dy": "Dysprosium",
+            "Er": "Erbium",
+            "Es": "Einsteinium",
+            "Eu": "Europium",
+            "F": "Fluorine",
+            "Fe": "Iron",
+            "Fl": "Flerovium",
+            "Fm": "Fermium",
+            "Fr": "Francium",
+            "Ga": "Gallium",
+            "Gd": "Gadolinium",
+            "Ge": "Germanium",
+            "H": "Hydrogen",
+            "He": "Helium",
+            "Hf": "Hafnium",
+            "Hg": "Mercury",
+            "Ho": "Holmium",
+            "Hs": "Hassium",
+            "I": "Iodine",
+            "In": "Indium",
+            "Ir": "Iridium",
+            "K": "Potassium",
+            "Kr": "Krypton",
+            "La": "Lanthanum",
+            "Li": "Lithium",
+            "Lr": "Lawrencium",
+            "Lu": "Lutetium",
+            "Lv": "Livermorium",
+            "Mc": "Moscovium",
+            "Md": "Mendelevium",
+            "Mg": "Magnesium",
+            "Mn": "Manganese",
+            "Mo": "Molybdenum",
+            "Mt": "Meitnerium",
+            "N": "Nitrogen",
+            "Na": "Sodium",
+            "Nb": "Niobium",
+            "Nd": "Neodymium",
+            "Ne": "Neon",
+            "Nh": "Nihonium",
+            "Ni": "Nickel",
+            "No": "Nobelium",
+            "Np": "Neptunium",
+            "O": "Oxygen",
+            "Og": "Oganesson",
+            "Os": "Osmium",
+            "P": "Phosphorus",
+            "Pa": "Protactinium",
+            "Pb": "Lead",
+            "Pd": "Palladium",
+            "Pm": "Promethium",
+            "Po": "Polonium",
+            "Pr": "Praseodymium",
+            "Pt": "Platinum",
+            "Pu": "Plutonium",
+            "Ra": "Radium",
+            "Rb": "Rubidium",
+            "Re": "Rhenium",
+            "Rf": "Rutherfordium",
+            "Rg": "Roentgenium",
+            "Rh": "Rhodium",
+            "Rn": "Radon",
+            "Ru": "Ruthenium",
+            "S": "Sulfur",
+            "Sb": "Antimony",
+            "Sc": "Scandium",
+            "Se": "Selenium",
+            "Sg": "Seaborgium",
+            "Si": "Silicon",
+            "Sm": "Samarium",
+            "Sn": "Tin",
+            "Sr": "Strontium",
+            "Ta": "Tantalum",
+            "Tb": "Terbium",
+            "Tc": "Technetium",
+            "Te": "Tellurium",
+            "Th": "Thorium",
+            "Ti": "Titanium",
+            "Tl": "Thallium",
+            "Tm": "Thulium",
+            "Ts": "Tennessine",
+            "U": "Uranium",
+            "V": "Vanadium",
+            "W": "Tungsten",
+            "Xe": "Xenon",
+            "Y": "Yttrium",
+            "Yb": "Ytterbium",
+            "Zn": "Zinc",
+            "Zr": "Zirconium",
         }
-        
+
     def get_element_name(self, e):
         if e in self.elements:
             return self.elements[e]

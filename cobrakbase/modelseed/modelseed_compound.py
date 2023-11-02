@@ -3,10 +3,9 @@ import pandas as pd
 
 
 class ModelSEEDCompound(ModelSEEDObject):
-
     @property
     def formula(self):
-        return self.data['formula']
+        return self.data["formula"]
 
     @property
     def database(self):
@@ -15,27 +14,36 @@ class ModelSEEDCompound(ModelSEEDObject):
     @property
     def inchi(self):
         if self.api is not None:
-            if self.id in self.api.compound_structures and 'InChI' in self.api.compound_structures[self.id]:
-                return self.api.compound_structures[self.id]['InChI']
+            if (
+                self.id in self.api.compound_structures
+                and "InChI" in self.api.compound_structures[self.id]
+            ):
+                return self.api.compound_structures[self.id]["InChI"]
         return None
 
     @property
     def inchikey(self):
         if self.api is not None:
-            if self.id in self.api.compound_structures and 'InChIKey' in self.api.compound_structures[self.id]:
-                return self.api.compound_structures[self.id]['InChIKey']
-        if pd.isna(self.data['inchikey']):
+            if (
+                self.id in self.api.compound_structures
+                and "InChIKey" in self.api.compound_structures[self.id]
+            ):
+                return self.api.compound_structures[self.id]["InChIKey"]
+        if pd.isna(self.data["inchikey"]):
             return None
-        return self.data['inchikey']
+        return self.data["inchikey"]
 
     @property
     def smiles(self):
         if self.api is not None:
-            if self.id in self.api.compound_structures and 'SMILE' in self.api.compound_structures[self.id]:
-                return self.api.compound_structures[self.id]['SMILE']
-        if pd.isna(self.data['smiles']):
+            if (
+                self.id in self.api.compound_structures
+                and "SMILE" in self.api.compound_structures[self.id]
+            ):
+                return self.api.compound_structures[self.id]["SMILE"]
+        if pd.isna(self.data["smiles"]):
             return None
-        return self.data['smiles']
+        return self.data["smiles"]
 
     @property
     def aliases(self):
@@ -46,12 +54,12 @@ class ModelSEEDCompound(ModelSEEDObject):
 
     @property
     def deltag(self):
-        return self.data['deltag']
+        return self.data["deltag"]
 
     @property
     def is_obsolete(self):
-        if 'is_obsolete' in self.data:
-            is_obsolete = self.data['is_obsolete']
+        if "is_obsolete" in self.data:
+            is_obsolete = self.data["is_obsolete"]
             if is_obsolete == 0:
                 return False
             else:

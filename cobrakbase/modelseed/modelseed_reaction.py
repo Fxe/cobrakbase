@@ -3,24 +3,24 @@ from cobrakbase.modelseed.seed_object import ModelSEEDObject
 
 
 def to_str2(rxn, cmp_replace=None, cpd_replace={}):
-    direction = rxn.data['direction']
-    op =  '<?>'
-    if direction == '=':
-        op = '<=>'
-    elif direction == '>':
-        op = '-->'
-    elif direction == '<':
-        op = '<--'
+    direction = rxn.data["direction"]
+    op = "<?>"
+    if direction == "=":
+        op = "<=>"
+    elif direction == ">":
+        op = "-->"
+    elif direction == "<":
+        op = "<--"
     else:
-        op =  '<?>'
+        op = "<?>"
     cstoichiometry = rxn.cstoichiometry
     l = []
     r = []
     for o in cstoichiometry:
         if cstoichiometry[o] > 0:
-            r.append((o[0],o[1], math.fabs(cstoichiometry[o])))
+            r.append((o[0], o[1], math.fabs(cstoichiometry[o])))
         else:
-            l.append((o[0],o[1], math.fabs(cstoichiometry[o])))
+            l.append((o[0], o[1], math.fabs(cstoichiometry[o])))
     l_str = print_stoich_block(l, cmp_replace, cpd_replace)
     r_str = print_stoich_block(r, cmp_replace, cpd_replace)
     return "{} {} {}".format(l_str, op, r_str)
@@ -42,16 +42,16 @@ def print_stoich_block(b, cmp_replace=None, cpd_replace={}):
         l_text.append(v_text)
 
     # print(l_text, r_text)
-    return ' + '.join(l_text)
+    return " + ".join(l_text)
 
 
 def get_lhs_rhs(seed_reaction, eval_func):
     result = {}
     result_no_zero = {}
-    stoichiometry = seed_reaction['stoichiometry']
+    stoichiometry = seed_reaction["stoichiometry"]
     if type(stoichiometry) == str:
-        for reagent_str in stoichiometry.split(';'):
-            reagent_data = reagent_str.split(':')
+        for reagent_str in stoichiometry.split(";"):
+            reagent_data = reagent_str.split(":")
             cpd_id = reagent_data[1]
             value = float(reagent_data[0])
             if eval_func(value):
@@ -59,7 +59,7 @@ def get_lhs_rhs(seed_reaction, eval_func):
                     result[cpd_id] = 0
                 result[reagent_data[1]] += value
             elif value == 0:
-                raise Exception('zero value stoich: ' + stoichiometry)
+                raise Exception("zero value stoich: " + stoichiometry)
 
     for cpd_id in result:
         if result[cpd_id] == 0:
@@ -72,10 +72,10 @@ def get_lhs_rhs(seed_reaction, eval_func):
 def get_stoichiometry(seed_reaction):
     result = {}
     result_no_zero = {}
-    stoichiometry = seed_reaction['stoichiometry']
+    stoichiometry = seed_reaction["stoichiometry"]
     if type(stoichiometry) == str:
-        for reagent_str in stoichiometry.split(';'):
-            reagent_data = reagent_str.split(':')
+        for reagent_str in stoichiometry.split(";"):
+            reagent_data = reagent_str.split(":")
             cpd_id = reagent_data[1]
             if not cpd_id in result:
                 result[cpd_id] = 0
@@ -92,11 +92,11 @@ def get_stoichiometry(seed_reaction):
 def get_cstoichiometry(seed_reaction):
     result = {}
     result_no_zero = {}
-    stoichiometry = seed_reaction['stoichiometry']
+    stoichiometry = seed_reaction["stoichiometry"]
     # print(stoichiometry)
     if type(stoichiometry) == str:
-        for reagent_str in stoichiometry.split(';'):
-            reagent_data = reagent_str.split(':')
+        for reagent_str in stoichiometry.split(";"):
+            reagent_data = reagent_str.split(":")
             value = reagent_data[0]
             cpd_id = reagent_data[1]
             cmp_index = reagent_data[2]
@@ -149,8 +149,8 @@ class ModelSEEDReaction(ModelSEEDObject):
 
     @property
     def is_transport(self):
-        if 'is_transport' in self.data:
-            is_transport = self.data['is_transport']
+        if "is_transport" in self.data:
+            is_transport = self.data["is_transport"]
             if is_transport == 1:
                 return True
 
@@ -168,15 +168,17 @@ class ModelSEEDReaction(ModelSEEDObject):
 
     @property
     def is_obsolete(self):
-        if 'is_obsolete' in self.data:
-            is_obsolete = self.data['is_obsolete']
+        if "is_obsolete" in self.data:
+            is_obsolete = self.data["is_obsolete"]
             if is_obsolete == 0:
                 return False
             else:
                 return True
         return False
 
-    def build_reaction_string(self, use_metabolite_names=False, use_compartment_names=None):
+    def build_reaction_string(
+        self, use_metabolite_names=False, use_compartment_names=None
+    ):
         cpd_name_replace = {}
         if use_metabolite_names:
             if self.api:
@@ -184,9 +186,10 @@ class ModelSEEDReaction(ModelSEEDObject):
                     cpd = self.api.get_seed_compound(cpd_id)
                     cpd_name_replace[cpd_id] = cpd.name
             else:
-                return self.data['definition']
+                return self.data["definition"]
         return to_str2(self, use_compartment_names, cpd_name_replace)
 
     def __str__(self):
         return "{id}: {stoichiometry}".format(
-            id=self.id, stoichiometry=self.build_reaction_string())
+            id=self.id, stoichiometry=self.build_reaction_string()
+        )
