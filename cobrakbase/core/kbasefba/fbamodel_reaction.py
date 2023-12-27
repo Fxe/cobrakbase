@@ -179,7 +179,9 @@ class ModelReaction(Reaction):
 
     def _set_probability(self, value: float):
         if not value is None:
-            self.notes[self.SBML_FIELD_PROBABILITY] = value
+            self.notes[self.SBML_FIELD_PROBABILITY] = float(value)
+        elif self.SBML_FIELD_PROBABILITY in self.notes:
+            del self.notes[self.SBML_FIELD_PROBABILITY]
 
     probability = property(_get_probability, _set_probability)
 
