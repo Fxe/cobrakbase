@@ -169,6 +169,20 @@ class ModelReaction(Reaction):
         self.numerical_attributes = numerical_attributes
         self.model_reaction_proteins = None
 
+    SBML_FIELD_PROBABILITY = "ms_probability"
+
+    def _get_probability(self):
+        if self.SBML_FIELD_PROBABILITY in self.notes:
+            return float(self.notes[self.SBML_FIELD_PROBABILITY])
+        else:
+            return None
+
+    def _set_probability(self, value: float):
+        if not value is None:
+            self.notes[self.SBML_FIELD_PROBABILITY] = value
+
+    probability = property(_get_probability, _set_probability)
+
     @staticmethod
     def from_json(data):
         data_copy = copy.deepcopy(data)

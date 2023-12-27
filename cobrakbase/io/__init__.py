@@ -1,6 +1,5 @@
 import json
 
-
 def read_json(filename):
     data = None
     with open(filename, "r") as f:
