@@ -31,6 +31,7 @@ def _get_ws_client(token, dev=False):
 
 
 class KBaseAPI:
+    
     def __init__(self, token=None, dev=False, config=None, public=False):
         self.max_retry = 3
         self._token = token

@@ -1,0 +1,21 @@
+{
+"metabolites":[],
+"reactions":[
+{
+"id":"rxn1",
+"name":"test reaction 1",
+"metabolites":{},
+"lower_bound":0,
+"upper_bound":1000,
+"gene_reaction_rule":"",
+"notes":{
+"ms_probability":1.1
+}
+}
+],
+"genes":[],
+"id":"test",
+"name":"test",
+"compartments":{},
+"version":"1"
+}

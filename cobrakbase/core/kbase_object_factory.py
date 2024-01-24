@@ -102,4 +102,7 @@ class KBaseObjectFactory:
         return KBaseObject(data, info, args)
 
     def create(self, ws_output, object_type):
+        """
+        
+        """
         return self.build_object_from_ws(ws_output, object_type)
