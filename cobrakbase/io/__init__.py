@@ -1,2 +1,1 @@
-import json
-from cobrakbase.io import load_kbase_zip_object
+from cobrakbase.io.read_kbase_zip import load_kbase_zip_object
