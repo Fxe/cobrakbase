@@ -10,9 +10,9 @@ logger = logging.getLogger(__name__)
 class CobraModelConverter:
     
     def __init__(self, model, genome=None, template=None, bio_reactions=None, e="e"):
-        self.biomass_reactions = bio_reactions
-        if self.biomass_reactions is None:
-            self.biomass_reactions = set()
+        self.biomass_reactions_ids = bio_reactions
+        if self.biomass_reactions_ids is None:
+            self.biomass_reactions_ids = set()
         self.model = model
         self.model_id = model.id
         self.template = template
@@ -37,7 +37,7 @@ class CobraModelConverter:
         return (
             type(reaction) == Biomass
             or "sbo" in reaction.annotation
-            or reaction.id in self.biomass_reactions
+            or reaction.id in self.biomass_reactions_ids
             and reaction.annotation["sbo"] == "SBO:0000629"
         )
 
