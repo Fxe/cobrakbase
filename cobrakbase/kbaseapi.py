@@ -62,6 +62,10 @@ class KBaseAPI:
         refs, IDs, and names for workspaces and objects
         """
         objspec = {}
+        if len(id_or_ref.split(";")) > 1:
+            objspec["to_obj_ref_path"] = id_or_ref.split(";")[0:-1]
+            print(objspec["to_obj_ref_path"])
+            id_or_ref = id_or_ref.split(";")[-1]
         if workspace is None:
             objspec["ref"] = id_or_ref
         else:
