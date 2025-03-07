@@ -294,7 +294,7 @@ class KBaseGenomeFeature(MSFeature):
     def from_kbase_data(kbase_data):
         functions = KBaseGenomeFeature.extract_functions(kbase_data)
         functions_split = KBaseGenomeFeature.split_annotation(functions)
-        protein_translation = kbase_data["protein_translation"]
+        protein_translation = kbase_data.get("protein_translation",None)
         dna_sequence = kbase_data["dna_sequence"]
         if protein_translation:
             protein_translation = protein_translation.upper()
@@ -305,7 +305,7 @@ class KBaseGenomeFeature(MSFeature):
             protein_translation,
             dna_sequence,
             kbase_data["location"],
-            kbase_data["cdss"],
+            kbase_data.get("cdss",None),
             functions,
             kbase_data.get("aliases")
         )
