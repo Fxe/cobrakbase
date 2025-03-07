@@ -42,8 +42,10 @@ class KBaseAPI:
             ):
                 with open(str(Path.home()) + "/.kbase/token", "r") as fh:
                     self._token = fh.read().strip()
+            elif os.environ.get('KB_AUTH_TOKEN', ""):
+                self._token = os.environ['KB_AUTH_TOKEN']
             if self._token is None:
-                raise Exception("missing token value or ~/.kbase/token file")
+                raise Exception("missing token value or ~/.kbase/token file or KB_AUTH_TOKEN environ var")
         else:
             self._token = None
 

@@ -95,6 +95,9 @@ class FBAModel(KBaseObject, Model):
           float ATPSynthaseStoichiometry;
           float ATPMaintenance;
           list<ModelQuantOpt> quantopts;
+
+
+
     """
 
     OBJECT_TYPE = "KBaseFBA.FBAModel"
@@ -232,7 +235,53 @@ class FBAModel(KBaseObject, Model):
     gapgens = property(_get_gapgens, _set_gapgens)
 
     def future__init__(
-        self,
+            self,
+            id_or_model: Union[str, "Model", None] = None,
+            name: Optional[str] = None,
+            source: str = None,
+            source_id: str = None,
+            type: str = None,
+            genome = None,
+            metagenome = None,
+            template = None,
+            ATPSynthaseStoichiometry: float = None,
+            ATPMaintenance: float = None,
+            attributes: dict = None,
+            drain_list: dict = None,
+            info=None,
+            args=None,
+    ) -> None:
+        """
+
+        @param id_or_model:
+        @param name:
+        @param source:
+        @param source_id:
+        @param type:
+        @param genome:
+        @param metagenome:
+        @param template:
+        @param ATPSynthaseStoichiometry:
+        @param ATPMaintenance:
+        @param attributes:
+        @param drain_list:
+        @param info:
+        @param args:
+        @return:
+        """
+        if info is None:
+            info = KBaseObjectInfo(object_type=FBAModel.OBJECT_TYPE)
+        KBaseObject.__init__(self, {}, info, args, None)
+        Model.__init__(self, id_or_model, name)
+        self.source = None
+        self.source_id = None
+        self.type = None
+        self.template = None
+        self.gap_fillings = None
+        self.gap_gens = None
+
+    @staticmethod
+    def actual_init(
         id_or_model: Union[str, "Model", None] = None,
         name: Optional[str] = None,
         info=None,
@@ -343,34 +392,7 @@ class FBAModel(KBaseObject, Model):
         data = {}
         ignore = {"modelcompounds", "modelreactions", "biomasses", "modelcompartments"}
 
-        data["modelcompartments"] = [converter.convert_compartment(x) for x in self.compartments]
-        """
-        for cmp_id, name in self.compartments:
-            model_compartment = {
-                "id": cmp_id,
-                "label": name,
-                "compartment_ref": "~/template/compartments/id/" + cmp_id[:-1],
-            }
-            cmp_meta_data_key = f"kbase_compartment_data_{cmp_id}"
-            if cmp_meta_data_key in self.notes:
-                m = self.notes[cmp_meta_data_key]
-                if type(m) == str:
-                    extra_data = json.loads(m.replace("&apos;", '"'))
-                elif type(m) == dict:
-                    extra_data = m
-                else:
-                    raise ValueError(
-                        f"note field for {cmp_meta_data_key} must be either str or dict, found: {type(m)}"
-                    )
-                if "compartmentIndex" in extra_data:
-                    extra_data["compartmentIndex"] = int(extra_data["compartmentIndex"])
-                if "pH" in extra_data:
-                    extra_data["pH"] = float(extra_data["pH"])
-                if "potential" in extra_data:
-                    extra_data["potential"] = float(extra_data["potential"])
-                model_compartment.update(extra_data)
-            data["modelcompartments"].append(model_compartment)
-        """
+        data["modelcompartments"] = list(converter.build_model_compartments().values())
 
         for key in self.data_keys:
             if key not in ignore:

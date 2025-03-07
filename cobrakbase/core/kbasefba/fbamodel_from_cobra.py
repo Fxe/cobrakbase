@@ -4,11 +4,22 @@ from cobrakbase.core.kbasefba.fbamodel_builder import FBAModelBuilder
 from cobrakbase.core.kbasefba.fbamodel_metabolite import ModelCompound
 from cobrakbase.core.kbasefba.fbamodel_reaction import ModelReaction
 from cobrakbase.core.kbasefba.fbamodel_biomass import Biomass
+from cobra.core import Reaction
 
 logger = logging.getLogger(__name__)
 
 
 class CobraModelConverter:
+
+    SBO_BIOCHEM_REACTION = 'SBO:0000176'
+    SBO_DEMAND_REACTION = 'SBO:0000628'
+    SBO_SINK_REACTION = 'SBO:0000632'
+    SBO_EXCHANGE_REACTION = 'SBO:0000627'
+    SBO_SPONTANEOUS_REACTION = 'SBO:0000672'
+
+    CONST_CMP_DEFAULT_PH = 7
+    CONST_CMP_DEFAULT_POTENTIAL = 0
+    CONST_CMP_DEFAULT_INDEX = 0
 
     def __init__(self, model, genome=None, template=None, bio_reactions=None, e="e"):
         self.biomass_reactions_ids = bio_reactions
@@ -23,11 +34,32 @@ class CobraModelConverter:
             False  # Detect seed id from identifier if annotation is missing
         )
 
+    @staticmethod
+    def convert_metabolite(m, compartment=None):
+        """
+
+        @param m:
+        @param compartment: override existing compartment
+        @return:
+        """
+        if compartment is None:
+            compartment = m.compartment
+        model_compound = ModelCompound(
+            m.id, m.formula, m.name, m.charge, compartment
+        )
+        model_compound.notes = m.notes
+        model_compound.annotation = m.annotation
+
+        return model_compound
+
     def convert_compartment(self, cmp_id):
         model_compartment = {
             "id": cmp_id,
             "label": self.model.compartments.get(cmp_id, cmp_id),
             "compartment_ref": "~/template/compartments/id/" + cmp_id[:-1],
+            "pH": self.CONST_CMP_DEFAULT_PH,
+            "potential": self.CONST_CMP_DEFAULT_POTENTIAL,
+            "compartmentIndex": self.CONST_CMP_DEFAULT_INDEX,
         }
         cmp_meta_data_key = f"kbase_compartment_data_{cmp_id}"
         if cmp_meta_data_key in self.model.notes:
@@ -48,7 +80,35 @@ class CobraModelConverter:
                 extra_data["potential"] = float(extra_data["potential"])
             model_compartment.update(extra_data)
 
+        if not model_compartment['id'].endswith(str(model_compartment['compartmentIndex'])):
+            logger.debug(f"append index to compartment {model_compartment['compartmentIndex']} -> {cmp_id}")
+            model_compartment['id'] += str(model_compartment['compartmentIndex'])
         return model_compartment
+
+    def build_model_compartments(self) -> dict:
+        return {x: self.convert_compartment(x) for x in self.model.compartments}
+
+    def build_model_metabolites(self, compartments) -> dict:
+        model_compounds = {}
+        for m in self.model.metabolites:
+            model_compound = self.convert_metabolite(m, compartments[m.compartment]['id'])
+            if model_compound.id not in model_compounds:
+                model_compounds[model_compound.id] = model_compound
+            else:
+                logger.warning(f"duplicate metabolite {model_compound.id}")
+        return model_compounds
+
+    def build_biomasses(self) -> list:
+        biomass_reactions = []
+        for r in self.biomass_reactions:
+            if type(r) is Biomass:
+                biomass_reactions.append(r._to_json())
+            elif type(r) is Reaction:
+                biomass_reactions.append(self.convert_reaction_to_biomass(r)._to_json())
+            else:
+                logger.warning(f"unable to biomass type {type(r)}")
+
+        return biomass_reactions
 
     @staticmethod
     def convert_reaction_to_biomass(reaction):
@@ -63,9 +123,9 @@ class CobraModelConverter:
         detect biomass reaction from SBO term SBO:0000629
         """
         return (
-            type(reaction) == Biomass
-            or reaction.id in self.biomass_reactions_ids
-            or reaction.annotation.get("sbo") == "SBO:0000629"
+                type(reaction) == Biomass
+                or reaction.id in self.biomass_reactions_ids
+                or reaction.annotation.get("sbo") == "SBO:0000629"
         )
 
     @staticmethod
@@ -78,7 +138,7 @@ class CobraModelConverter:
         return None
 
     @staticmethod
-    def reaction_is_drain(reaction, detect_from_id=False, exclude=None):
+    def reaction_is_drain(reaction, detect_from_id=False, exclude: dict = None):
         if exclude is None:
             exclude = {}
         """
@@ -86,25 +146,44 @@ class CobraModelConverter:
         if annotated with sbo SBO:0000176 overrides drain check
         """
         drain_sbo_terms = {"SBO:0000632", "SBO:0000628"}
-        if exclude is None:
-            exclude = set()
-        sbo_terms = reaction.annotation.get("sbo")
+        sbo_terms = reaction.annotation.get("sbo", "")
+        if sbo_terms and CobraModelConverter.SBO_BIOCHEM_REACTION in sbo_terms:
+            return False
         if sbo_terms:
             if type(sbo_terms) is str:
-                if sbo_terms in drain_sbo_terms:
-                    return True
-                if sbo_terms == "SBO:0000176":
+                if sbo_terms == CobraModelConverter.SBO_BIOCHEM_REACTION:
                     return False
+                elif sbo_terms in drain_sbo_terms:
+                    return True
             else:
                 if len(drain_sbo_terms & set(sbo_terms)) > 0:
                     return True
                 if "SBO:0000176" in sbo_terms:
                     return False
 
+        seed_id = CobraModelConverter.get_seed_id(reaction, detect_from_id)
+        len_metabolites = len(reaction.metabolites)
+        return CobraModelConverter._str_or_list_not_in_set(seed_id, set(exclude)) and len_metabolites == 1
+
+    @staticmethod
+    def reaction_is_exchange(reaction, detect_from_id=False, exclude=None):
+        if exclude is None:
+            exclude = {}
+        """
+        assume reactions of size 1 as drain reactions
+        if annotated with sbo SBO:0000176 overrides drain check
+        """
+        if "sbo" in reaction.annotation and reaction.annotation["sbo"] == CobraModelConverter.SBO_BIOCHEM_REACTION:
+            return False
+        if "sbo" in reaction.annotation and reaction.annotation["sbo"] == CobraModelConverter.SBO_EXCHANGE_REACTION:
+            return True
+        compartments = reaction.compartments
         return (
-            CobraModelConverter._str_or_list_not_in_set(
-                CobraModelConverter.get_seed_id(reaction, detect_from_id), exclude)
-            and len(reaction.metabolites) == 1
+                CobraModelConverter._str_or_list_not_in_set(
+                    CobraModelConverter.get_seed_id(reaction, detect_from_id), set(exclude))
+                and len(reaction.metabolites) == 1
+                and len(compartments) == 1
+                and (list(compartments)[0] == "e0" or list(compartments)[0] == "e")
         )
 
     @staticmethod
@@ -116,27 +195,6 @@ class CobraModelConverter:
             else:
                 test = len(set_object & set(str_or_list)) == 0
         return test
-
-    @staticmethod
-    def reaction_is_exchange(reaction, detect_from_id=False, exclude=None):
-        if exclude is None:
-            exclude = {}
-        """
-        assume reactions of size 1 as drain reactions
-        if annotated with sbo SBO:0000176 overrides drain check
-        """
-        if "sbo" in reaction.annotation and reaction.annotation["sbo"] == "SBO:0000176":
-            return False
-        if "sbo" in reaction.annotation and reaction.annotation["sbo"] == "SBO:0000627":
-            return True
-        compartments = reaction.compartments
-        return (
-            CobraModelConverter._str_or_list_not_in_set(
-                CobraModelConverter.get_seed_id(reaction, detect_from_id), exclude)
-            and len(reaction.metabolites) == 1
-            and len(compartments) == 1
-            and (list(compartments)[0] == "e0" or list(compartments)[0] == "e")
-        )
 
     def get_template_ref(self):
         if self.template:
@@ -152,7 +210,7 @@ class CobraModelConverter:
     def metabolic_reactions(self):
         for reaction in self.model.reactions:
             if not self.reaction_is_biomass(reaction) and not self.reaction_is_drain(
-                reaction, self.extract_seed_it_from_identifier, self.drain_exclude_set
+                    reaction, self.extract_seed_it_from_identifier, self.drain_exclude_set
             ):
                 yield reaction
 
@@ -203,7 +261,9 @@ class CobraModelConverter:
             )
             model_reaction.notes = r.notes
             model_reaction.annotation = r.annotation
-            print("Converting:",r.id, r.gene_reaction_rule)
+
+            logger.debug(f"Converting: {r.id} {r.gene_reaction_rule}")
+
             model_reaction.gene_reaction_rule = r.gene_reaction_rule
             model_reaction.add_metabolites(
                 dict([(model_compounds[c.id], v) for (c, v) in r.metabolites.items()])
@@ -215,7 +275,7 @@ class CobraModelConverter:
             reaction_biomass = self.convert_reaction_to_biomass(r)
             model_biomass[reaction_biomass.id] = reaction_biomass
             """
-            
+
             biomass_compounds = []
             metabolites = r.metabolites
             for m in metabolites:
@@ -282,7 +342,7 @@ class CobraModelConverter:
         if self.get_genome_ref():
             model_base["genome_ref"] = self.get_genome_ref()
 
-        #cobra_model = FBAModel
+        # cobra_model = FBAModel
 
         cobra_model = FBAModelBuilder(model_base).build()
         cobra_model.genome = self.genome

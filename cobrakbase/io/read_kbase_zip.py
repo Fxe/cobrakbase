@@ -48,7 +48,7 @@ def load_kbase_zip_object(filename):
                 }
             ]
         }
-        KBaseObjectFactory().create(data, None)
+        return KBaseObjectFactory().create(data, None)
     else:
         data = {
             'data': [

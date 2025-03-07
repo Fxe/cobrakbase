@@ -372,7 +372,7 @@ class ModelReaction(Reaction):
                         "triggering": 1,
                     }
                     data_cpx["modelReactionProteinSubunits"].append(data_su)
-                model_reaction_proteins.append(data_cpx)
+                proteins_list.append(data_cpx)
 
         data = {
             "id": self.id,
