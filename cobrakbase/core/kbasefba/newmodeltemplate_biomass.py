@@ -14,6 +14,8 @@ class NewModelTemplateBiomass(MSTemplateBiomass):
             d["lipid"],
             d["cellwall"],
             d["cofactor"],
+            d.get("pigment",0),
+            d.get("carbohydrate",0),
             d["energy"],
             d["other"],
         )
