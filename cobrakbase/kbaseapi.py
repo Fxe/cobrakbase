@@ -64,6 +64,10 @@ class KBaseAPI:
         refs, IDs, and names for workspaces and objects
         """
         objspec = {}
+        if len(id_or_ref.split(";")) > 1:
+            objspec["to_obj_ref_path"] = id_or_ref.split(";")[0:-1]
+            print(objspec["to_obj_ref_path"])
+            id_or_ref = id_or_ref.split(";")[-1]
         if workspace is None:
             objspec["ref"] = id_or_ref
         else:
@@ -286,7 +290,7 @@ class KBaseAPI:
             params["workspace"] = ws
         return KBaseObjectInfo(self.ws_client.save_objects(params)[0])
 
-    def list_objects(self, ws, object_type=None, include_metadata=False):
+    def list_objects(self, ws, object_type=None, include_metadata=False,showHidden=False):
         """
         List objects of a workspace (i.e., narrative) with either numerical id (e.g., 12345)
         or string id (e.g., user:narrative_1111111111111)
@@ -296,7 +300,7 @@ class KBaseAPI:
         :param include_metadata:
         :return:
         """
-        params = {"includeMetadata": 0}
+        params = {"includeMetadata": 0, "showHidden": 0}
         if type(ws) == int:
             params["ids"] = [ws]
         else:
@@ -305,6 +309,8 @@ class KBaseAPI:
             params["type"] = object_type
         if include_metadata:
             params["includeMetadata"] = 1
+        if showHidden:
+            params["showHidden"] = 1
         return self.ws_client.list_objects(params)
 
     def list_workspace(self, ws, object_type=None, include_metadata=False):

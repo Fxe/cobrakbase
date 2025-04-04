@@ -50,15 +50,15 @@ class NewModelTemplateCompound(MSTemplateMetabolite):
     def from_dict(d):
         return NewModelTemplateCompound(
             d["id"],
-            d["formula"],
-            d["name"],
-            d["defaultCharge"],
-            d["mass"],
-            d["deltaG"],
-            d["deltaGErr"],
-            d["isCofactor"] == 1,
-            d["abbreviation"],
-            d["aliases"],
+            d.get("formula",None),
+            d.get("name",d["id"]),
+            d.get("defaultCharge",None),
+            d.get("mass",None),
+            d.get("deltaG",None),
+            d.get("deltaGErr",None),
+            d.get("isCofactor",0) == 1,
+            d.get("abbreviation",d["id"]),
+            d.get("aliases",[]),
         )
 
     def __repr__(self):
