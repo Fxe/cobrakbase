@@ -329,7 +329,7 @@ class ModelReaction(Reaction):
                                 "~/genome/features/id/" + x
                                 for x in complex_group.notes[
                                     f"complex_subunit_features_{su}"
-                                ].split(";")
+                                ].split(";") if x
                             ],
                         }
                         model_reaction_protein["modelReactionProteinSubunits"].append(
