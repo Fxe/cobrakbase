@@ -20,6 +20,8 @@ KBASE_WS_URL = "https://kbase.us/services/ws/"
 KBASE_HANDLE_URL = "https://kbase.us/services/handle_service"
 KBASE_SHOCK_URL = "https://kbase.us/services/shock-api"
 DEV_KBASE_WS_URL = "https://appdev.kbase.us/services/ws/"
+DEV_KBASE_HANDLE_URL = "https://appdev.kbase.us/services/handle_service"
+DEV_KBASE_SHOCK_URL = "https://appdev.kbase.us/services/shock-api"
 
 
 # Why not put this in the constructor?
@@ -35,6 +37,7 @@ class KBaseAPI:
     def __init__(self, token=None, dev=False, config=None, public=False):
         self.max_retry = 3
         self._token = token
+        self.dev = dev
         if not public:
             if (
                 self._token is None
@@ -51,7 +54,10 @@ class KBaseAPI:
 
         if config is None:
             self.ws_client = _get_ws_client(self._token, dev)
-            self.hs = HandleService(KBASE_HANDLE_URL, token=self._token)
+            if not dev:
+                self.hs = HandleService(KBASE_HANDLE_URL, token=self._token)
+            else:
+                self.hs = HandleService(DEV_KBASE_HANDLE_URL, token=self._token)
         else:
             self.ws_client = WorkspaceClient(config["workspace-url"], token=self._token)
 
@@ -103,8 +109,10 @@ class KBaseAPI:
 
         handles = self.hs.hids_to_handles([handle_ref])
         file_id = handles[0]["id"]
-        node_url = KBASE_SHOCK_URL + "/node/" + file_id
-
+        if not self.dev:
+            node_url = KBASE_SHOCK_URL + "/node/" + file_id
+        else:
+            node_url = DEV_KBASE_SHOCK_URL + "/node/" + file_id
         written_bytes = 0
 
         with open(file_name, "wb") as fh:
