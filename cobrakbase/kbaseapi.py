@@ -20,7 +20,7 @@ KBASE_WS_URL = "https://kbase.us/services/ws/"
 KBASE_HANDLE_URL = "https://kbase.us/services/handle_service"
 KBASE_SHOCK_URL = "https://kbase.us/services/shock-api"
 DEV_KBASE_WS_URL = "https://appdev.kbase.us/services/ws/"
-
+DEV_KBASE_HANDLE_URL = "https://appdev.kbase.us/services/handle_service"
 
 # Why not put this in the constructor?
 def _get_ws_client(token, dev=False):
