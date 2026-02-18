@@ -178,7 +178,7 @@ class KBaseAPI:
         else:
             node_url = DEV_KBASE_SHOCK_URL + "/node/" + file_id
         if self._config:
-            node_url = self._config['shock-url']
+            node_url = self._config['shock-url'] + "/node/" + file_id
         written_bytes = 0
 
         with open(file_name, "wb") as fh:
