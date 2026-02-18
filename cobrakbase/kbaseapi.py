@@ -38,6 +38,7 @@ class KBaseAPI:
         self.max_retry = 3
         self._token = token
         self.dev = dev
+        self._config = config
         if not public:
             if (
                 self._token is None
@@ -176,6 +177,8 @@ class KBaseAPI:
             node_url = KBASE_SHOCK_URL + "/node/" + file_id
         else:
             node_url = DEV_KBASE_SHOCK_URL + "/node/" + file_id
+        if self._config:
+            node_url = self._config['shock-url']
         written_bytes = 0
 
         with open(file_name, "wb") as fh:
