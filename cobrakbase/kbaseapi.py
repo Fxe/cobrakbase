@@ -60,8 +60,71 @@ class KBaseAPI:
                 self.hs = HandleService(DEV_KBASE_HANDLE_URL, token=self._token)
         else:
             self.ws_client = WorkspaceClient(config["workspace-url"], token=self._token)
+            self.hs = HandleService(config["handle-service-url"], token=self._token)
 
-    # def _find_token(self):
+    def upload_blob_file(self, filepath, shock_url=KBASE_SHOCK_URL):
+        """Upload a file to Shock and get handle.
+
+        Args:
+            @param filepath: Path to file to upload
+            @param shock_url:
+        Returns:
+            Tuple of (shock_id, handle_id)
+
+        """
+        logger.info(f"Uploading file to Shock: {filepath}")
+
+        # Upload to Shock
+        headers = {"Authorization": "OAuth " + self._token}
+
+        # Get file size for Content-Length
+        file_size = os.path.getsize(filepath)
+        filename = os.path.basename(filepath)
+
+        with open(filepath, "rb") as f:
+            # Use multipart form with file and explicit content-type/size
+            # The tuple format is (filename, fileobj, content_type, headers)
+            files = {
+                "upload": (
+                    filename,
+                    f,
+                    "application/octet-stream",
+                    {"Content-Length": str(file_size)},
+                )
+            }
+
+            r = requests.post(
+                shock_url + "/node",
+                headers=headers,
+                files=files,
+                allow_redirects=True,
+            )
+
+            if not r.ok:
+                error_msg = r.text
+                try:
+                    error_data = r.json()
+                    error_msg = error_data.get("error", [r.text])[0]
+                except Exception as ex:
+                    logger.error(ex)
+                raise RuntimeError(f"Failed to upload file to Shock: {error_msg}")
+
+            shock_node = r.json()["data"]
+            shock_id = shock_node["id"]
+
+        # Create handle
+        hs = self.hs
+        handle = hs.persist_handle(
+            {
+                "id": shock_id,
+                "type": "shock",
+                "url": shock_url,
+            }
+        )
+        handle_id = handle
+        logger.info(f"File uploaded to Shock: {shock_id}, Handle: {handle_id}")
+
+        return shock_id, handle_id
 
     @staticmethod
     def process_workspace_identifiers(id_or_ref, workspace=None):
