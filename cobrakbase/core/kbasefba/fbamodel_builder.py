@@ -241,11 +241,11 @@ class FBAModelBuilder:
                             {x.split("/")[-1] for x in u["feature_refs"]}
                         )
                         notes[f"complex_subunit_features_{role_id}"] = features
-                        notes[f"complex_subunit_note_{role_id}"] = u["note"]
-                        notes[f"complex_subunit_optional_{role_id}"] = u[
-                            "optionalSubunit"
-                        ]
-                        notes[f"complex_subunit_triggering_{role_id}"] = u["triggering"]
+                        notes[f"complex_subunit_note_{role_id}"] = u.get("note", "")
+                        notes[f"complex_subunit_optional_{role_id}"] = u.get(
+                            "optionalSubunit", 0
+                        )
+                        notes[f"complex_subunit_triggering_{role_id}"] = u.get("triggering", 0)
                     complex_group.notes = notes
                     complex_groups[complex_group.id] = complex_group
 
